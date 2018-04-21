@@ -1,16 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import {
+  createStore,
+  applyMiddleware
+} from 'redux';
 import { Provider } from 'react-redux';
+import { createEpicMiddleware } from 'redux-observable';
 
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 
-import reducer from './reducers';
+import rootReducer from './reducers';
+import rootEpic from './epics';
 
 import './index.css';
 
-const store = createStore(reducer);
+const epicMiddleware = createEpicMiddleware(rootEpic);
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(epicMiddleware),
+);
 
 ReactDOM.render(
   <Provider store={store}>
