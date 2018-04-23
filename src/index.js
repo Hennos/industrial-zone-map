@@ -7,11 +7,12 @@ import {
 import { Provider } from 'react-redux';
 import { createEpicMiddleware } from 'redux-observable';
 
-import App from './components/App';
-import registerServiceWorker from './registerServiceWorker';
+import App from './App';
 
-import rootReducer from './reducers';
-import rootEpic from './epics';
+import rootReducer from './reducer';
+import rootEpic from './epic';
+
+import registerServiceWorker from './registerServiceWorker';
 
 import './index.css';
 
