@@ -29,12 +29,13 @@ class MapConnecter extends React.Component {
 
 MapConnecter.propTypes = {
   className: PropTypes.string,
-  token: PropTypes.string.isRequired,
+  token: PropTypes.string,
   getToken: PropTypes.func.isRequired,
 };
 
 MapConnecter.defaultProps = {
   className: '',
+  token: '',
 };
 
 const mapStateProps = state => ({
