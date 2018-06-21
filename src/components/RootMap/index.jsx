@@ -17,8 +17,8 @@ class RootMap extends React.Component {
     return (
       <Map id="root-map" center={this.center} zoom={this.zoom}>
         <TileLayer
-          url="https://api.tiles.mapbox.com/v4/{mapId}/{z}/{x}/{y}.png?access_token={token}"
-          mapId="mapbox.streets"
+          url="https://api.tiles.mapbox.com/v4/{mapType}/{z}/{x}/{y}.png?access_token={token}"
+          mapType="mapbox.streets"
           attribution="&copy; Mapbox Street contributors"
           minZoom={10}
           token={this.token}
