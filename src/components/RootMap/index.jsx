@@ -1,5 +1,5 @@
 import React from 'react';
-import Leaflet from 'leaflet';
+import { Map, TileLayer } from 'react-leaflet';
 
 import './index.css';
 
@@ -9,50 +9,21 @@ class RootMap extends React.Component {
 
     this.token = 'pk.eyJ1IjoiaGVubm9zIiwiYSI6ImNpeTV0dnQxdjAwMXozMm82OWg5Zmp0NHAifQ.suQs7bdNBxg5Q8_stqjOaA';
 
-    this.mapTiles = null;
-    this.mapData = null;
-    this.mapNode = null;
-  }
-
-  componentDidMount() {
-    this.init(this.mapNode);
-  }
-
-  componentWillUnmount() {
-    this.state.map.remove();
-  }
-
-  getMapConfig() {
-    const config = {};
-    config.params = {
-      center: [59.939095, 30.315868],
-      zoom: 10,
-    };
-    config.tileLayer = {
-      uri: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
-      params: {
-        attribution: '&copy; Mapbox Street contributors',
-        maxZoom: 18,
-        id: 'mapbox.streets',
-        accessToken: this.token,
-      },
-    };
-    return config;
-  }
-
-  init(id) {
-    const config = this.getMapConfig();
-
-    const map = Leaflet.map(id, config.params);
-    const tileLayer = Leaflet.tileLayer(config.tileLayer.uri, config.tileLayer.params).addTo(map);
-
-    this.mapData = map;
-    this.mapTiles = tileLayer;
+    this.center = [59.9342802, 30.12979159];
+    this.zoom = 10;
   }
 
   render() {
     return (
-      <div id="root-map" ref={(node) => { this.mapNode = node; }} />
+      <Map id="root-map" center={this.center} zoom={this.zoom}>
+        <TileLayer
+          url="https://api.tiles.mapbox.com/v4/{mapId}/{z}/{x}/{y}.png?access_token={token}"
+          mapId="mapbox.streets"
+          attribution="&copy; Mapbox Street contributors"
+          minZoom={10}
+          token={this.token}
+        />
+      </Map>
     );
   }
 }
