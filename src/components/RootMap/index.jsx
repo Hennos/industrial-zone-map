@@ -1,14 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Leaflet from 'leaflet';
-
-// import Leaflet from 'leaflet';
 
 import './index.css';
 
-class Map extends React.Component {
+class RootMap extends React.Component {
   constructor(props) {
     super(props);
+
+    this.token = 'pk.eyJ1IjoiaGVubm9zIiwiYSI6ImNpeTV0dnQxdjAwMXozMm82OWg5Zmp0NHAifQ.suQs7bdNBxg5Q8_stqjOaA';
 
     this.mapTiles = null;
     this.mapData = null;
@@ -35,7 +34,7 @@ class Map extends React.Component {
         attribution: '&copy; Mapbox Street contributors',
         maxZoom: 18,
         id: 'mapbox.streets',
-        accessToken: this.props.token,
+        accessToken: this.token,
       },
     };
     return config;
@@ -53,13 +52,9 @@ class Map extends React.Component {
 
   render() {
     return (
-      <div ref={node => this.mapNode = node} id="mapid" />
+      <div id="root-map" ref={(node) => { this.mapNode = node; }} />
     );
   }
 }
 
-Map.propTypes = {
-  token: PropTypes.string.isRequired,
-};
-
-export default Map;
+export default RootMap;
