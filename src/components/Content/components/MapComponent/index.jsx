@@ -3,7 +3,7 @@ import { Map, TileLayer } from 'react-leaflet';
 
 import './index.css';
 
-class RootMap extends React.Component {
+class MapComponent extends React.Component {
   // Можно передавать центр карты и начальный масштаб через свойства элемента
   constructor(props) {
     super(props);
@@ -29,4 +29,4 @@ class RootMap extends React.Component {
   }
 }
 
-export default RootMap;
+export default MapComponent;
