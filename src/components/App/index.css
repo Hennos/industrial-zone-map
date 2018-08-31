@@ -1,0 +1,26 @@
+.map-application {
+  display: grid;
+  grid-template-rows: [header-start] 100px [header-end content-start] 1fr [content-end footer-start] 30px [footer-end];
+  width: 100vw;
+  height: 100vh;
+}
+
+.map-application .map-application-header {
+  grid-row: header-start / header-end;
+}
+
+.map-application .map-application-content {
+  grid-row: content-start / content-end;
+}
+
+.map-application .map-application-footer {
+  grid-row: footer-start / footer-end;
+}
+
+.map-application .map-application-fragment:last-of-type {
+  border-bottom: none;
+}
+
+.map-application .map-application-fragment {
+  border-bottom: 1px solid black;
+}

@@ -1,0 +1,12 @@
+.content {
+  display: flex;
+}
+
+.content-sidebar {
+  width: 280px;
+  border-right: 1px solid black;
+}
+
+.content-map-container {
+  flex-grow: 1;
+}
