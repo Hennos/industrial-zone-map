@@ -1,0 +1,8 @@
+.sidebar {
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+}
+
+.sidebar > .sidebar-fragment {
+}

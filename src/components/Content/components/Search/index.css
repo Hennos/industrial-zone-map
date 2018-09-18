@@ -1,0 +1,18 @@
+.search {
+  padding: 20px 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.search > .search-border-radius {
+  border-radius: 4px;
+}
+
+.search > .search-input-area {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.search > .search-found-area {
+  margin-top: 5px;
+}

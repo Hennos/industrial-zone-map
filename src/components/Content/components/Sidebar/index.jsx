@@ -4,8 +4,12 @@ import PropTypes from 'prop-types';
 
 import './index.css';
 
+import Search from '../Search';
+
 const Sidebar = ({ stylization }) => (
-  <div className={classNames(stylization)} />
+  <div className={classNames(stylization, 'sidebar')}>
+    <Search stylization="sidebar-fragment" />
+  </div>
 );
 
 Sidebar.propTypes = {

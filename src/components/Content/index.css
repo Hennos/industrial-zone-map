@@ -2,11 +2,11 @@
   display: flex;
 }
 
-.content-sidebar {
-  width: 280px;
+.content > .content-sidebar {
+  width: 300px;
   border-right: 1px solid black;
 }
 
-.content-map-container {
+.content > .content-map-container {
   flex-grow: 1;
 }

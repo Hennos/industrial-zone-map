@@ -1,0 +1,13 @@
+.search-input {
+  padding: 5px 10px;
+  height: 30px;
+  position: relative;
+}
+
+.search-input > .search-string {
+  font-size: 14px;
+}
+
+.search-input > .search-buttons {
+  width: 40px;
+}
