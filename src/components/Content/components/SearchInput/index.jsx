@@ -6,11 +6,16 @@ import './index.css';
 
 import SearchFilters from '../SearchFilters';
 
+const Button = () => (
+  <div className="search-input-button" />
+);
+
 const SearchInput = ({ stylization }) => (
   <div className={classNames(stylization, 'search-input')}>
-    <input className="search-string" placeholder="Поиск" type="text" />
-    <div className="search-buttons" />
-    <SearchFilters stylization="search-filters" />
+    <input className="search-input-string" placeholder="Поиск" type="text" />
+    <Button />
+    <Button />
+    <SearchFilters stylization="search-input-filters" />
   </div>
 );
 

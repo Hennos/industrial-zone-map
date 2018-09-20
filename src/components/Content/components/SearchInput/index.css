@@ -2,12 +2,33 @@
   padding: 5px 10px;
   height: 30px;
   position: relative;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  box-sizing: content-box;
 }
 
-.search-input > .search-string {
+.search-input > .search-input-string {
   font-size: 14px;
+  flex-grow: 1;
 }
 
-.search-input > .search-buttons {
-  width: 40px;
+.search-input > .search-input-button {
+  width: 16px;
+  height: 16px;
+  border-radius: 100%;
+  margin-left: 4px;
+  background-color: #A2D0EA;
+}
+
+.search-input > .search-input-button:hover {
+  cursor: pointer;
+}
+
+.search-input > .search-input-button:last-of-type {
+  margin-right: 0;
+}
+
+.search-input > .search-input-filters {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }

@@ -1,0 +1,19 @@
+.select-filter {
+  display: flex;
+  align-items: center;
+}
+
+.select-filter > .select-drop-list-button {
+  position: relative;
+  display: inline-block;
+  top: 4px;
+  border-bottom: 7px solid transparent;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid #AFAFAF;
+  margin-left: 0.4em;
+}
+
+.select-filter > .select-drop-list-button:hover {
+  cursor: pointer;
+}

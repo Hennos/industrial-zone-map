@@ -50,7 +50,7 @@ class Search extends React.Component {
     const { found } = this.state;
     return (
       <div className={classNames(this.props.stylization, 'search')}>
-        <SearchInput stylization="search-input-area search-border-radius" />
+        <SearchInput stylization="search-input-area" />
         {(found.length)
         ? <SearchFound stylization="search-found-area" found={found} />
         : null}
