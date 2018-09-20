@@ -1,5 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Bree+Serif);
-@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
 
 @import '../node_modules/leaflet/dist/leaflet.css';
 
@@ -82,5 +81,5 @@ body, html {
 
 body {
 	overflow: hidden;
-	font-family: 'Open Sans', Tahoma, Geneva, Verdana, sans-serif;	
+	font-family: arial;
 }
