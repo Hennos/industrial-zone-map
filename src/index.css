@@ -40,6 +40,7 @@ footer, header, hgroup, menu, nav, section {
 button, input[type="submit"] {
 	border: none;
 	font: inherit;
+	outline: none;
 	background-image: none;
 	background-color: transparent;
 	box-shadow: none;
