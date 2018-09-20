@@ -16,11 +16,16 @@ class Map extends React.Component {
 
   render() {
     return (
-      <LeafletMap id="root-map" center={this.center} zoom={this.zoom}>
+      <LeafletMap
+        id="root-map"
+        center={this.center}
+        zoom={this.zoom}
+        zoomControl={false}
+        attributionControl={false}
+      >
         <TileLayer
           url="https://api.tiles.mapbox.com/v4/{mapType}/{z}/{x}/{y}.png?access_token={token}"
           mapType="mapbox.streets"
-          attribution="&copy; Mapbox Street contributors"
           minZoom={10}
           token={this.token}
         />
