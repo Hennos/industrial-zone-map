@@ -1,10 +1,20 @@
 .content {
+  position: relative;
   display: flex;
 }
 
 .content > .content-sidebar {
   width: 300px;
   border-right: 1px solid black;
+}
+
+.content > .content-map-legend {
+  position: fixed;
+  right: 0;
+  bottom: 20px;
+  margin: 10px;
+  z-index: 1000000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .content > .content-container {
