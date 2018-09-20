@@ -6,7 +6,7 @@ import './index.css';
 
 import LegendRecord from '../LegendRecord';
 
-const MapLegend = ({ stylization }) => {
+const MapLegend = ({ stylization, onClose }) => {
   const records = [{
     id: 1,
     description: 'Зона среднеэтажной и многоэтажной жилой застройки с включением объектов общественно деловой застройки, а также объектов инженерной инфраструктуры, связанных с обслуживанием данной зоны',
@@ -28,7 +28,7 @@ const MapLegend = ({ stylization }) => {
   );
 
   const CloseButton = () => (
-    <div className="map-legend-close-button" />
+    <button className="map-legend-close-button" onClick={onClose} />
   );
 
   const LegendList = () => (
@@ -55,11 +55,13 @@ const shapeLegendRecords = {
 
 MapLegend.propTypes = {
   stylization: PropTypes.string,
+  onClose: PropTypes.func,
   records: PropTypes.arrayOf(PropTypes.shape(shapeLegendRecords)).isRequired,
 };
 
 MapLegend.defaultProps = {
   stylization: '',
+  onClose: () => {},
 };
 
 export default MapLegend;

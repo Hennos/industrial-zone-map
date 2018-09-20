@@ -64,7 +64,7 @@ class SearchFilters extends React.Component {
   }
 
   render() {
-    const { stylization } = this.props;
+    const { stylization, onClose } = this.props;
     const { filters } = this.state;
 
     const Header = () => (
@@ -74,7 +74,7 @@ class SearchFilters extends React.Component {
     );
 
     const CloseButton = () => (
-      <div className="search-filters-close-button" />
+      <button onClick={onClose} className="search-filters-close-button" />
     );
 
     const FilterRenderer = ({ type, data }) => {
@@ -112,10 +112,12 @@ class SearchFilters extends React.Component {
 
 SearchFilters.propTypes = {
   stylization: PropTypes.string,
+  onClose: PropTypes.func,
 };
 
 SearchFilters.defaultProps = {
   stylization: '',
+  onClose: () => {},
 };
 
 export default SearchFilters;

@@ -1,0 +1,35 @@
+.map-information {
+  height: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.map-information > .map-information-button {
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  border-radius: 100%;
+  background-color: white;
+}
+
+.map-information > .map-information-button:hover {
+  cursor: pointer;
+}
+
+.map-information > .map-information-legend {
+  position: fixed;
+  right: 0;
+  bottom: 20px;
+  margin: 10px;
+  z-index: 1000000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.map-information > .map-information-legend-none {
+  visibility: hidden;
+  pointer-events: none;
+}
