@@ -6,18 +6,49 @@ import './index.css';
 
 import SearchFilters from '../SearchFilters';
 
-const Button = () => (
-  <div className="search-input-button" />
-);
+class SearchInput extends React.Component {
+  constructor(props) {
+    super(props);
 
-const SearchInput = ({ stylization }) => (
-  <div className={classNames(stylization, 'search-input')}>
-    <input className="search-input-string" placeholder="Поиск" type="text" />
-    <Button />
-    <Button />
-    <SearchFilters stylization="search-input-filters" />
-  </div>
-);
+    this.state = {
+      filtersVisibility: false,
+    };
+
+    this.onClickFiltersButton = this.onClickFiltersButton.bind(this);
+  }
+
+  onClickFiltersButton() {
+    this.setState({
+      filtersVisibility: !this.state.filtersVisibility,
+    });
+  }
+
+  render() {
+    const { stylization } = this.props;
+    const { filtersVisibility } = this.state;
+
+    const SearchButton = () => (
+      <button className="search-input-button" />
+    );
+
+    const FiltersButton = () => (
+      <button onClick={this.onClickFiltersButton} className="search-input-button" />
+    );
+
+    const searchFiltersStylization = classNames(
+      'search-input-filters',
+      { 'search-input-filters-none': !filtersVisibility },
+    );
+    return (
+      <div className={classNames(stylization, 'search-input')}>
+        <input className="search-input-string" placeholder="Поиск" type="text" />
+        <SearchButton />
+        <FiltersButton />
+        <SearchFilters stylization={searchFiltersStylization} onClose={this.onClickFiltersButton} />
+      </div>
+    );
+  }
+}
 
 SearchInput.propTypes = {
   stylization: PropTypes.string,
