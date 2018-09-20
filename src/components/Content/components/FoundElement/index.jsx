@@ -25,8 +25,8 @@ const FoundElement = ({ stylization, data }) => (
 
 const shapeElementData = {
   address: PropTypes.string,
-  cadastrialNumber: PropTypes.string,
-  typePermittedUse: PropTypes.string,
+  cadastrialNumber: PropTypes.string.isRequired,
+  typePermittedUse: PropTypes.string.isRequired,
 };
 
 FoundElement.propTypes = {
