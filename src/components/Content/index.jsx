@@ -8,16 +8,18 @@ import Sidebar from './components/Sidebar';
 
 import Map from './components/Map';
 import Search from './components/Search';
-import MapLegend from './components/MapLegend';
+import MapInformation from './components/MapInformation';
 
 const Content = ({ stylization }) => (
   <div className={classNames(stylization, 'content')}>
     <Sidebar stylization="content-sidebar">
       <Search stylization="content-search" />
     </Sidebar>
-    <MapLegend stylization="content-map-legend" />
     <div className="content-container">
       <Map />
+    </div>
+    <div className="content-footer">
+      <MapInformation />
     </div>
   </div>
 );

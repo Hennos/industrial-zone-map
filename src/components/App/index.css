@@ -1,6 +1,6 @@
 .map-application {
   display: grid;
-  grid-template-rows: [header-start] 100px [header-end content-start] calc(100vh - 120px) [content-end footer-start] 20px [footer-end];
+  grid-template-rows: [header-start] 100px [header-end content-start] calc(100vh - 100px) [content-end];
   width: 100vw;
   height: 100vh;
 }
@@ -11,10 +11,6 @@
 
 .map-application > .map-application-content {
   grid-row: content-start / content-end;
-}
-
-.map-application > .map-application-footer {
-  grid-row: footer-start / footer-end;
 }
 
 .map-application > .map-application-fragment:last-of-type {

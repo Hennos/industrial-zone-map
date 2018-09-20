@@ -1,22 +1,23 @@
 .content {
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-rows: [content-main-start] auto [content-main-end content-footer-start] 20px [content-footer-end];
+  grid-template-columns: [content-start sidebar-start] 300px [sidebar-end content-container-start] auto [content-container-end content-end];
 }
 
 .content > .content-sidebar {
-  width: 300px;
+  grid-row: content-main-start / content-main-end;
+  grid-column: sidebar-start / sidebar-end;
   border-right: 1px solid black;
 }
 
-.content > .content-map-legend {
-  position: fixed;
-  right: 0;
-  bottom: 20px;
-  margin: 10px;
-  z-index: 1000000;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+.content > .content-container {
+  grid-row: content-main-start / content-main-end;
+  grid-column: content-container-start / content-container-end;
 }
 
-.content > .content-container {
-  flex-grow: 1;
+.content > .content-footer {
+  grid-row: content-footer-start / content-footer-end;
+  grid-column: content-start / content-end;
+  background-color: #0081C7;
 }
