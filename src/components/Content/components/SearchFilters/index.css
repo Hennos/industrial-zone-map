@@ -1,10 +1,5 @@
 .search-filters {
-  position: fixed;
-  top: 120px;
-  left: 300px;
-  margin-left: 10px;
   background-color: white;
-  z-index: 1000000;
   border-radius: 4px;
 }
 
