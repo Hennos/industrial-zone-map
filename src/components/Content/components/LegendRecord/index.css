@@ -1,9 +1,10 @@
 .legend-record {
+  font-size: 12px;
+  line-height: 14px;
   padding-top: 7px;
   padding-bottom: 7px;
   display: flex;
   align-items: center;
-  line-height: 14px;
 }
 
 .legend-record > .legend-record-icon {

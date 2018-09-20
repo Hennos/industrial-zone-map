@@ -31,7 +31,6 @@
 }
 
 .map-legend > .map-legend-list {
-  font-size: 12px;
   overflow-y: auto;
   overflow-x: hidden;
   margin-left: 4px;
