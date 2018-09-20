@@ -7,6 +7,6 @@
   border-right: 1px solid black;
 }
 
-.content > .content-map-container {
+.content > .content-container {
   flex-grow: 1;
 }

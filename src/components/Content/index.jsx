@@ -5,12 +5,18 @@ import PropTypes from 'prop-types';
 import './index.css';
 
 import Sidebar from './components/Sidebar';
-import MapContainer from './components/MapContainer';
+
+import Map from './components/Map';
+import Search from './components/Search';
 
 const Content = ({ stylization }) => (
   <div className={classNames(stylization, 'content')}>
-    <Sidebar stylization="content-sidebar" />
-    <MapContainer stylization="content-map-container" />
+    <Sidebar stylization="content-sidebar">
+      <Search stylization="content-search" />
+    </Sidebar>
+    <div className="content-container">
+      <Map />
+    </div>
   </div>
 );
 

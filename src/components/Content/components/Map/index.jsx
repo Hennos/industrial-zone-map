@@ -1,9 +1,9 @@
 import React from 'react';
-import { Map, TileLayer } from 'react-leaflet';
+import { Map as LeafletMap, TileLayer } from 'react-leaflet';
 
 import './index.css';
 
-class MapComponent extends React.Component {
+class Map extends React.Component {
   // Можно передавать центр карты и начальный масштаб через свойства элемента
   constructor(props) {
     super(props);
@@ -16,7 +16,7 @@ class MapComponent extends React.Component {
 
   render() {
     return (
-      <Map id="root-map" center={this.center} zoom={this.zoom}>
+      <LeafletMap id="root-map" center={this.center} zoom={this.zoom}>
         <TileLayer
           url="https://api.tiles.mapbox.com/v4/{mapType}/{z}/{x}/{y}.png?access_token={token}"
           mapType="mapbox.streets"
@@ -24,9 +24,9 @@ class MapComponent extends React.Component {
           minZoom={10}
           token={this.token}
         />
-      </Map>
+      </LeafletMap>
     );
   }
 }
 
-export default MapComponent;
+export default Map;

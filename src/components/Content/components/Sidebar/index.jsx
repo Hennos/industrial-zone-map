@@ -4,16 +4,15 @@ import PropTypes from 'prop-types';
 
 import './index.css';
 
-import Search from '../Search';
-
-const Sidebar = ({ stylization }) => (
+const Sidebar = ({ stylization, children }) => (
   <div className={classNames(stylization, 'sidebar')}>
-    <Search stylization="sidebar-fragment" />
+    {children}
   </div>
 );
 
 Sidebar.propTypes = {
   stylization: PropTypes.string,
+  children: PropTypes.element.isRequired,
 };
 
 Sidebar.defaultProps = {
