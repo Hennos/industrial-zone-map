@@ -1,17 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ApolloProvider } from 'react-apollo';
+import { Provider } from 'react-redux';
+
+import registerServiceWorker from './registerServiceWorker';
+import store from './store';
 
 import './index.css';
 
-import apollo from './apollo/client';
 import App from './components/App';
-import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-  <ApolloProvider client={apollo}>
+  <Provider store={store}>
     <App />
-  </ApolloProvider>,  
+  </Provider>,
   document.getElementById('root'),
 );
 
