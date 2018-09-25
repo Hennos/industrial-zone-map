@@ -1,118 +1,60 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import './index.css';
 
-import RangeFilter from '../RangeFilter';
-import FlagFilter from '../FlagFilter';
-import SelectFilter from '../SelectFilter';
+import { keys } from '../../../../store/search/constants';
+import { updateSearchFilterValue } from '../../../../store/search/actions';
 
-class SearchFilters extends React.Component {
-  constructor(props) {
-    super(props);
+import FilterPresenter from '../FilterPresenter';
 
-    this.state = {
-      filters: [{
-        id: 1,
-        title: 'Приоритетный район',
-        type: 'select',
-      }, {
-        id: 2,
-        title: 'Площадь земельного участка',
-        type: 'range',
-        units: 'м²',
-      }, {
-        id: 3,
-        title: 'Вид разрешенного использования',
-        type: 'flag',
-      }, {
-        id: 4,
-        title: 'Класс опасности производства',
-        type: 'flag',
-      }, {
-        id: 5,
-        title: 'Санитарно-защитная зона',
-        type: 'flag',
-      }, {
-        id: 6,
-        title: 'Газоснабжение',
-        type: 'range',
-        units: 'м³/сутки',
-      }, {
-        id: 7,
-        title: 'Водоснабжение',
-        type: 'range',
-        units: 'м³/сутки',
-      }, {
-        id: 8,
-        title: 'Водоотведение',
-        type: 'range',
-        units: 'м³/сутки',
-      }, {
-        id: 9,
-        title: 'Теплоснабжение',
-        type: 'range',
-        units: 'Гкал/час',
-      }, {
-        id: 10,
-        title: 'Электроснабжение',
-        type: 'range',
-        units: 'кВТ',
-      }],
-    };
-  }
 
-  render() {
-    const { stylization, onClose } = this.props;
-    const { filters } = this.state;
+const SearchFilters = ({
+  stylization,
+  filters,
+  onClose,
+  onChangeFilter,
+}) => {
+  const Header = () => <div className="search-filters-header">Критерии поиска</div>;
 
-    const Header = () => (
-      <div className="search-filters-header">
-        Критерии поиска
-      </div>
-    );
+  const CloseButton = () => <button onClick={onClose} className="search-filters-close-button" />;
 
-    const CloseButton = () => (
-      <button onClick={onClose} className="search-filters-close-button" />
-    );
-
-    const FilterRenderer = ({ type, data }) => {
-      switch (type) {
-        case 'range':
-          return <RangeFilter stylization="search-filters-list-element" data={data} />;
-        case 'flag':
-          return <FlagFilter stylization="search-filters-list-element" data={data} />;
-        case 'select':
-          return <SelectFilter stylization="search-filters-list-element" data={data} />;
-        default:
-          return (
-            <div className="search-filters-list-element" />
-          );
-      }
-    };
-
-    const FiltersList = () => (
+  return (
+    <div className={classNames(stylization, 'search-filters')}>
+      <Header />
+      <CloseButton />
       <div className="search-filters-list">
-        {filters.map(({ id, type, ...data }) => (
-          <FilterRenderer key={id} type={type} data={data} />
+        {filters.map(({ id, data, value }) => (
+          <FilterPresenter
+            key={id}
+            stylization="search-filters-list-element"
+            value={value}
+            data={data}
+            onChange={newValue => onChangeFilter(id, newValue)}
+          />
         ))}
       </div>
-    );
+    </div>
+  );
+};
 
-    return (
-      <div className={classNames(stylization, 'search-filters')}>
-        <Header />
-        <CloseButton />
-        <FiltersList />
-      </div>
-    );
-  }
-}
+const shapeFilterData = {
+  type: PropTypes.string,
+};
+
+const shapeFilter = {
+  id: PropTypes.number,
+  data: PropTypes.shape(shapeFilterData),
+  value: PropTypes.object.isRequired,
+};
 
 SearchFilters.propTypes = {
   stylization: PropTypes.string,
+  filters: PropTypes.arrayOf(PropTypes.shape(shapeFilter)).isRequired,
   onClose: PropTypes.func,
+  onChangeFilter: PropTypes.func.isRequired,
 };
 
 SearchFilters.defaultProps = {
@@ -120,4 +62,25 @@ SearchFilters.defaultProps = {
   onClose: () => {},
 };
 
-export default SearchFilters;
+function mapStateToProps(state) {
+  const filters = state.search.get(keys.filters);
+  const filtersData = state.search.get(keys.filtersData);
+  const filtersValue = state.search.get(keys.filtersValue);
+  return {
+    filters: filters.map(id => ({
+      id,
+      data: filtersData.get(id),
+      value: filtersValue.get(id) || {},
+    })).toArray(),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onChangeFilter: (id, value) => {
+      dispatch(updateSearchFilterValue(id, value));
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchFilters);

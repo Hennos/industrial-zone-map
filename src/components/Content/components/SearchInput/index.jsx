@@ -11,10 +11,18 @@ class SearchInput extends React.Component {
     super(props);
 
     this.state = {
-      filtersVisibility: false,
+      inputValue: '',
+      filtersVisibility: true,
     };
 
+    this.onChangeInput = this.onChangeInput.bind(this);
     this.onClickFiltersButton = this.onClickFiltersButton.bind(this);
+  }
+
+  onChangeInput(event) {
+    this.setState({
+      inputValue: event.target.value,
+    });
   }
 
   onClickFiltersButton() {
@@ -25,7 +33,7 @@ class SearchInput extends React.Component {
 
   render() {
     const { stylization } = this.props;
-    const { filtersVisibility } = this.state;
+    const { inputValue, filtersValue, filtersVisibility } = this.state;
 
     const SearchButton = () => (
       <button className="search-input-button" />
@@ -41,10 +49,20 @@ class SearchInput extends React.Component {
     );
     return (
       <div className={classNames(stylization, 'search-input')}>
-        <input className="search-input-string" placeholder="Поиск" type="text" />
+        <input
+          className="search-input-string"
+          placeholder="Поиск"
+          value={inputValue}
+          type="text"
+          onChange={this.onChangeInput}
+        />
         <SearchButton />
         <FiltersButton />
-        <SearchFilters stylization={searchFiltersStylization} onClose={this.onClickFiltersButton} />
+        <SearchFilters
+          stylization={searchFiltersStylization}
+          values={filtersValue}
+          onClose={this.onClickFiltersButton}
+        />
       </div>
     );
   }

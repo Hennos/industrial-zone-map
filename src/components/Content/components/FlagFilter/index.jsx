@@ -14,7 +14,7 @@ class FlagFilter extends React.Component {
   }
 
   render() {
-    const { stylization } = this.props;
+    const { stylization, onChange } = this.props;
     const { title } = this.props.data;
     const { choosed } = this.state;
 
@@ -38,10 +38,12 @@ const shapeElementData = {
 FlagFilter.propTypes = {
   stylization: PropTypes.string,
   data: PropTypes.shape(shapeElementData).isRequired,
+  onChange: PropTypes.func,
 };
 
 FlagFilter.defaultProps = {
   stylization: '',
+  onChange: () => {},
 };
 
 export default FlagFilter;
