@@ -1,12 +1,16 @@
 .map-application {
   display: grid;
-  grid-template-rows: [header-start] 100px [header-end content-start] calc(100vh - 100px) [content-end];
+  grid-template-rows: [header-start] 70px [header-end nav-start] 30px [nav-end content-start] calc(100vh - 100px) [content-end];
   width: 100vw;
   height: 100vh;
 }
 
 .map-application > .map-application-header {
   grid-row: header-start / header-end;
+}
+
+.map-application > .map-application-nav {
+  grid-row: nav-start / nav-end;
 }
 
 .map-application > .map-application-content {
