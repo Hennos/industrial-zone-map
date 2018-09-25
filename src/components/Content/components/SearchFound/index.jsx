@@ -8,13 +8,18 @@ import FoundElement from '../FoundElement';
 
 const SearchFound = ({ stylization, found }) => (
   <div className={classNames(stylization, 'search-found')}>
-    {found.map(element => <FoundElement key={element.id} stylization="search-found-element" data={element} />)}
+    {found.map(({ id, data }) => <FoundElement key={id} stylization="search-found-element" id={id} data={data} />)}
   </div>
 );
 
+const shapeFound = {
+  id: PropTypes.number,
+  data: PropTypes.object,
+};
+
 SearchFound.propTypes = {
   stylization: PropTypes.string,
-  found: PropTypes.arrayOf(PropTypes.object).isRequired,
+  found: PropTypes.arrayOf(PropTypes.shape(shapeFound)).isRequired,
 };
 
 SearchFound.defaultProps = {

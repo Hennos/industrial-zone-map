@@ -6,6 +6,8 @@ const keys = {
   filters: 'filters',
   filtersData: 'filtersData',
   filtersValue: 'filtersValue',
+  foundAreas: 'foundAreas',
+  foundAreasData: 'foundAreasData',
 };
 
 export {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import './index.css';
 
-const FoundElement = ({ stylization, data }) => (
+const FoundElement = ({ stylization, id, data }) => (
   <div className={classNames(stylization, 'found-element')}>
     <ul className="found-element-list">
       <li className="list-element">
@@ -31,6 +31,7 @@ const shapeElementData = {
 
 FoundElement.propTypes = {
   stylization: PropTypes.string,
+  id: PropTypes.number.isRequired,
   data: PropTypes.shape(shapeElementData).isRequired,
 };
 
