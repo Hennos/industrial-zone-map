@@ -7,6 +7,12 @@ const updateSearchFilterValue =
     value,
   });
 
+const loadFiltersData =
+  () => ({
+    type: events.loadFiltersData,
+  });
+
 export {
   updateSearchFilterValue,
-}
+  loadFiltersData,
+};
