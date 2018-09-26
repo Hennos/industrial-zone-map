@@ -1,30 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import './index.css';
 
+import { keys } from '../../../../store/legend/constants';
+
 import LegendRecord from '../LegendRecord';
 
-const MapLegend = ({ stylization, onClose }) => {
-  const records = [{
-    id: 1,
-    description: 'Зона среднеэтажной и многоэтажной жилой застройки' +
-    ' с включением объектов общественно деловой застройки, а также' +
-    ' объектов инженерной инфраструктуры, связанных с обслуживанием данной зоны',
-  }, {
-    id: 2,
-    description: 'Запись в легенде карты',
-  }, {
-    id: 3,
-    description: 'Запись в легенде карты',
-  }, {
-    id: 4,
-    description: 'Зона среднеэтажной и многоэтажной жилой застройки' +
-    ' с включением объектов общественно деловой застройки, а также' +
-    ' объектов инженерной инфраструктуры, связанных с обслуживанием данной зоны',
-  }];
-
+const MapLegend = ({ stylization, records, onClose }) => {
   const Header = () => (
     <div className="map-legend-header">
       Обозначения на карте
@@ -35,26 +20,22 @@ const MapLegend = ({ stylization, onClose }) => {
     <button className="map-legend-close-button" onClick={onClose} />
   );
 
-  const LegendList = () => (
-    <div className="map-legend-list">
-      {records.map(({ id, ...legend }) => (
-        <LegendRecord key={id} stylization="map-legend-list-element" data={legend} />
-      ))}
-    </div>
-  );
-
   return (
     <div className={classNames(stylization, 'map-legend')}>
       <Header />
       <CloseButton />
-      <LegendList />
+      <div className="map-legend-list">
+        {records.map(({ id, data }) => (
+          <LegendRecord key={id} stylization="map-legend-list-element" data={data} />
+        ))}
+      </div>
     </div>
   );
 };
 
 const shapeLegendRecords = {
-  id: PropTypes.string.isRequired,
-  description: PropTypes.string,
+  id: PropTypes.number.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 MapLegend.propTypes = {
@@ -68,4 +49,15 @@ MapLegend.defaultProps = {
   onClose: () => {},
 };
 
-export default MapLegend;
+const mapStateToProps = (state) => {
+  const legendRecords = state.legend.get(keys.legendRecords);
+  const legendRecordsData = state.legend.get(keys.legendRecordsData);
+  return {
+    records: legendRecords.map(id => ({
+      id,
+      data: legendRecordsData.get(id),
+    })).toArray(),
+  };
+};
+
+export default connect(mapStateToProps)(MapLegend);
