@@ -29,7 +29,7 @@ const FilterPresenter = ({
 };
 
 const shapeFilterData = {
-  type: PropTypes.string,
+  type: PropTypes.string.isRequired,
 };
 
 const shapeFilterValue = {};

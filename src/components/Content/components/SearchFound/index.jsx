@@ -13,8 +13,8 @@ const SearchFound = ({ stylization, found }) => (
 );
 
 const shapeFound = {
-  id: PropTypes.number,
-  data: PropTypes.object,
+  id: PropTypes.number.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 SearchFound.propTypes = {

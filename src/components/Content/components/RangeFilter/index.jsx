@@ -58,13 +58,17 @@ const shapeElementData = {
 
 RangeFilter.propTypes = {
   stylization: PropTypes.string,
-  value: PropTypes.shape(shapeValue).isRequired,
+  value: PropTypes.shape(shapeValue),
   data: PropTypes.shape(shapeElementData).isRequired,
   onChange: PropTypes.func,
 };
 
 RangeFilter.defaultProps = {
   stylization: '',
+  value: {
+    lower: NaN,
+    upper: NaN,
+  },
   onChange: () => {},
 };
 

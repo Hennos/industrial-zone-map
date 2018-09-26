@@ -40,13 +40,9 @@ const SearchFilters = ({
   );
 };
 
-const shapeFilterData = {
-  type: PropTypes.string,
-};
-
 const shapeFilter = {
-  id: PropTypes.number,
-  data: PropTypes.shape(shapeFilterData),
+  id: PropTypes.number.isRequired,
+  data: PropTypes.object.isRequired,
   value: PropTypes.object.isRequired,
 };
 
