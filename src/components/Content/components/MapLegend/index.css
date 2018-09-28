@@ -31,6 +31,7 @@
 }
 
 .map-legend > .map-legend-list {
+  min-height: 150px;
   overflow-y: auto;
   overflow-x: hidden;
   margin-left: 4px;
