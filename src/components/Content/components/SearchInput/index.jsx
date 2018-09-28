@@ -12,7 +12,7 @@ class SearchInput extends React.Component {
 
     this.state = {
       inputValue: '',
-      filtersVisibility: true,
+      filtersVisibility: false,
     };
 
     this.onChangeInput = this.onChangeInput.bind(this);
