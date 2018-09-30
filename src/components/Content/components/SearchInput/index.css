@@ -35,7 +35,6 @@
   left: 300px;
   margin-left: 10px;
   z-index: 1000001;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .search-input > .search-input-filters-none {

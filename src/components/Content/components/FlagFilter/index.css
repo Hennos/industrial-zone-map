@@ -3,17 +3,6 @@
   align-items: center;
 }
 
-.flag-filter > .flag-drop-list-button {
-  position: relative;
-  display: inline-block;
-  top: 4px;
-  border-bottom: 7px solid transparent;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 7px solid #AFAFAF;
-  margin-left: 0.4em;
-}
-
-.flag-filter > .flag-drop-list-button:hover {
-  cursor: pointer;
+.flag-filter > .flag-filter-drop-list {
+  margin-left: 0.2em;
 }
