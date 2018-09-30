@@ -1,5 +1,22 @@
 import { events } from './constants';
 
+const loadFiltersData =
+  () => ({
+    type: events.loadFiltersData,
+  });
+
+const getLoadedFiltersData =
+  filters => ({
+    type: events.getLoadedFiltersData,
+    filters,
+  });
+
+const errorLoadFiltersData =
+  error => ({
+    type: events.errorLoadFiltersData,
+    error,
+  });
+
 const updateSearchFilterValue =
   (id, value) => ({
     type: events.updateSearchFilterValue,
@@ -7,12 +24,9 @@ const updateSearchFilterValue =
     value,
   });
 
-const loadFiltersData =
-  () => ({
-    type: events.loadFiltersData,
-  });
-
 export {
-  updateSearchFilterValue,
   loadFiltersData,
+  getLoadedFiltersData,
+  errorLoadFiltersData,
+  updateSearchFilterValue,
 };
