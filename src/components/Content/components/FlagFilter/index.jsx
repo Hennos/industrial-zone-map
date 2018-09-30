@@ -4,45 +4,43 @@ import PropTypes from 'prop-types';
 
 import './index.css';
 
-class FlagFilter extends React.Component {
-  constructor(props) {
-    super(props);
+import FlagDropList from '../FlagDropList';
 
-    this.state = {
-      choosed: '',
-    };
-  }
-
-  render() {
-    const { stylization, onChange } = this.props;
-    const { title } = this.props.data;
-    const { choosed } = this.state;
-
-    const DropListButton = () => (
-      <div className="flag-drop-list-button" />
-    );
-
-    return (
-      <div className={classNames(stylization, 'flag-filter')}>
-        {title}: {choosed || 'выберите из списка'} <DropListButton />
-      </div>
-    );
-  }
-}
+const FlagFilter = ({
+  stylization,
+  value,
+  data,
+  onChange,
+}) => (
+  <div className={classNames(stylization, 'flag-filter')}>
+    {data.title}: <FlagDropList
+      stylization="flag-filter-drop-list"
+      choosed={value.choosed || ''}
+      options={data.options}
+      onChange={onChange}
+    />
+  </div>
+);
 
 const shapeElementData = {
-  title: PropTypes.string,
-  type: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.string),
+};
+
+const shapeElementValue = {
+  choosed: PropTypes.string,
 };
 
 FlagFilter.propTypes = {
   stylization: PropTypes.string,
   data: PropTypes.shape(shapeElementData).isRequired,
+  value: PropTypes.shape(shapeElementValue),
   onChange: PropTypes.func,
 };
 
 FlagFilter.defaultProps = {
   stylization: '',
+  value: {},
   onChange: () => {},
 };
 
