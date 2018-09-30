@@ -4,49 +4,44 @@ import PropTypes from 'prop-types';
 
 import './index.css';
 
-class SelectFilter extends React.Component {
-  constructor(props) {
-    super(props);
+import SelectDropList from '../SelectDropList';
 
-    this.state = {
-      choosed: [1, 2],
-    };
-  }
-
-  render() {
-    const { stylization } = this.props;
-    const { title } = this.props.data;
-    const { choosed } = this.state;
-
-    const DropListButton = () => (
-      <div className="select-drop-list-button" />
-    );
-
-    const description =
-      choosed.length
-        ? `несколько выбранных (${choosed.length})`
-        : 'выберите из списка';
-
-    return (
-      <div className={classNames(stylization, 'select-filter')}>
-        {title}: {description} <DropListButton />
-      </div>
-    );
-  }
-}
+const SelectFilter = ({
+  stylization,
+  value,
+  data,
+  onChange,
+}) => (
+  <div className={classNames(stylization, 'select-filter')}>
+    {data.title}: <SelectDropList
+      stylization="select-filter-drop-list"
+      choosed={value.choosed || []}
+      options={data.options}
+      onChange={onChange}
+    />
+  </div>
+);
 
 const shapeElementData = {
-  title: PropTypes.string,
-  type: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.string),
+};
+
+const shapeElementValue = {
+  choosed: PropTypes.arrayOf(PropTypes.string),
 };
 
 SelectFilter.propTypes = {
   stylization: PropTypes.string,
   data: PropTypes.shape(shapeElementData).isRequired,
+  value: PropTypes.shape(shapeElementValue),
+  onChange: PropTypes.func,
 };
 
 SelectFilter.defaultProps = {
   stylization: '',
+  value: {},
+  onChange: () => {},
 };
 
 export default SelectFilter;
