@@ -46,7 +46,6 @@ class SearchInput extends React.Component {
     const searchFiltersStylization = classNames(
       'search-input-filters',
       'modal-window-theme',
-      { 'search-input-filters-none': !filtersVisibility },
     );
     return (
       <div className={classNames(stylization, 'search-input')}>
@@ -59,11 +58,11 @@ class SearchInput extends React.Component {
         />
         <SearchButton />
         <FiltersButton />
-        <SearchFilters
+        {filtersVisibility && <SearchFilters
           stylization={searchFiltersStylization}
           values={filtersValue}
           onClose={this.onClickFiltersButton}
-        />
+        />}
       </div>
     );
   }

@@ -36,8 +36,3 @@
   margin-left: 10px;
   z-index: 1000001;
 }
-
-.search-input > .search-input-filters-none {
-  visibility: hidden;
-  pointer-events: none;
-}
