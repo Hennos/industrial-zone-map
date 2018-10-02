@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import './index.css';
 
-const FoundElement = ({ stylization, id, data }) => (
+const FoundElement = ({ stylization, data, onRequestDetails }) => (
   <div className={classNames(stylization, 'found-element')}>
     <ul className="found-element-list">
       <li className="list-element">
@@ -16,8 +16,10 @@ const FoundElement = ({ stylization, id, data }) => (
       <li className="list-element">
         Вид разрешённого пользования: {data.typePermittedUse}
       </li>
-      <li className="list-element list-element-a">
-        Подробнее
+      <li className="list-element">
+        <button className="found-element-details" onClick={onRequestDetails}>
+          Подробнее
+        </button>
       </li>
     </ul>
   </div>
@@ -31,12 +33,13 @@ const shapeElementData = {
 
 FoundElement.propTypes = {
   stylization: PropTypes.string,
-  id: PropTypes.number.isRequired,
   data: PropTypes.shape(shapeElementData).isRequired,
+  onRequestDetails: PropTypes.func,
 };
 
 FoundElement.defaultProps = {
   stylization: '',
+  onRequestDetails: () => {},
 };
 
 export default FoundElement;

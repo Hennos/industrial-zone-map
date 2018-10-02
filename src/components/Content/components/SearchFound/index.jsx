@@ -6,9 +6,16 @@ import './index.css';
 
 import FoundElement from '../FoundElement';
 
-const SearchFound = ({ stylization, found }) => (
+const SearchFound = ({ stylization, found, onRequestDetails }) => (
   <div className={classNames(stylization, 'search-found')}>
-    {found.map(({ id, data }) => <FoundElement key={id} stylization="search-found-element" id={id} data={data} />)}
+    {found.map(({ id, data }) => (
+      <FoundElement
+        key={id}
+        stylization="search-found-element"
+        data={data}
+        onRequestDetails={() => onRequestDetails(id)}
+      />
+    ))}
   </div>
 );
 
@@ -20,10 +27,12 @@ const shapeFound = {
 SearchFound.propTypes = {
   stylization: PropTypes.string,
   found: PropTypes.arrayOf(PropTypes.shape(shapeFound)).isRequired,
+  onRequestDetails: PropTypes.func,
 };
 
 SearchFound.defaultProps = {
   stylization: '',
+  onRequestDetails: () => {},
 };
 
 export default SearchFound;

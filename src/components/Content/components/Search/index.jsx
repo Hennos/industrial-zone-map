@@ -6,16 +6,20 @@ import { connect } from 'react-redux';
 import './index.css';
 
 import { keys } from '../../../../store/search/constants';
+import { loadObjectDetails } from '../../../../store/objectDetails/actions';
 
 import SearchInput from '../SearchInput';
 import SearchFound from '../SearchFound';
 
-const Search = ({ stylization, found }) => (
-  <div className={classNames(stylization, 'search')}>
+const Search = ({ stylization, found, onRequestFoundDetails }) => (
+  <div className={classNames('search', stylization)}>
     <SearchInput stylization="search-input-area" />
-    {(found.length)
-      ? <SearchFound stylization="search-found-area" found={found} />
-      : null}
+    {(found.length) ?
+      <SearchFound
+        stylization="search-found-area"
+        onRequestDetails={onRequestFoundDetails}
+        found={found}
+      /> : null}
   </div>
 );
 
@@ -24,6 +28,7 @@ const shapeFound = {};
 Search.propTypes = {
   stylization: PropTypes.string,
   found: PropTypes.arrayOf(PropTypes.shape(shapeFound)),
+  onRequestFoundDetails: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {
@@ -42,4 +47,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Search);
+const mapDispatchToProps = dispatch => ({
+  onRequestFoundDetails: id => dispatch(loadObjectDetails(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
