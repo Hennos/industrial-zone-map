@@ -79,10 +79,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapdDspatchToProps = (dispatch) => {
-  return {
-    loadLegendData: () => dispatch(loadLegendData()),
-  };
-};
+const mapdDspatchToProps = dispatch => ({
+  loadLegendData: () => dispatch(loadLegendData()),
+});
 
 export default connect(mapStateToProps, mapdDspatchToProps)(MapLegend);
