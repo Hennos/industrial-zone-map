@@ -32,7 +32,7 @@
 .search-input > .search-input-filters {
   position: fixed;
   top: 120px;
-  left: 300px;
+  left: 350px;
   margin-left: 10px;
   z-index: 1000001;
 }

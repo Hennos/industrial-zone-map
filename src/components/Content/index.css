@@ -2,7 +2,7 @@
   position: relative;
   display: grid;
   grid-template-rows: [content-main-start] auto [content-main-end content-footer-start] 20px [content-footer-end];
-  grid-template-columns: [content-start sidebar-start] 300px [sidebar-end content-container-start] auto [content-container-end content-end];
+  grid-template-columns: [content-start sidebar-start] 350px [sidebar-end content-container-start] auto [content-container-end content-end];
 }
 
 .content > .content-sidebar {
