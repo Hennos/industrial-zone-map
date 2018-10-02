@@ -18,11 +18,11 @@
   padding-bottom: 0;
 }
 
-.found-element > .found-element-list > .list-element-a {
+.found-element .list-element > .found-element-details {
   color: blue;
   text-decoration: underline;
 }
 
-.found-element > .found-element-list > .list-element-a:hover {
+.found-element .list-element > .found-element-details:hover {
   cursor: pointer;
 }
