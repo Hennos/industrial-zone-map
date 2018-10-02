@@ -7,13 +7,13 @@ import './index.css';
 import Sidebar from './components/Sidebar';
 
 import Map from './components/Map';
-import Search from './components/Search';
+import EntityInformation from './components/EntityInformation';
 import MapInformation from './components/MapInformation';
 
 const Content = ({ stylization }) => (
   <div className={classNames(stylization, 'content')}>
     <Sidebar stylization="content-sidebar">
-      <Search stylization="content-search" />
+      <EntityInformation />
     </Sidebar>
     <div className="content-container">
       <Map />
