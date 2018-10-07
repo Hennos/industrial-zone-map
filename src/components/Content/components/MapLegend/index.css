@@ -22,12 +22,19 @@
   margin: 4px;
   width: 12px;
   height: 12px;
+  line-height: 8px;
   border-radius: 100%;
   background-color: #0081C7;
 }
 
 .map-legend > .map-legend-close-button:hover {
   cursor: pointer;
+}
+
+.map-legend > .map-legend-close-button i {
+  font-size: 10px;
+  margin: 0 auto;
+  color: white;
 }
 
 .map-legend > .map-legend-list {

@@ -30,7 +30,9 @@ class MapLegend extends React.Component {
     );
 
     const CloseButton = () => (
-      <button className="map-legend-close-button" onClick={onClose} />
+      <button className="map-legend-close-button" onClick={onClose}>
+        <i className="fas fa-times" />
+      </button>
     );
 
     return (
@@ -38,7 +40,7 @@ class MapLegend extends React.Component {
         <Header />
         <CloseButton />
         <div className="map-legend-list">
-          {loadStatus === 'SUCCESSFULL' &&
+          {loadStatus === 'SUCCESS' &&
             records.map(({ id, data }) => (
               <LegendRecord key={id} stylization="map-legend-list-element" data={data} />
             ))}
