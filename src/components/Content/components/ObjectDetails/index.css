@@ -1,8 +1,8 @@
 .object-details{
-  padding: 20px 10px;
   display: flex;
   flex-direction: column;
   font-size: 12px;
+  background-color: white;
 }
 
 .object-details > .object-details-header {
@@ -18,6 +18,8 @@
 
 .object-details > .object-details-header > .object-details-header-content {
   flex-grow: 1;
+  display: flex;
+  align-items: center;
 }
 
 .object-details > .object-details-header > .object-details-close {
@@ -30,4 +32,17 @@
 
 .object-details > .object-details-header > .object-details-close:hover {
   cursor: pointer;
+}
+
+.object-details > .object-details-list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 5px 10px;
+}
+
+.object-details > .object-details-list > .object-details-list-element {
+  min-height: 20px;
+  line-height: 14px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }

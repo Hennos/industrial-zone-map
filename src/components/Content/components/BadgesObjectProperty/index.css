@@ -1,0 +1,23 @@
+.badges-object-property {
+  position: relative;
+  top: -2px;
+  left: -2px;
+  display: flex;
+  flex-wrap: wrap;
+  line-height: 50px;
+}
+
+.badges-object-property > .badges-object-property-badge {
+  flex-shrink: 0;
+  height: 20px;
+  line-height: 12px;
+  padding: 4px;
+  margin: 2px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.badges-object-property > .badges-object-property-badge:hover {
+  cursor: default;
+  background-color: rgba(0, 0, 0, 0.075);
+}
