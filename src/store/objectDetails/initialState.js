@@ -1,27 +1,14 @@
 import Immutable from 'immutable';
 
-import { keys } from './constants';
+import { loadStatusEnum, keys } from './constants';
 
 const initialState = Immutable.Map([
-  [keys.loadStatus, 'LOADING'],
-  [keys.loadErrorMessage, ''],
   [keys.id, null],
-  [keys.district, ''],
-  [keys.address, ''],
-  [keys.cadastralNumber, ''],
-  [keys.usage, []],
-  [keys.hazardClass, NaN],
-  [keys.protectionZone, NaN],
-  [keys.activity, []],
-  [keys.rightHolder, ''],
-  [keys.rightFoundation, ''],
-  [keys.gasSupply, NaN],
-  [keys.waterSupply, NaN],
-  [keys.waterDrainage, NaN],
-  [keys.heatSupply, ''],
-  [keys.powerSupply, ''],
-  [keys.reorganization, ''],
-  [keys.area, NaN],
+  [keys.loadStatus, loadStatusEnum.none],
+  [keys.loadErrorMessage, ''],
+  [keys.properties, Immutable.List()],
+  [keys.propsData, Immutable.Map()],
+  [keys.propsValue, Immutable.Map()],
 ]);
 
 export default initialState;
