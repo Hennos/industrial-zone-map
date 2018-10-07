@@ -1,8 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import './index.css';
+
+import { requestSearchObjects } from '../../../../store/search/actions';
 
 import SearchFilters from '../SearchFilters';
 
@@ -32,11 +35,13 @@ class SearchInput extends React.Component {
   }
 
   render() {
-    const { stylization } = this.props;
+    const { stylization, onSearchObjects } = this.props;
     const { inputValue, filtersValue, filtersVisibility } = this.state;
 
     const SearchButton = () => (
-      <button className="search-input-button" />
+      <button className="search-input-button" onClick={onSearchObjects}>
+        <i className="fas fa-search" />
+      </button>
     );
 
     const FiltersButton = () => (
@@ -70,10 +75,15 @@ class SearchInput extends React.Component {
 
 SearchInput.propTypes = {
   stylization: PropTypes.string,
+  onSearchObjects: PropTypes.func.isRequired,
 };
 
 SearchInput.defaultProps = {
   stylization: '',
 };
 
-export default SearchInput;
+const mapDispatchToProps = dispatch => ({
+  onSearchObjects: search => dispatch(requestSearchObjects(search)),
+});
+
+export default connect(undefined, mapDispatchToProps)(SearchInput);

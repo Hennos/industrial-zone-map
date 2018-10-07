@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 
 import './index.css';
 
-const FoundElement = ({ stylization, data, onRequestDetails }) => (
+const FoundElement = ({
+  stylization,
+  editable,
+  data,
+  onRequestDetails,
+}) => (
   <div className={classNames(stylization, 'found-element')}>
     <ul className="found-element-list">
       <li className="list-element">
@@ -16,10 +21,15 @@ const FoundElement = ({ stylization, data, onRequestDetails }) => (
       <li className="list-element">
         Вид разрешённого пользования: {data.typePermittedUse}
       </li>
-      <li className="list-element">
-        <button className="found-element-details" onClick={onRequestDetails}>
+      <li className="list-element list-element-operations">
+        <button className="found-element-operation" onClick={onRequestDetails}>
           Подробнее
         </button>
+        {editable && (
+          <button className="found-element-operation">
+            Редактировать
+          </button>
+        )}
       </li>
     </ul>
   </div>
@@ -28,17 +38,19 @@ const FoundElement = ({ stylization, data, onRequestDetails }) => (
 const shapeElementData = {
   address: PropTypes.string,
   cadastrialNumber: PropTypes.string.isRequired,
-  typePermittedUse: PropTypes.string.isRequired,
+  usage: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 FoundElement.propTypes = {
   stylization: PropTypes.string,
+  editable: PropTypes.bool,
   data: PropTypes.shape(shapeElementData).isRequired,
   onRequestDetails: PropTypes.func,
 };
 
 FoundElement.defaultProps = {
   stylization: '',
+  editable: false,
   onRequestDetails: () => {},
 };
 

@@ -6,12 +6,13 @@ import './index.css';
 
 import FoundElement from '../FoundElement';
 
-const SearchFound = ({ stylization, found, onRequestDetails }) => (
+const SearchFound = ({ stylization, editable, found, onRequestDetails }) => (
   <div className={classNames(stylization, 'search-found')}>
     {found.map(({ id, data }) => (
       <FoundElement
         key={id}
         stylization="search-found-element"
+        editable={editable}
         data={data}
         onRequestDetails={() => onRequestDetails(id)}
       />
@@ -26,12 +27,14 @@ const shapeFound = {
 
 SearchFound.propTypes = {
   stylization: PropTypes.string,
+  editable: PropTypes.bool,
   found: PropTypes.arrayOf(PropTypes.shape(shapeFound)).isRequired,
   onRequestDetails: PropTypes.func,
 };
 
 SearchFound.defaultProps = {
   stylization: '',
+  editable: false,
   onRequestDetails: () => {},
 };
 
