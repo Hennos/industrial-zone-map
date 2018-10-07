@@ -27,7 +27,7 @@ const handleGetLoadedLegendData = (prevState, { loaded }) => {
   return prevState
     .set(keys.legendRecords, legendRecords)
     .set(keys.legendRecordsData, legendRecordsData)
-    .set(keys.loadStatus, 'SUCCESSFULL');
+    .set(keys.loadStatus, 'SUCCESS');
 };
 
 const handleErrorLoadLegendData = (prevState, action) =>
