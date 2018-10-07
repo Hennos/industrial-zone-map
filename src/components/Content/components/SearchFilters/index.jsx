@@ -19,7 +19,11 @@ const SearchFilters = ({
 }) => {
   const Header = () => <div className="search-filters-header">Критерии поиска</div>;
 
-  const CloseButton = () => <button onClick={onClose} className="search-filters-close-button" />;
+  const CloseButton = () => (
+    <button onClick={onClose} className="search-filters-close-button">
+      <i className="fas fa-times" />
+    </button>
+  );
 
   return (
     <div className={classNames(stylization, 'search-filters')}>

@@ -17,12 +17,19 @@
   margin: 4px;
   width: 12px;
   height: 12px;
+  line-height: 8px;
   border-radius: 100%;
   background-color: #0081C7;
 }
 
 .search-filters > .search-filters-close-button:hover {
   cursor: pointer;
+}
+
+.search-filters > .search-filters-close-button i {
+  font-size: 10px;
+  margin: 0 auto;
+  color: white;
 }
 
 .search-filters > .search-filters-list {
