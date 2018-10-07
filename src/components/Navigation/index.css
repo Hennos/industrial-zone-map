@@ -1,0 +1,73 @@
+.navigation {
+  position: relative;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  min-height: 50px;
+}
+
+.navigation > .navigation-container {
+  height: 100%;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  white-space: nowrap;
+}
+
+.navigation > .navigation-container > .navigation-title {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;  
+}
+
+.navigation > .navigation-container > .navigation-title > .brand {
+  display: inline-block;
+}
+
+.navigation > .navigation-container > .navigation-title > .navigation-title-naming {
+  padding: 15px;
+  line-height: 1.5rem;
+  font-size: 16px;
+  color: #777;
+}
+
+.navigation > .navigation-container > .navigation-title > .navigation-title-naming b {
+  font-weight: 700;
+}
+
+.navigation > .navigation-container > .navigation-list {
+  display: flex;
+  align-items: center;
+}
+
+.navigation > .navigation-container > .navigation-list > .navigation-list-element {
+  padding: 13px;
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.navigation > .navigation-container > .navigation-list > .navigation-list-element:first-of-type {
+  color: #2262ca;
+}
+
+.navigation > .navigation-container > .navigation-list > .navigation-list-button {
+  display: flex;
+  align-items: center;
+}
+
+.navigation > .navigation-container > .navigation-list > .navigation-list-button button {
+  color: #2262ca;
+  padding: 4px 30px;
+  height: 30px;
+  font-size: 12px;
+  margin-left: 30px;
+  border: 1px solid #2262ca;
+  border-radius: 20px;
+  display: inline-block;
+  overflow: hidden;
+}
