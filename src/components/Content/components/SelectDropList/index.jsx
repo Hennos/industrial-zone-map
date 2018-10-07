@@ -42,11 +42,20 @@ class SelectDropList extends React.Component {
       'modal-window-theme',
       { 'select-drop-list-options-none': !dropped },
     );
+    const choosedState = (() => {
+      let stateString = '';
+      if (!choosed.length) {
+        stateString = 'выберите из списка';
+      } else if (choosed.length === 1) {
+        stateString = choosed[0];
+      } else {
+        stateString = `несколько выбранных (${choosed.length})`;
+      }
+      return stateString;
+    })();
     return (
       <div className={classNames(stylization, 'select-drop-list')} >
-        {choosed.length ?
-          `несколько выбранных (${choosed.length})` :
-          'выберите из списка'}
+        {choosedState}
         <button className="select-drop-list-button" onClick={this.onDropListButtonClick} />
         <div className={contentStylization}>
           {options.map(option => (
