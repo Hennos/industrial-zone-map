@@ -3,6 +3,9 @@ const events = Object.freeze({
   getLoadedFiltersData: '@@SEARCH:GET_LOADED_FILTERS_DATA',
   errorLoadFiltersData: '@@SEARCH:ERROR_LOAD_FILTERS_DATA',
   updateSearchFilterValue: '@@SEARCH:UPDATE_FILTER_VALUE',
+  requestSearchObjects: '@@SEARCH:SEARCH_OBJECTS',
+  getFoundObjects: '@@SEARCH:GET_FOUND_OBJECTS',
+  errorGetFoundObjects: '@@SEARCH:ERROR_GET_FOUND_OBJECT',
 });
 
 const keys = Object.freeze({

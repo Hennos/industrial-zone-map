@@ -1,18 +1,29 @@
+import Immutable from 'immutable';
+
 import { events, keys } from './constants';
 import initialState from './initialState';
 
-function handleUpdateSearchFilterValue(state, action) {
+function handleUpdateSearchFilterValue(prevState, action) {
   const { id, value } = action;
 
-  const updatedFiltersValue = state
+  const updatedFiltersValue = prevState
     .get(keys.filtersValue)
     .set(id, value);
 
-  return state.set(keys.filtersValue, updatedFiltersValue);
+  return prevState.set(keys.filtersValue, updatedFiltersValue);
+}
+
+function handleGetFoundObjects(prevState, { found }) {
+  const foundAreasId = Immutable.List(found.map(({ id }) => id));
+  const foundAreasData = Immutable.Map(found.map(({ id, properties }) => [id, properties]));
+  return prevState
+    .set(keys.foundAreas, foundAreasId)
+    .set(keys.foundAreasData, foundAreasData);
 }
 
 const handlers = new Map([
   [events.updateSearchFilterValue, handleUpdateSearchFilterValue],
+  [events.getFoundObjects, handleGetFoundObjects],
 ]);
 
 const reducer = (state = initialState, action) => {

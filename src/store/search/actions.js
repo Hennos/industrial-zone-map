@@ -24,9 +24,30 @@ const updateSearchFilterValue =
     value,
   });
 
+const requestSearchObjects =
+  search => ({
+    type: events.requestSearchObjects,
+    search,
+  });
+
+const getFoundObjects =
+  found => ({
+    type: events.getFoundObjects,
+    found,
+  });
+
+const errorGetFoundObjects =
+  error => ({
+    type: events.errorGetFoundObjects,
+    error,
+  });
+
 export {
   loadFiltersData,
   getLoadedFiltersData,
   errorLoadFiltersData,
   updateSearchFilterValue,
+  requestSearchObjects,
+  getFoundObjects,
+  errorGetFoundObjects,
 };

@@ -80,49 +80,14 @@ const initialFiltersData = Immutable.Map([
   }],
 ]);
 
-const initialFoundAreasData = Immutable.Map([
-  [1, {
-    address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-    cadastrialNumber: '78:07:0003005:245',
-    typePermittedUse: 'торговый центр',
-  }],
-  [2, {
-    address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-    cadastrialNumber: '78:07:0003005:245',
-    typePermittedUse: 'торговый центр',
-  }],
-  [3, {
-    address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-    cadastrialNumber: '78:07:0003005:245',
-    typePermittedUse: 'торговый центр',
-  }],
-  [4, {
-    address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-    cadastrialNumber: '78:07:0003005:245',
-    typePermittedUse: 'торговый центр',
-  }],
-  [5, {
-    address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-    cadastrialNumber: '78:07:0003005:245',
-    typePermittedUse: 'торговый центр',
-  }],
-  [6, {
-    address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-    cadastrialNumber: '78:07:0003005:245',
-    typePermittedUse: 'торговый центр',
-  }],
-]);
-
 const initialState = Immutable.Map([
   [keys.filters, Immutable.List([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
   ])],
   [keys.filtersData, initialFiltersData],
   [keys.filtersValue, Immutable.Map()],
-  [keys.foundAreas, Immutable.List([
-    1, 2, 3, 4, 5, 6,
-  ])],
-  [keys.foundAreasData, Immutable.Map(initialFoundAreasData)],
+  [keys.foundAreas, Immutable.List()],
+  [keys.foundAreasData, Immutable.Map()],
 ]);
 
 export default initialState;
