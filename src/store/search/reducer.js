@@ -13,6 +13,12 @@ function handleUpdateSearchFilterValue(prevState, action) {
   return prevState.set(keys.filtersValue, updatedFiltersValue);
 }
 
+function handleInvertFiltersVisability(prevState) {
+  const prevVisability = prevState.get(keys.filtersVisability);
+  return prevState
+    .set(keys.filtersVisability, !prevVisability);
+}
+
 function handleGetFoundObjects(prevState, { found }) {
   const foundAreasId = Immutable.List(found.map(({ id }) => id));
   const foundAreasData = Immutable.Map(found.map(({ id, properties }) => [id, properties]));
@@ -23,6 +29,7 @@ function handleGetFoundObjects(prevState, { found }) {
 
 const handlers = new Map([
   [events.updateSearchFilterValue, handleUpdateSearchFilterValue],
+  [events.invertFiltersVisability, handleInvertFiltersVisability],
   [events.getFoundObjects, handleGetFoundObjects],
 ]);
 

@@ -24,6 +24,11 @@ const updateSearchFilterValue =
     value,
   });
 
+const invertFiltersVisability =
+  () => ({
+    type: events.invertFiltersVisability,
+  });
+
 const requestSearchObjects =
   search => ({
     type: events.requestSearchObjects,
@@ -47,6 +52,7 @@ export {
   getLoadedFiltersData,
   errorLoadFiltersData,
   updateSearchFilterValue,
+  invertFiltersVisability,
   requestSearchObjects,
   getFoundObjects,
   errorGetFoundObjects,

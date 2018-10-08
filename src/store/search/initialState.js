@@ -86,6 +86,7 @@ const initialState = Immutable.Map([
   ])],
   [keys.filtersData, initialFiltersData],
   [keys.filtersValue, Immutable.Map()],
+  [keys.filtersVisability, false],
   [keys.foundAreas, Immutable.List()],
   [keys.foundAreasData, Immutable.Map()],
 ]);
