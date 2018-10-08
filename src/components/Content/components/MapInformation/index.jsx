@@ -1,55 +1,35 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import './index.css';
 
-import MapLegend from '../MapLegend';
+import { invertLegendVisability } from '../../../../store/legend/actions';
 
-class MapInformation extends React.Component {
-  constructor(props) {
-    super(props);
+const MapInformation = ({ stylization, onChangeLegendVisability }) => {
+  const LegendButton = () => (
+    <button onClick={onChangeLegendVisability} className="map-information-button" />
+  );
 
-    this.state = {
-      legendVisibility: false,
-    };
-
-    this.onClickLegendButton = this.onClickLegendButton.bind(this);
-  }
-
-  onClickLegendButton() {
-    this.setState({
-      legendVisibility: !this.state.legendVisibility,
-    });
-  }
-
-  render() {
-    const { stylization } = this.props;
-    const { legendVisibility } = this.state;
-
-    const LegendButton = () => (
-      <button onClick={this.onClickLegendButton} className="map-information-button" />
-    );
-
-    const mapLegendStylization = classNames(
-      'map-information-legend',
-      { 'map-information-legend-none': !legendVisibility },
-    );
-    return (
-      <div className={classNames(stylization, 'map-information')}>
-        <LegendButton stylization="map-information-button" />
-        <MapLegend stylization={mapLegendStylization} onClose={this.onClickLegendButton} />
-      </div>
-    );
-  }
-}
+  return (
+    <div className={classNames(stylization, 'map-information')}>
+      <LegendButton stylization="map-information-button" />
+    </div>
+  );
+};
 
 MapInformation.propTypes = {
   stylization: PropTypes.string,
+  onChangeLegendVisability: PropTypes.func.isRequired,
 };
 
 MapInformation.defaultProps = {
   stylization: '',
 };
 
-export default MapInformation;
+const mapDispatchToProps = dispatch => ({
+  onChangeLegendVisability: () => dispatch(invertLegendVisability()),
+});
+
+export default connect(undefined, mapDispatchToProps)(MapInformation);
