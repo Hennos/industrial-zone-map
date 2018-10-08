@@ -6,13 +6,16 @@ import { connect } from 'react-redux';
 import './index.css';
 
 import { keys } from '../../../../store/legend/constants';
-import { loadLegendData } from '../../../../store/legend/actions';
+import {
+  loadLegendData,
+  invertLegendVisability,
+} from '../../../../store/legend/actions';
 
 import LegendRecord from '../LegendRecord';
 
 class MapLegend extends React.Component {
   componentDidMount() {
-    this.props.loadLegendData();
+    this.props.onLoadLegendData();
   }
 
   render() {
@@ -20,7 +23,7 @@ class MapLegend extends React.Component {
       stylization,
       loadStatus,
       records,
-      onClose,
+      onCloseLegend,
     } = this.props;
 
     const Header = () => (
@@ -30,7 +33,7 @@ class MapLegend extends React.Component {
     );
 
     const CloseButton = () => (
-      <button className="map-legend-close-button" onClick={onClose}>
+      <button className="map-legend-close-button" onClick={onCloseLegend}>
         <i className="fas fa-times" />
       </button>
     );
@@ -59,13 +62,12 @@ MapLegend.propTypes = {
   stylization: PropTypes.string,
   loadStatus: PropTypes.string.isRequired,
   records: PropTypes.arrayOf(PropTypes.shape(shapeLegendRecords)).isRequired,
-  onClose: PropTypes.func,
-  loadLegendData: PropTypes.func.isRequired,
+  onLoadLegendData: PropTypes.func.isRequired,
+  onCloseLegend: PropTypes.func.isRequired,
 };
 
 MapLegend.defaultProps = {
   stylization: '',
-  onClose: () => {},
 };
 
 const mapStateToProps = (state) => {
@@ -82,7 +84,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapdDspatchToProps = dispatch => ({
-  loadLegendData: () => dispatch(loadLegendData()),
+  onLoadLegendData: () => dispatch(loadLegendData()),
+  onCloseLegend: () => dispatch(invertLegendVisability()),
 });
 
 export default connect(mapStateToProps, mapdDspatchToProps)(MapLegend);
