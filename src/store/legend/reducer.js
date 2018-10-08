@@ -35,9 +35,16 @@ const handleErrorLoadLegendData = (prevState, action) =>
     .set(keys.loadErrorMessage, action.error.toString())
     .set(keys.loadStatus, 'FAILED');
 
+const handleInvertLegendVisability = (prevState) => {
+  const prevVisability = prevState.get(keys.legendVisability);
+  return prevState
+    .set(keys.legendVisability, !prevVisability);
+};
+
 const handlers = new Map([
   [events.getLoadedLegendData, handleGetLoadedLegendData],
   [events.errorLoadLegendData, handleErrorLoadLegendData],
+  [events.invertLegendVisability, handleInvertLegendVisability],
 ]);
 
 export default function (state = initialState, action) {

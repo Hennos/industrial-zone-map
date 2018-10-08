@@ -7,6 +7,7 @@ const initialState = Immutable.Map([
   [keys.loadErrorMessage, ''],
   [keys.legendRecords, Immutable.List()],
   [keys.legendRecordsData, Immutable.Map()],
+  [keys.legendVisability, false],
 ]);
 
 export default initialState;

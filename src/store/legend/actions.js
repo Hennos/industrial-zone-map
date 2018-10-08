@@ -17,8 +17,14 @@ const errorLoadLegendData =
     error,
   });
 
+const invertLegendVisability =
+  () => ({
+    type: events.invertLegendVisability,
+  });
+
 export {
   loadLegendData,
   getLoadedLegendData,
   errorLoadLegendData,
+  invertLegendVisability,
 };
