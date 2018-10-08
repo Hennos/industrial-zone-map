@@ -3,6 +3,7 @@
   display: grid;
   grid-template-rows: [content-main-start] auto [content-main-end content-footer-start] 20px [content-footer-end];
   grid-template-columns: [content-start sidebar-start] 350px [sidebar-end content-container-start] auto [content-container-end content-end];
+  font-size: 12px;
 }
 
 .content > .content-sidebar {
@@ -20,4 +21,21 @@
   grid-row: content-footer-start / content-footer-end;
   grid-column: content-start / content-end;
   background-color: #0081C7;
+}
+
+.content > .content-search-filters {
+  position: absolute;
+  top: 20px;
+  left: 350px;
+  margin-left: 10px;
+  z-index: 1000001;
+}
+
+.content > .content-map-legend {
+  position: absolute;
+  right: 0;
+  bottom: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  z-index: 1000001;
 }
