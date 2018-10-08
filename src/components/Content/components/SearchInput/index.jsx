@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 
 import './index.css';
 
-import { requestSearchObjects } from '../../../../store/search/actions';
-
-import SearchFilters from '../SearchFilters';
+import {
+  requestSearchObjects,
+  invertFiltersVisability,
+} from '../../../../store/search/actions';
 
 class SearchInput extends React.Component {
   constructor(props) {
@@ -15,11 +16,9 @@ class SearchInput extends React.Component {
 
     this.state = {
       inputValue: '',
-      filtersVisibility: false,
     };
 
     this.onChangeInput = this.onChangeInput.bind(this);
-    this.onClickFiltersButton = this.onClickFiltersButton.bind(this);
   }
 
   onChangeInput(event) {
@@ -28,15 +27,9 @@ class SearchInput extends React.Component {
     });
   }
 
-  onClickFiltersButton() {
-    this.setState({
-      filtersVisibility: !this.state.filtersVisibility,
-    });
-  }
-
   render() {
-    const { stylization, onSearchObjects } = this.props;
-    const { inputValue, filtersValue, filtersVisibility } = this.state;
+    const { stylization, onSearchObjects, onChangeFiltersVisability } = this.props;
+    const { inputValue } = this.state;
 
     const SearchButton = () => (
       <button className="search-input-button" onClick={onSearchObjects}>
@@ -45,13 +38,9 @@ class SearchInput extends React.Component {
     );
 
     const FiltersButton = () => (
-      <button onClick={this.onClickFiltersButton} className="search-input-button" />
+      <button onClick={onChangeFiltersVisability} className="search-input-button" />
     );
 
-    const searchFiltersStylization = classNames(
-      'search-input-filters',
-      'modal-window-theme',
-    );
     return (
       <div className={classNames(stylization, 'search-input')}>
         <input
@@ -63,11 +52,6 @@ class SearchInput extends React.Component {
         />
         <SearchButton />
         <FiltersButton />
-        {filtersVisibility && <SearchFilters
-          stylization={searchFiltersStylization}
-          values={filtersValue}
-          onClose={this.onClickFiltersButton}
-        />}
       </div>
     );
   }
@@ -76,6 +60,7 @@ class SearchInput extends React.Component {
 SearchInput.propTypes = {
   stylization: PropTypes.string,
   onSearchObjects: PropTypes.func.isRequired,
+  onChangeFiltersVisability: PropTypes.func.isRequired,
 };
 
 SearchInput.defaultProps = {
@@ -84,6 +69,7 @@ SearchInput.defaultProps = {
 
 const mapDispatchToProps = dispatch => ({
   onSearchObjects: search => dispatch(requestSearchObjects(search)),
+  onChangeFiltersVisability: () => dispatch(invertFiltersVisability()),
 });
 
 export default connect(undefined, mapDispatchToProps)(SearchInput);

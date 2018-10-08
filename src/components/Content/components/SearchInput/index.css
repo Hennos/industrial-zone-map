@@ -36,11 +36,3 @@
 .search-input > .search-input-button:last-of-type {
   margin-right: 0;
 }
-
-.search-input > .search-input-filters {
-  position: fixed;
-  top: 150px;
-  left: 350px;
-  margin-left: 10px;
-  z-index: 1000001;
-}
