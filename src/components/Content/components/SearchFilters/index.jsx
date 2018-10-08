@@ -6,7 +6,10 @@ import { connect } from 'react-redux';
 import './index.css';
 
 import { keys } from '../../../../store/search/constants';
-import { updateSearchFilterValue } from '../../../../store/search/actions';
+import {
+  updateSearchFilterValue,
+  invertFiltersVisability,
+} from '../../../../store/search/actions';
 
 import FilterPresenter from '../FilterPresenter';
 
@@ -14,13 +17,13 @@ import FilterPresenter from '../FilterPresenter';
 const SearchFilters = ({
   stylization,
   filters,
-  onClose,
+  onCloseFilters,
   onChangeFilter,
 }) => {
   const Header = () => <div className="search-filters-header">Критерии поиска</div>;
 
   const CloseButton = () => (
-    <button onClick={onClose} className="search-filters-close-button">
+    <button onClick={onCloseFilters} className="search-filters-close-button">
       <i className="fas fa-times" />
     </button>
   );
@@ -53,13 +56,12 @@ const shapeFilter = {
 SearchFilters.propTypes = {
   stylization: PropTypes.string,
   filters: PropTypes.arrayOf(PropTypes.shape(shapeFilter)).isRequired,
-  onClose: PropTypes.func,
   onChangeFilter: PropTypes.func.isRequired,
+  onCloseFilters: PropTypes.func.isRequired,
 };
 
 SearchFilters.defaultProps = {
   stylization: '',
-  onClose: () => {},
 };
 
 function mapStateToProps(state) {
@@ -75,12 +77,13 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onChangeFilter: (id, value) => {
-      dispatch(updateSearchFilterValue(id, value));
-    },
-  };
-}
+const mapDispatchToProps = dispatch => ({
+  onChangeFilter: (id, value) => {
+    dispatch(updateSearchFilterValue(id, value));
+  },
+  onCloseFilters: () => {
+    dispatch(invertFiltersVisability());
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchFilters);
