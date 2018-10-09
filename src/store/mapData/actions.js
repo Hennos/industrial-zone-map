@@ -1,5 +1,10 @@
 import { events } from './constants';
 
+const resetMap =
+  () => ({
+    type: events.resetMap,
+  });
+
 const chooseIndustrialZone =
   zone => ({
     type: events.chooseIndustrialZone,
@@ -42,6 +47,7 @@ const errorLoadCadastrialAreas =
   });
 
 export {
+  resetMap,
   chooseIndustrialZone,
   loadIndustrialZones,
   successLoadIndustrialZones,

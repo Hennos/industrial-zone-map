@@ -5,6 +5,8 @@ const loadStatusEnum = Object.freeze({
 });
 
 const events = Object.freeze({
+  resetMap: '@@MAP:RESET_MAP',
+
   chooseIndustrialZone: '@@MAP:CHOOSE_INDUSTRIAL_ZONE',
 
   loadIndustrialZones: '@@MAP:LOAD_INDUSTRIAL_ZONES',

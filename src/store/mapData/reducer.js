@@ -3,6 +3,16 @@ import Immutable from 'immutable';
 import { loadStatusEnum, events, keys } from './constants';
 import initialState from './initialState';
 
+function handleResetMap(prevState) {
+  return prevState
+    .set(keys.activeZone, NaN)
+    .set(keys.areas, Immutable.List())
+    .set(keys.areasData, Immutable.Map())
+    .set(keys.areasGeoData, Immutable.Map())
+    .set(keys.areasLoadStatus, loadStatusEnum.none)
+    .set(keys.areasLoadErrorMessage, '');
+}
+
 function handleChooseIndustrialZone(prevState, { zone }) {
   return prevState
     .set(keys.activeZone, zone);
@@ -42,7 +52,7 @@ function handleSuccessLoadCadastrialAreas(prevState, { areas }) {
     const { json, ...data } = properties;
     return {
       data: [id, data],
-      bounds: [id, json],
+      bounds: [id, JSON.parse(json)],
     };
   });
   const areasData = Immutable.Map(areasDataEntities.map(({ data }) => data));
@@ -65,6 +75,7 @@ function handleErrorLoadCadastrialAreas(prevState, { error }) {
 }
 
 const handlers = new Map([
+  [events.resetMap, handleResetMap],
   [events.chooseIndustrialZone, handleChooseIndustrialZone],
   [events.loadIndustrialZones, handleLoadIndustrialZones],
   [events.successLoadIndustrialZones, handleSuccessLoadIndustrialZones],
