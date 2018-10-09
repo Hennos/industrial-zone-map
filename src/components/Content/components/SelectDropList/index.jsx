@@ -70,7 +70,7 @@ class SelectDropList extends React.Component {
                 type="checkbox"
                 checked={!!choosed.find(value => value === option)}
               />
-              {option}
+              <span>{option}</span>
             </div>
           ))}
         </div>

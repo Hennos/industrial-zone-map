@@ -57,7 +57,7 @@ class FlagDropList extends React.Component {
                 type="radio"
                 checked={option === choosed}
               />
-              {option}
+              <span>{option}</span>
             </div>
           ))}
         </div>
