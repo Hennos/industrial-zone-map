@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import './index.css';
 
 import { keys as searchKeys } from '../../../../store/search/constants';
-import { userGroupsEnum, keys as statusKeys } from '../../../../store/status/constants';
+import { userGroupsEnum, keys as statusKeys } from '../../../../store/userStatus/constants';
 import { loadObjectDetails } from '../../../../store/objectDetails/actions';
 
 import SearchInput from '../SearchInput';

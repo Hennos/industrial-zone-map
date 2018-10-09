@@ -1,6 +1,6 @@
 import { combineEpics } from 'redux-observable';
 
-import userStatus from './status/epic';
+import userStatus from './userStatus/epic';
 import legend from './legend/epic';
 import search from './search/epic';
 import entityInformation from './entityInformation/epic';

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import './index.css';
 
-import { loadUserStatus } from '../../store/status/actions';
+import { loadUserStatus } from '../../store/userStatus/actions';
 
 import Header from '../Header';
 import Navigation from '../Navigation';
