@@ -6,7 +6,12 @@ import './index.css';
 
 import FoundElement from '../FoundElement';
 
-const SearchFound = ({ stylization, editable, found, onRequestDetails }) => (
+const SearchFound = ({
+  stylization,
+  editable,
+  found,
+  onRequestDetails,
+}) => (
   <div className={classNames(stylization, 'search-found')}>
     {found.map(({ id, data }) => (
       <FoundElement
