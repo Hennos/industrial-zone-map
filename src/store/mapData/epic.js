@@ -49,8 +49,28 @@ const jsonIndustrialZones = JSON.stringify({
   }],
 });
 
+const jsonCadastrialAreas = JSON.stringify({
+  objects: [{
+    id: 1,
+    properties: {
+      address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
+      cadastrialNumber: '78:07:0003005:245',
+      usage: ['промышленные сооружения'],
+      json: JSON.stringify({
+        type: 'Polygon',
+        coordinates: [[
+          [59.86247302, 30.19396309],
+          [59.86492926, 30.20812515],
+          [59.85587904, 30.21533493],
+          [59.85665487, 30.19868378],
+        ]],
+      }),
+    },
+  }],
+});
+
 const uriIndustrialZones = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonIndustrialZones}`;
-const uriCadastrialAreas = 'http://industry.specom-vm.ru/map_interface.php?action=ping&data="{}"';
+const uriCadastrialAreas = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonCadastrialAreas}`;
 
 const loadIndustrialZonesEpic = action$ => action$.pipe(
   ofType(events.loadIndustrialZones),
