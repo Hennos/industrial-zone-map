@@ -6,6 +6,7 @@ import legend from './legend/reducer';
 import entityInformation from './entityInformation/reducer';
 import objectDetails from './objectDetails/reducer';
 import mapData from './mapData/reducer';
+import areaEditor from './areaEditor/reducer';
 
 const rootReducer = combineReducers({
   userStatus,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   entityInformation,
   objectDetails,
   mapData,
+  areaEditor,
 });
 
 export default rootReducer;

@@ -6,6 +6,7 @@ import search from './search/epic';
 import entityInformation from './entityInformation/epic';
 import objectDetails from './objectDetails/epic';
 import mapData from './mapData/epic';
+import areaEditor from './areaEditor/epic';
 
 const rootEpic = combineEpics(
   userStatus,
@@ -14,6 +15,7 @@ const rootEpic = combineEpics(
   entityInformation,
   objectDetails,
   mapData,
+  areaEditor,
 );
 
 export default rootEpic;
