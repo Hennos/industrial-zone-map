@@ -8,6 +8,7 @@ import './index.css';
 import { keys as searchKeys } from '../../../../store/search/constants';
 import { userGroupsEnum, keys as statusKeys } from '../../../../store/userStatus/constants';
 import { loadObjectDetails } from '../../../../store/objectDetails/actions';
+import { loadAreaPropertiesValue } from '../../../../store/areaEditor/actions';
 
 import SearchInput from '../SearchInput';
 import SearchFound from '../SearchFound';
@@ -17,6 +18,7 @@ const Search = ({
   superuser,
   found,
   onRequestFoundDetails,
+  onRequestFoundEdit,
 }) => (
   <div className={classNames('search', stylization)}>
     <SearchInput stylization="search-input-area" />
@@ -25,6 +27,7 @@ const Search = ({
         stylization="search-found-area"
         editable={superuser}
         onRequestDetails={onRequestFoundDetails}
+        onRequestEdit={onRequestFoundEdit}
         found={found}
       /> : null}
   </div>
@@ -37,6 +40,7 @@ Search.propTypes = {
   superuser: PropTypes.bool,
   found: PropTypes.arrayOf(PropTypes.shape(shapeFound)),
   onRequestFoundDetails: PropTypes.func.isRequired,
+  onRequestFoundEdit: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {
@@ -60,6 +64,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   onRequestFoundDetails: id => dispatch(loadObjectDetails(id)),
+  onRequestFoundEdit: id => dispatch(loadAreaPropertiesValue(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

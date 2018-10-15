@@ -11,6 +11,7 @@ const SearchFound = ({
   editable,
   found,
   onRequestDetails,
+  onRequestEdit,
 }) => (
   <div className={classNames(stylization, 'search-found')}>
     {found.map(({ id, data }) => (
@@ -20,6 +21,7 @@ const SearchFound = ({
         editable={editable}
         data={data}
         onRequestDetails={() => onRequestDetails(id)}
+        onRequestEdit={() => onRequestEdit(id)}
       />
     ))}
   </div>
@@ -35,12 +37,14 @@ SearchFound.propTypes = {
   editable: PropTypes.bool,
   found: PropTypes.arrayOf(PropTypes.shape(shapeFound)).isRequired,
   onRequestDetails: PropTypes.func,
+  onRequestEdit: PropTypes.func,
 };
 
 SearchFound.defaultProps = {
   stylization: '',
   editable: false,
   onRequestDetails: () => {},
+  onRequestEdit: () => {},
 };
 
 export default SearchFound;
