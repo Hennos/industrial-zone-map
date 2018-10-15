@@ -9,6 +9,7 @@ const FoundElement = ({
   editable,
   data,
   onRequestDetails,
+  onRequestEdit,
 }) => (
   <div className={classNames(stylization, 'found-element')}>
     <ul className="found-element-list">
@@ -19,14 +20,14 @@ const FoundElement = ({
         Кад. номер: {data.cadastrialNumber}
       </li>
       <li className="list-element">
-        Вид разрешённого пользования: {data.typePermittedUse}
+        Вид разрешённого пользования: {data.usage}
       </li>
       <li className="list-element list-element-operations">
         <button className="found-element-operation" onClick={onRequestDetails}>
           Подробнее
         </button>
         {editable && (
-          <button className="found-element-operation">
+          <button className="found-element-operation" onClick={onRequestEdit}>
             Редактировать
           </button>
         )}
@@ -46,12 +47,14 @@ FoundElement.propTypes = {
   editable: PropTypes.bool,
   data: PropTypes.shape(shapeElementData).isRequired,
   onRequestDetails: PropTypes.func,
+  onRequestEdit: PropTypes.func,
 };
 
 FoundElement.defaultProps = {
   stylization: '',
   editable: false,
   onRequestDetails: () => {},
+  onRequestEdit: () => {},
 };
 
 export default FoundElement;
