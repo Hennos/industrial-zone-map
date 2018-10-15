@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import './index.css';
 
 import { loadUserStatus } from '../../store/userStatus/actions';
+import { loadPropertiesData } from '../../store/areaEditor/actions';
 
 import Header from '../Header';
 import Navigation from '../Navigation';
@@ -13,6 +14,7 @@ import Content from '../Content';
 class App extends React.Component {
   componentDidMount() {
     this.props.onLoadUserStatus();
+    this.props.onLoadAreaProperties();
   }
 
   render() {
@@ -28,10 +30,12 @@ class App extends React.Component {
 
 App.propTypes = {
   onLoadUserStatus: PropTypes.func.isRequired,
+  onLoadAreaProperties: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
   onLoadUserStatus: () => dispatch(loadUserStatus()),
+  onLoadAreaProperties: () => dispatch(loadPropertiesData()),
 });
 
 export default connect(undefined, mapDispatchToProps)(App);

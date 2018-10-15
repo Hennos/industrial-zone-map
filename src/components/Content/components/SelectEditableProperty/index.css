@@ -1,0 +1,9 @@
+.select-editable-property {
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.select-editable-property > .select-editable-property-drop-list {
+  margin-left: 0.2em;
+}
