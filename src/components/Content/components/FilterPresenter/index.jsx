@@ -13,7 +13,7 @@ const FilterPresenter = ({
 }) => {
   const mapFilter = {
     range: RangeFilter,
-    flag: FlagFilter,
+    check: FlagFilter,
     select: SelectFilter,
   };
   const { type, ...filterData } = data;

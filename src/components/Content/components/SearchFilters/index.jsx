@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 
 import './index.css';
 
-import { keys } from '../../../../store/search/constants';
+import { loadStatusEnum, keys as loaderKeys } from '../../../../store/loader/constants';
+import { keys as searchKeys } from '../../../../store/search/constants';
 import {
   updateSearchFilterValue,
   invertFiltersVisability,
@@ -16,6 +17,7 @@ import FilterPresenter from '../FilterPresenter';
 
 const SearchFilters = ({
   stylization,
+  loadStatus,
   filters,
   onCloseFilters,
   onChangeFilter,
@@ -33,14 +35,15 @@ const SearchFilters = ({
       <Header />
       <CloseButton />
       <div className="search-filters-list">
-        {filters.map(({ id, data, value }) => (
-          <FilterPresenter
-            key={id}
-            stylization="search-filters-list-element"
-            value={value}
-            data={data}
-            onChange={newValue => onChangeFilter(id, newValue)}
-          />
+        {loadStatus === loadStatusEnum.success &&
+          filters.map(({ name, data, value }) => (
+            <FilterPresenter
+              key={name}
+              stylization="search-filters-list-element"
+              value={value}
+              data={data}
+              onChange={newValue => onChangeFilter(name, newValue)}
+            />
         ))}
       </div>
     </div>
@@ -48,13 +51,14 @@ const SearchFilters = ({
 };
 
 const shapeFilter = {
-  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
   value: PropTypes.object.isRequired,
 };
 
 SearchFilters.propTypes = {
   stylization: PropTypes.string,
+  loadStatus: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(shapeFilter)).isRequired,
   onChangeFilter: PropTypes.func.isRequired,
   onCloseFilters: PropTypes.func.isRequired,
@@ -65,14 +69,16 @@ SearchFilters.defaultProps = {
 };
 
 function mapStateToProps(state) {
-  const filters = state.search.get(keys.filters);
-  const filtersData = state.search.get(keys.filtersData);
-  const filtersValue = state.search.get(keys.filtersValue);
+  const loadStatus = state.loader.get(loaderKeys.filtersLoadStatus);
+  const filters = state.search.get(searchKeys.filters);
+  const filtersData = state.search.get(searchKeys.filtersData);
+  const filtersValue = state.search.get(searchKeys.filtersValue);
   return {
-    filters: filters.map(id => ({
-      id,
-      data: filtersData.get(id),
-      value: filtersValue.get(id) || {},
+    loadStatus,
+    filters: filters.map(name => ({
+      name,
+      data: filtersData.get(name),
+      value: filtersValue.get(name) || {},
     })).toArray(),
   };
 }

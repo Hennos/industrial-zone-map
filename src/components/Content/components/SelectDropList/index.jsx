@@ -47,7 +47,8 @@ class SelectDropList extends React.Component {
       if (!choosed.length) {
         stateString = 'выберите из списка';
       } else if (choosed.length === 1) {
-        stateString = choosed[0];
+        const [onlyChoosed] = choosed;
+        stateString = onlyChoosed;
       } else {
         stateString = `несколько выбранных (${choosed.length})`;
       }
@@ -58,31 +59,34 @@ class SelectDropList extends React.Component {
         {choosedState}
         <button className="select-drop-list-button" onClick={this.onDropListButtonClick} />
         <div className={contentStylization}>
-          {options.map(option => (
-            <div
-              className={classNames('select-drop-list-option', {
-                'select-drop-list-option-choosed': !!choosed.find(value => value === option),
-              })}
-              key={option}
-              onClick={() => this.onChooseOption(option)}
-            >
-              <input
-                type="checkbox"
-                checked={!!choosed.find(value => value === option)}
-              />
-              <span>{option}</span>
-            </div>
-          ))}
+          {options.map(({ name, title }) => {
+            const checked = !!choosed.find(value => value === name);
+            const className = classNames(
+              'select-drop-list-option',
+              { 'select-drop-list-option-choosed': checked },
+            );
+            return (
+              <button key={name} className={className} onClick={() => this.onChooseOption(name)}>
+                <input type="checkbox" checked={checked} />
+                <span>{title}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
     );
   }
 }
 
+const shapeOption = {
+  name: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+};
+
 SelectDropList.propTypes = {
   stylization: PropTypes.string,
   choosed: PropTypes.arrayOf(PropTypes.string),
-  options: PropTypes.arrayOf(PropTypes.string),
+  options: PropTypes.arrayOf(PropTypes.shape(shapeOption)),
   onChange: PropTypes.func,
 };
 

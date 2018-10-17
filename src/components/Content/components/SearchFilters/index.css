@@ -1,4 +1,8 @@
 .search-filters {
+  min-height: 300px;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
   white-space: nowrap;
 }
 

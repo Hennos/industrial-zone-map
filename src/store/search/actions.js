@@ -1,26 +1,15 @@
 import { events } from './constants';
 
-const loadFiltersData =
-  () => ({
-    type: events.loadFiltersData,
-  });
-
-const getLoadedFiltersData =
+const setFiltersData =
   filters => ({
-    type: events.getLoadedFiltersData,
+    type: events.setFiltersData,
     filters,
   });
 
-const errorLoadFiltersData =
-  error => ({
-    type: events.errorLoadFiltersData,
-    error,
-  });
-
 const updateSearchFilterValue =
-  (id, value) => ({
+  (name, value) => ({
     type: events.updateSearchFilterValue,
-    id,
+    name,
     value,
   });
 
@@ -48,9 +37,7 @@ const errorGetFoundObjects =
   });
 
 export {
-  loadFiltersData,
-  getLoadedFiltersData,
-  errorLoadFiltersData,
+  setFiltersData,
   updateSearchFilterValue,
   invertFiltersVisability,
   requestSearchObjects,

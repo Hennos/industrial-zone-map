@@ -1,10 +1,20 @@
 import { of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { mergeMap, map, catchError } from 'rxjs/operators';
-import { ofType } from 'redux-observable';
+import { combineEpics, ofType } from 'redux-observable';
 
-import { events } from './constants';
-import { getFoundObjects, errorGetFoundObjects } from './actions';
+import { events as loaderEvents } from '../loader/constants';
+import { events as searchEvents } from './constants';
+import {
+  setFiltersData,
+  getFoundObjects,
+  errorGetFoundObjects,
+} from './actions';
+
+const setFiltersDataEpic = action$ => action$.pipe(
+  ofType(loaderEvents.successLoadFilters),
+  map(({ data }) => setFiltersData(data.records)),
+);
 
 const jsonFoundObjects = JSON.stringify({
   objects: [{
@@ -57,15 +67,19 @@ const jsonFoundObjects = JSON.stringify({
     },
   }],
 });
-
 const uriFoundObjects = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonFoundObjects}`;
 
-const epic = action$ => action$.pipe(
-  ofType(events.requestSearchObjects),
+const loadFoundObjectsEpic = action$ => action$.pipe(
+  ofType(searchEvents.requestSearchObjects),
   mergeMap(() => ajax.getJSON(uriFoundObjects).pipe(
     map(response => getFoundObjects(response.data.objects)),
     catchError(error => of(errorGetFoundObjects(error))),
   )),
+);
+
+const epic = combineEpics(
+  setFiltersDataEpic,
+  loadFoundObjectsEpic,
 );
 
 export default epic;

@@ -24,7 +24,7 @@ const FlagFilter = ({
 
 const shapeElementData = {
   title: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.string),
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const shapeElementValue = {
