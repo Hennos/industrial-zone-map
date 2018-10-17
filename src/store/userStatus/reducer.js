@@ -1,19 +1,13 @@
 import Immutable from 'immutable';
 
 import {
-  loadStatusEnum,
   userGroupsEnum,
   events,
   keys,
 } from './constants';
 import initialState from './initialState';
 
-function handleLoadUserStatus(prevState) {
-  return prevState
-    .set(keys.loadStatus, loadStatusEnum.loading);
-}
-
-function handleSuccessLoadUserStatus(prevState, { user }) {
+function handleSetUserStatus(prevState, { user }) {
   const {
     is_authorized: authorized,
     user_groups: userGroups,
@@ -30,20 +24,11 @@ function handleSuccessLoadUserStatus(prevState, { user }) {
 
   return prevState
     .set(keys.authorized, authorized)
-    .set(keys.groups, groups)
-    .set(keys.loadStatus, loadStatusEnum.success);
-}
-
-function handleErrorLoadUserStatus(prevState, { error }) {
-  return prevState
-    .set(keys.loadErrorMessage, error.toString())
-    .set(keys.loadStatus, loadStatusEnum.error);
+    .set(keys.groups, groups);
 }
 
 const handlers = new Map([
-  [events.loadUserStatus, handleLoadUserStatus],
-  [events.successLoadUserStatus, handleSuccessLoadUserStatus],
-  [events.errorLoadUserStatus, handleErrorLoadUserStatus],
+  [events.setUserStatus, handleSetUserStatus],
 ]);
 
 const reducer = (state = initialState, action) => {

@@ -1,24 +1,9 @@
 import { events } from './constants';
 
-const loadUserStatus =
-  () => ({
-    type: events.loadUserStatus,
-  });
-
-const successLoadUserStatus =
+const setUserStatus =
   user => ({
-    type: events.successLoadUserStatus,
+    type: events.setUserStatus,
     user,
   });
 
-const errorLoadUserStatus =
-  error => ({
-    type: events.errorLoadUserStatus,
-    error,
-  });
-
-export {
-  loadUserStatus,
-  successLoadUserStatus,
-  errorLoadUserStatus,
-};
+export { setUserStatus };
