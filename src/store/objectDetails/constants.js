@@ -1,10 +1,3 @@
-const loadStatusEnum = Object.freeze({
-  none: 'NONE',
-  loading: 'LOADING',
-  success: 'SUCCESS',
-  error: 'ERROR',
-});
-
 const propsEnum = Object.freeze({
   address: 'address',
   cadastralNumber: 'cadastralNumber',
@@ -19,12 +12,10 @@ const propsEnum = Object.freeze({
 });
 
 const events = Object.freeze({
-  loadObjectDetailsData: '@@OBJECT_DETAILS:LOAD_OBJECT_DETAILS_DATA',
-  successLoadObjectDetailsData: '@@OBJECT_DETAILS:SUCCESS_LOAD_OBJECT_DETAILS_DATA',
+  setAreaPropertiesData: '@@OBJECT_DETAILS:SET_AREA_PROPERTIES_DATA',
 
   loadObjectDetails: '@@OBJECT_DETAILS:LOAD_OBJECT_DETAILS',
   successLoadObjectDetails: '@@OBJECT_DETAILS:SUCCESS_LOAD_OBJECT_DETAILS',
-
   errorLoadObjectDetails: '@@OBJECT_DETAILS:ERROR_LOAD_OBJECT_DETAILS',
 
   closeObjectDetails: '@@OBJECT_DETAILS:CLOSE_OBJECT_DETAILS',
@@ -33,11 +24,10 @@ const events = Object.freeze({
 
 const keys = Object.freeze({
   id: 'id',
-  loadStatus: 'loadStatus',
-  loadErrorMessage: 'loadErrorMessage',
+  ready: 'ready',
   properties: 'propertries',
   propsData: 'propsData',
   propsValue: 'propsValue',
 });
 
-export { loadStatusEnum, propsEnum, events, keys };
+export { propsEnum, events, keys };

@@ -1,14 +1,9 @@
 import { events } from './constants';
 
-const loadObjectDetailsData =
-  () => ({
-    type: events.loadObjectDetailsData,
-  });
-
-const successLoadObjectDetailsData =
-  data => ({
-    type: events.successLoadObjectDetailsData,
-    data,
+const setAreaPropertiesData =
+  properties => ({
+    type: events.setAreaPropertiesData,
+    properties,
   });
 
 const loadObjectDetails =
@@ -16,13 +11,11 @@ const loadObjectDetails =
     type: events.loadObjectDetails,
     id,
   });
-
 const successLoadObjectDetails =
   object => ({
     type: events.successLoadObjectDetails,
     object,
   });
-
 const errorLoadObjectDetails =
   error => ({
     type: events.errorLoadObjectDetails,
@@ -40,8 +33,7 @@ const unsetObjectDetails =
   });
 
 export {
-  loadObjectDetailsData,
-  successLoadObjectDetailsData,
+  setAreaPropertiesData,
   loadObjectDetails,
   successLoadObjectDetails,
   errorLoadObjectDetails,

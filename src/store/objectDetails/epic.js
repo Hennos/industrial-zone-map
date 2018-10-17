@@ -9,47 +9,14 @@ import {
 } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
-import { events } from './constants';
+import { events as loaderEvents } from '../loader/constants';
+import { events as objectDetailsEvents } from './constants';
 import {
-  successLoadObjectDetailsData,
+  setAreaPropertiesData,
   successLoadObjectDetails,
   errorLoadObjectDetails,
   unsetObjectDetails,
 } from './actions';
-
-const jsonObjectDetailsData = JSON.stringify({
-  properties: [{
-    name: 'address',
-    title: 'Адрес',
-  }, {
-    name: 'cadastralNumber',
-    title: 'Кадастровый номер',
-  }, {
-    name: 'usage',
-    title: 'Вид разрешенного использования',
-  }, {
-    name: 'hazardClass',
-    title: 'Класс опасности производства',
-  }, {
-    name: 'rightHolder',
-    title: 'Правообладатель',
-  }, {
-    name: 'rightFoundation',
-    title: 'Основание пользования участком',
-  }, {
-    name: 'activity',
-    title: 'Вид деятельности производства',
-  }, {
-    name: 'protectionZone',
-    title: 'Санитарно-защитная зона',
-  }, {
-    name: 'connectivityOptions',
-    title: 'Возможности подключения',
-  }, {
-    name: 'reorganization',
-    title: 'Градостроительные преобразования',
-  }],
-});
 
 const jsonObjectDetails = JSON.stringify({
   id: 1,
@@ -78,19 +45,15 @@ const jsonObjectDetails = JSON.stringify({
   },
 });
 
-const uriObjectDetailsData = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonObjectDetailsData}`;
 const uriObjectDetails = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonObjectDetails}`;
 
-const loadObjectDetailsDataEpic = action$ => action$.pipe(
-  ofType(events.loadObjectDetailsData),
-  mergeMap(() => ajax.getJSON(uriObjectDetailsData).pipe(
-    map(response => successLoadObjectDetailsData(response.data)),
-    catchError(error => of(errorLoadObjectDetails(error))),
-  )),
+const setAreaPropertiesDataEpic = action$ => action$.pipe(
+  ofType(loaderEvents.successLoadAreaPropertries),
+  map(({ data }) => setAreaPropertiesData(data.properties)),
 );
 
 const loadObjectDetailsEpic = action$ => action$.pipe(
-  ofType(events.loadObjectDetails),
+  ofType(objectDetailsEvents.loadObjectDetails),
   mergeMap(() => ajax.getJSON(uriObjectDetails).pipe(
     map(response => successLoadObjectDetails(response.data)),
     catchError(error => of(errorLoadObjectDetails(error))),
@@ -98,13 +61,13 @@ const loadObjectDetailsEpic = action$ => action$.pipe(
 );
 
 const closeObjectDetailsEpic = action$ => action$.pipe(
-  ofType(events.closeObjectDetails),
+  ofType(objectDetailsEvents.closeObjectDetails),
   delay(500),
   mapTo(unsetObjectDetails()),
 );
 
 const epic = combineEpics(
-  loadObjectDetailsDataEpic,
+  setAreaPropertiesDataEpic,
   loadObjectDetailsEpic,
   closeObjectDetailsEpic,
 );

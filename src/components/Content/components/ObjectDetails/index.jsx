@@ -5,39 +5,32 @@ import { connect } from 'react-redux';
 
 import './index.css';
 
-import { keys } from '../../../../store/objectDetails/constants';
-import {
-  loadObjectDetailsData,
-  closeObjectDetails,
-} from '../../../../store/objectDetails/actions';
+import { loadStatusEnum, keys as loaderKeys } from '../../../../store/loader/constants';
+import { keys as objectDetailsKeys } from '../../../../store/objectDetails/constants';
+import { closeObjectDetails } from '../../../../store/objectDetails/actions';
 
 import PropertyPresenter from '../PropertyPresenter';
 
-class ObjectDetails extends React.Component {
-  componentDidMount() {
-    this.props.onLoadProperties();
-  }
+const ObjectDetails = ({
+  stylization,
+  propsLoadStatus,
+  ready,
+  properties,
+  onCloseObjectDetails,
+}) => {
+  const Header = () => (
+    <div className="object-details-header">
+      <p className="object-details-header-content">Информация по выбранному участку</p>
+      <button className="object-details-close" onClick={onCloseObjectDetails} />
+    </div>
+  );
 
-  render() {
-    const {
-      stylization,
-      loadStatus,
-      properties,
-      onCloseObjectDetails,
-    } = this.props;
-
-    const Header = () => (
-      <div className="object-details-header">
-        <p className="object-details-header-content">Информация по выбранному участку</p>
-        <button className="object-details-close" onClick={onCloseObjectDetails} />
-      </div>
-    );
-
-    return (
-      <div className={classNames('object-details', stylization)}>
-        <Header />
-        <div className="object-details-list">
-          {loadStatus === 'SUCCESS' &&
+  return (
+    <div className={classNames('object-details', stylization)}>
+      <Header />
+      <div className="object-details-list">
+        {propsLoadStatus === loadStatusEnum.success &&
+          ready &&
             properties
               .filter(({ value }) => value !== null)
               .map(({ name, data, value }) => (
@@ -48,12 +41,11 @@ class ObjectDetails extends React.Component {
                   data={data}
                   value={value}
                 />
-          ))}
-        </div>
+        ))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const shapeProperty = {
   name: PropTypes.string.isRequired,
@@ -63,9 +55,9 @@ const shapeProperty = {
 
 ObjectDetails.propTypes = {
   stylization: PropTypes.string,
-  loadStatus: PropTypes.string.isRequired,
+  propsLoadStatus: PropTypes.string.isRequired,
+  ready: PropTypes.bool.isRequired,
   properties: PropTypes.arrayOf(PropTypes.shape(shapeProperty)).isRequired,
-  onLoadProperties: PropTypes.func.isRequired,
   onCloseObjectDetails: PropTypes.func.isRequired,
 };
 
@@ -74,12 +66,14 @@ ObjectDetails.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const loadStatus = state.objectDetails.get(keys.loadStatus);
-  const properties = state.objectDetails.get(keys.properties);
-  const propsData = state.objectDetails.get(keys.propsData);
-  const propsValue = state.objectDetails.get(keys.propsValue);
+  const propsLoadStatus = state.loader.get(loaderKeys.areaPropertiesLoadStatus);
+  const ready = state.objectDetails.get(objectDetailsKeys.ready);
+  const properties = state.objectDetails.get(objectDetailsKeys.properties);
+  const propsData = state.objectDetails.get(objectDetailsKeys.propsData);
+  const propsValue = state.objectDetails.get(objectDetailsKeys.propsValue);
   return {
-    loadStatus,
+    propsLoadStatus,
+    ready,
     properties: properties.map(name => ({
       name,
       data: propsData.get(name),
@@ -89,7 +83,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onLoadProperties: () => dispatch(loadObjectDetailsData()),
   onCloseObjectDetails: () => dispatch(closeObjectDetails()),
 });
 

@@ -1,12 +1,13 @@
 import Immutable from 'immutable';
 
-import { loadStatusEnum, events, keys } from './constants';
+import { events, keys } from './constants';
 import initialState from './initialState';
 
-function handleSuccessLoadObjectDetailsData(prevState, { data }) {
-  const { properties } = data;
-  const propsNames = Immutable.List(properties.map(property => property.name));
-  const propsData = Immutable.Map(properties.map(({ name, ...other }) => [name, other]));
+function handleSetAreaPropertiesData(prevState, { properties }) {
+  const validProps = properties
+    .filter(({ type }) => type !== 'range');
+  const propsNames = Immutable.List(validProps.map(({ name }) => name));
+  const propsData = Immutable.Map(validProps.map(({ name, type, ...other }) => [name, other]));
   return prevState
     .set(keys.properties, propsNames)
     .set(keys.propsData, propsData);
@@ -19,23 +20,18 @@ function handleSuccessLoadObjectDetails(prevState, { object }) {
   return prevState
     .set(keys.id, id)
     .set(keys.propsValue, propsValue)
-    .set(keys.loadStatus, loadStatusEnum.success);
-}
-
-function handleErrorLoadObjectDetails(prevState) {
-  return prevState;
+    .set(keys.ready, true);
 }
 
 function handleUnsetObjectDetails(prevState) {
   return prevState
     .set(keys.propsValue, Immutable.Map())
-    .set(keys.loadStatus, loadStatusEnum.none);
+    .set(keys.ready, false);
 }
 
 const handlers = new Map([
-  [events.successLoadObjectDetailsData, handleSuccessLoadObjectDetailsData],
+  [events.setAreaPropertiesData, handleSetAreaPropertiesData],
   [events.successLoadObjectDetails, handleSuccessLoadObjectDetails],
-  [events.errorLoadObjectDetails, handleErrorLoadObjectDetails],
   [events.unsetObjectDetails, handleUnsetObjectDetails],
 ]);
 
