@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 
+import loader from './loader/reducer';
 import userStatus from './userStatus/reducer';
 import search from './search/reducer';
 import legend from './legend/reducer';
@@ -9,6 +10,7 @@ import mapData from './mapData/reducer';
 import areaEditor from './areaEditor/reducer';
 
 const rootReducer = combineReducers({
+  loader,
   userStatus,
   search,
   legend,
