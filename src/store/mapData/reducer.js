@@ -3,6 +3,14 @@ import Immutable from 'immutable';
 import { loadStatusEnum, events, keys } from './constants';
 import initialState from './initialState';
 
+const createId = (() => {
+  let id = 0;
+  return () => {
+    id += 1;
+    return `local_${id}`;
+  };
+})();
+
 function handleResetMap(prevState) {
   return prevState
     .set(keys.activeZone, NaN)
@@ -29,7 +37,7 @@ function handleSuccessLoadIndustrialZones(prevState, { zones }) {
     const { json, ...data } = properties;
     return {
       data: [id, data],
-      bounds: [id, JSON.parse(json)],
+      bounds: [id, json],
     };
   });
   const zonesData = Immutable.Map(zonesDataEntities.map(({ data }) => data));
@@ -52,7 +60,7 @@ function handleSuccessLoadCadastrialAreas(prevState, { areas }) {
     const { json, ...data } = properties;
     return {
       data: [id, data],
-      bounds: [id, JSON.parse(json)],
+      bounds: [id, json],
     };
   });
   const areasData = Immutable.Map(areasDataEntities.map(({ data }) => data));
@@ -74,6 +82,50 @@ function handleErrorLoadCadastrialAreas(prevState, { error }) {
     .set(keys.areasLoadErrorMessage, error.toString());
 }
 
+function handleCreateTerritoryCadastrialArea(prevState, { area }) {
+  const id = createId();
+  const updatedAreas = prevState
+    .get(keys.areas)
+    .push(id);
+  const updatedAreasData = prevState
+    .get(keys.areasData)
+    .set(id, {
+      created: true,
+    });
+  const updatedAreasGeoData = prevState
+    .get(keys.areasGeoData)
+    .set(id, area);
+  return prevState
+    .set(keys.areas, updatedAreas)
+    .set(keys.areasData, updatedAreasData)
+    .set(keys.areasGeoData, updatedAreasGeoData);
+}
+
+function handleEditTerritoryCadastrialAreas(prevState, { areas }) {
+  const newEditedAreasGeoData = Immutable.Map(areas.map(({ id, bounds }) => [id, bounds]));
+  const updatedAreasGeoData = prevState
+    .get(keys.areasGeoData)
+    .merge(newEditedAreasGeoData);
+  return prevState
+    .set(keys.areasGeoData, updatedAreasGeoData)
+}
+
+function handleRemoveTerritoryCadastrialArea(prevState, { area: removed }) {
+  const updatedAreas = prevState
+    .get(keys.areas)
+    .filter(area => area !== removed);
+  const updatedAreasData = prevState
+    .get(keys.areasData)
+    .delete(removed);
+  const updatedAreasGeoData = prevState
+    .get(keys.areasGeoData)
+    .delete(removed);
+  return prevState
+    .set(keys.areas, updatedAreas)
+    .set(keys.areasData, updatedAreasData)
+    .set(keys.areasGeoData, updatedAreasGeoData);
+}
+
 const handlers = new Map([
   [events.resetMap, handleResetMap],
   [events.chooseIndustrialZone, handleChooseIndustrialZone],
@@ -83,6 +135,9 @@ const handlers = new Map([
   [events.loadCadastrialAreas, handleLoadCadastrialAreas],
   [events.successLoadCadastrialAreas, handleSuccessLoadCadastrialAreas],
   [events.errorLoadCadastrialAreas, handleErrorLoadCadastrialAreas],
+  [events.createTerritoryCadastrialArea, handleCreateTerritoryCadastrialArea],
+  [events.editTerritoryCadastrialAreas, handleEditTerritoryCadastrialAreas],
+  [events.removeTerritoryCadastrialArea, handleRemoveTerritoryCadastrialArea],
 ]);
 
 export default function (state = initialState, action) {

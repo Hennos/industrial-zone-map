@@ -46,6 +46,24 @@ const errorLoadCadastrialAreas =
     error,
   });
 
+const createTerritoryCadastrialArea =
+  area => ({
+    type: events.createTerritoryCadastrialArea,
+    area,
+  });
+
+const editTerritoryCadastrialAreas =
+  areas => ({
+    type: events.editTerritoryCadastrialAreas,
+    areas,
+  });
+
+const removeTerritoryCadastrialArea =
+  area => ({
+    type: events.removeTerritoryCadastrialArea,
+    area,
+  });
+
 export {
   resetMap,
   chooseIndustrialZone,
@@ -55,4 +73,7 @@ export {
   loadCadastrialAreas,
   successLoadCadastrialAreas,
   errorLoadCadastrialAreas,
+  createTerritoryCadastrialArea,
+  editTerritoryCadastrialAreas,
+  removeTerritoryCadastrialArea,
 };

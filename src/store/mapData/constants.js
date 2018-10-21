@@ -16,6 +16,10 @@ const events = Object.freeze({
   loadCadastrialAreas: '@@MAP:LOAD:CADASTRIAL_AREAS',
   successLoadCadastrialAreas: '@@MAP:SUCCESS_LOAD_CADASTRIAL_AREAS',
   errorLoadCadastrialAreas: '@@MAP:ERROR_LOAD_CADASTRIAL_AREAS',
+
+  createTerritoryCadastrialArea: '@@MAP:CREATE_TERRITORY_CADASTRIAL_AREA',
+  editTerritoryCadastrialAreas: '@@MAP:EDIT_TERRITORY_CADASTRIAL_AREAS',
+  removeTerritoryCadastrialArea: '@@MAP:REMOVE_TERRITORY_CADASTRIAL_AREA',
 });
 
 const keys = Object.freeze({
