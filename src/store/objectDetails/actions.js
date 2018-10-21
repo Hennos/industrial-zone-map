@@ -7,9 +7,9 @@ const setAreaPropertiesData =
   });
 
 const loadObjectDetails =
-  id => ({
+  area => ({
     type: events.loadObjectDetails,
-    id,
+    area,
   });
 const successLoadObjectDetails =
   object => ({
