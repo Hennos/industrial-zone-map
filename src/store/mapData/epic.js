@@ -16,74 +16,37 @@ import {
   errorLoadCadastrialAreas,
 } from './actions';
 
-const jsonIndustrialZones = JSON.stringify({
-  objects: [{
-    id: 1,
-    properties: {
-      name: 'Конная Лахта',
-      json: JSON.stringify({
-        type: 'Polygon',
-        coordinates: [[
-          [59.99086145, 30.16367251],
-          [60.00326509, 30.15998179],
-          [60.00682652, 30.13234431],
-          [59.99468739, 30.13037443],
-        ]],
-      }),
-    },
-  }, {
-    id: 2,
-    properties: {
-      name: 'Часть территории Морской портово-промышленной зоны',
-      json: JSON.stringify({
-        type: 'Polygon',
-        coordinates: [[
-          [59.86350395, 30.15029598],
-          [59.84695239, 30.1702087],
-          [59.84557272, 30.21278072],
-          [59.86384869, 30.23544002],
-          [59.87591222, 30.18325496],
-        ]],
-      }),
-    },
-  }],
-});
-
-const jsonCadastrialAreas = JSON.stringify({
-  objects: [{
-    id: 1,
-    properties: {
-      address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-      cadastrialNumber: '78:07:0003005:245',
-      usage: ['промышленные сооружения'],
-      json: JSON.stringify({
-        type: 'Polygon',
-        coordinates: [[
-          [59.86247302, 30.19396309],
-          [59.86492926, 30.20812515],
-          [59.85587904, 30.21533493],
-          [59.85665487, 30.19868378],
-        ]],
-      }),
-    },
-  }],
-});
-
-const uriIndustrialZones = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonIndustrialZones}`;
-const uriCadastrialAreas = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonCadastrialAreas}`;
-
+const uriIndustrialZones =
+  'http://industry.specom-vm.ru/map_interface.php?action=enumerate&data={"class":"Zone","properties":["json"]}';
 const loadIndustrialZonesEpic = action$ => action$.pipe(
   ofType(events.loadIndustrialZones),
   mergeMap(() => ajax.getJSON(uriIndustrialZones).pipe(
-    map(response => successLoadIndustrialZones(response.data.objects)),
+    map(response => successLoadIndustrialZones(response.objects)),
     catchError(error => of(errorLoadIndustrialZones(error))),
   )),
 );
 
+const requestAreasConfigurator = zone =>
+  JSON.stringify({
+    class: 'MapEntity',
+    properties: [
+      'address',
+      'cadastral_number',
+      'id_usage',
+      'json',
+    ],
+    filters: [{
+      operation: 'is',
+      property: 'id_zone',
+      value: zone,
+    }],
+  });
+const requestAreasURI =
+  areas => `http://industry.specom-vm.ru/map_interface.php?action=enumerate&data=${areas}`;
 const loadCadastrialAreasEpic = action$ => action$.pipe(
   ofType(events.loadCadastrialAreas),
-  mergeMap(() => ajax.getJSON(uriCadastrialAreas).pipe(
-    map(response => successLoadCadastrialAreas(response.data.objects)),
+  mergeMap(({ zone }) => ajax.getJSON(requestAreasURI(requestAreasConfigurator(zone))).pipe(
+    map(({ objects }) => successLoadCadastrialAreas(objects)),
     catchError(error => of(errorLoadCadastrialAreas(error))),
   )),
 );
