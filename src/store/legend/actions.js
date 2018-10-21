@@ -1,20 +1,9 @@
 import { events } from './constants';
 
-const loadLegendData =
-  () => ({
-    type: events.loadLegendData,
-  });
-
-const getLoadedLegendData =
-  loaded => ({
-    type: events.getLoadedLegendData,
-    loaded,
-  });
-
-const errorLoadLegendData =
-  error => ({
-    type: events.errorLoadLegendData,
-    error,
+const setLegendData =
+  records => ({
+    type: events.setLegendData,
+    records,
   });
 
 const invertLegendVisability =
@@ -23,8 +12,6 @@ const invertLegendVisability =
   });
 
 export {
-  loadLegendData,
-  getLoadedLegendData,
-  errorLoadLegendData,
+  setLegendData,
   invertLegendVisability,
 };

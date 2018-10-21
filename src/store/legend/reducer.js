@@ -11,29 +11,19 @@ const createId = (() => {
   };
 })();
 
-const handleGetLoadedLegendData = (prevState, { loaded }) => {
-  const legendRecordPresenter = legendRecord => ({
-    icon: legendRecord.icon,
-    description: legendRecord.description,
-  });
-
-  const { records } = loaded.data;
-  const legendRecordsData = Immutable.Map(records.map(record => [
-    createId(),
-    legendRecordPresenter(record),
+const handleSetLegendData = (prevState, { records }) => {
+  const recordsData = Immutable.Map(records.map(record => [
+    createId(), {
+      icon: record.icon,
+      description: record.description,
+    },
   ]));
-  const legendRecords = Immutable.List(legendRecordsData.keys());
+  const legendRecords = Immutable.List(recordsData.keys());
 
   return prevState
     .set(keys.legendRecords, legendRecords)
-    .set(keys.legendRecordsData, legendRecordsData)
-    .set(keys.loadStatus, 'SUCCESS');
+    .set(keys.legendRecordsData, recordsData);
 };
-
-const handleErrorLoadLegendData = (prevState, action) =>
-  prevState
-    .set(keys.loadErrorMessage, action.error.toString())
-    .set(keys.loadStatus, 'FAILED');
 
 const handleInvertLegendVisability = (prevState) => {
   const prevVisability = prevState.get(keys.legendVisability);
@@ -42,8 +32,7 @@ const handleInvertLegendVisability = (prevState) => {
 };
 
 const handlers = new Map([
-  [events.getLoadedLegendData, handleGetLoadedLegendData],
-  [events.errorLoadLegendData, handleErrorLoadLegendData],
+  [events.setLegendData, handleSetLegendData],
   [events.invertLegendVisability, handleInvertLegendVisability],
 ]);
 

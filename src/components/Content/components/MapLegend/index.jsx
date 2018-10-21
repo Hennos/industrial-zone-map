@@ -5,53 +5,43 @@ import { connect } from 'react-redux';
 
 import './index.css';
 
-import { keys } from '../../../../store/legend/constants';
-import {
-  loadLegendData,
-  invertLegendVisability,
-} from '../../../../store/legend/actions';
+import { loadStatusEnum, keys as loaderKeys } from '../../../../store/loader/constants';
+import { keys as legendKeys } from '../../../../store/legend/constants';
+import { invertLegendVisability } from '../../../../store/legend/actions';
 
 import LegendRecord from '../LegendRecord';
 
-class MapLegend extends React.Component {
-  componentDidMount() {
-    this.props.onLoadLegendData();
-  }
+const MapLegend = ({
+  stylization,
+  loadStatus,
+  records,
+  onCloseLegend,
+}) => {
+  const Header = () => (
+    <div className="map-legend-header">
+      Обозначения на карте
+    </div>
+  );
 
-  render() {
-    const {
-      stylization,
-      loadStatus,
-      records,
-      onCloseLegend,
-    } = this.props;
+  const CloseButton = () => (
+    <button className="map-legend-close-button" onClick={onCloseLegend}>
+      <i className="fas fa-times" />
+    </button>
+  );
 
-    const Header = () => (
-      <div className="map-legend-header">
-        Обозначения на карте
+  return (
+    <div className={classNames(stylization, 'map-legend')}>
+      <Header />
+      <CloseButton />
+      <div className="map-legend-list">
+        {loadStatus === loadStatusEnum.success &&
+          records.map(({ id, data }) => (
+            <LegendRecord key={id} stylization="map-legend-list-element" data={data} />
+          ))}
       </div>
-    );
-
-    const CloseButton = () => (
-      <button className="map-legend-close-button" onClick={onCloseLegend}>
-        <i className="fas fa-times" />
-      </button>
-    );
-
-    return (
-      <div className={classNames(stylization, 'map-legend')}>
-        <Header />
-        <CloseButton />
-        <div className="map-legend-list">
-          {loadStatus === 'SUCCESS' &&
-            records.map(({ id, data }) => (
-              <LegendRecord key={id} stylization="map-legend-list-element" data={data} />
-            ))}
-        </div>
-      </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const shapeLegendRecords = {
   id: PropTypes.number.isRequired,
@@ -62,7 +52,6 @@ MapLegend.propTypes = {
   stylization: PropTypes.string,
   loadStatus: PropTypes.string.isRequired,
   records: PropTypes.arrayOf(PropTypes.shape(shapeLegendRecords)).isRequired,
-  onLoadLegendData: PropTypes.func.isRequired,
   onCloseLegend: PropTypes.func.isRequired,
 };
 
@@ -71,9 +60,9 @@ MapLegend.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const loadStatus = state.legend.get(keys.loadStatus);
-  const legendRecords = state.legend.get(keys.legendRecords);
-  const legendRecordsData = state.legend.get(keys.legendRecordsData);
+  const loadStatus = state.loader.get(loaderKeys.legendLoadStatus);
+  const legendRecords = state.legend.get(legendKeys.legendRecords);
+  const legendRecordsData = state.legend.get(legendKeys.legendRecordsData);
   return {
     loadStatus,
     records: legendRecords.map(id => ({
@@ -84,7 +73,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapdDspatchToProps = dispatch => ({
-  onLoadLegendData: () => dispatch(loadLegendData()),
   onCloseLegend: () => dispatch(invertLegendVisability()),
 });
 
