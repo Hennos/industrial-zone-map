@@ -1,13 +1,13 @@
 const propsEnum = Object.freeze({
   address: 'address',
-  cadastralNumber: 'cadastralNumber',
-  usage: 'usage',
-  hazardClass: 'hazardClass',
-  rightHolder: 'rightHolder',
-  rightFoundation: 'rightFoundation',
-  activity: 'activity',
-  protectionZone: 'protectionZone',
-  connectivityOptions: 'connectivityOptions',
+  cadastralNumber: 'cadastral_number',
+  usage: 'id_usage',
+  hazardClass: 'id_hazardclass',
+  rightHolder: 'rightholder',
+  rightFoundation: 'right_foundation',
+  activity: 'id_activity',
+  protectionZone: 'protection_zone',
+  connectivityOptions: 'connectivity',
   reorganization: 'reorganization',
 });
 
