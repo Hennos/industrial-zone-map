@@ -6,8 +6,6 @@ import './index.css';
 
 import { requestLoadAppData } from '../../store/loader/actions';
 
-import Header from '../Header';
-import Navigation from '../Navigation';
 import Content from '../Content';
 
 class App extends React.Component {
@@ -18,8 +16,6 @@ class App extends React.Component {
   render() {
     return (
       <div className="map-application">
-        <Header stylization="map-application-header map-application-fragment" />
-        <Navigation stylization="map-application-nav map-application-fragment" />
         <Content stylization="map-application-content map-application-fragment" />
       </div>
     );
