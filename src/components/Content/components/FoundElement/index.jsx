@@ -17,10 +17,10 @@ const FoundElement = ({
         Адрес: {data.address}
       </li>
       <li className="list-element">
-        Кад. номер: {data.cadastrialNumber}
+        Кад. номер: {data.cadastral_number}
       </li>
       <li className="list-element">
-        Вид разрешённого пользования: {data.usage}
+        Вид разрешённого пользования: {data.id_usage}
       </li>
       <li className="list-element list-element-operations">
         <button className="found-element-operation" onClick={onRequestDetails}>
