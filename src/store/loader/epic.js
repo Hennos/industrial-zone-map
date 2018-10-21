@@ -47,27 +47,11 @@ const loadLegendEpic = action$ => action$.pipe(
   )),
 );
 
-const jsonUserStatusData = JSON.stringify({
-  is_authorized: true,
-  user_info: {
-    id: 1,
-    login: 'test',
-  },
-  user_groups: {
-    fl: false,
-    ul: false,
-    iogv: true,
-    admin: true,
-    operator: false,
-    approved: true,
-  },
-});
-const uriUserStatusData = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonUserStatusData}`;
-
+const requestUserStatusURI = 'http://industry.specom-vm.ru/map_interface.php?action=status';
 const loadUserStatusEpic = action$ => action$.pipe(
   ofType(events.loadUserStatus),
-  mergeMap(() => ajax.getJSON(uriUserStatusData).pipe(
-    map(({ data }) => successLoadUserStatus(data)),
+  mergeMap(() => ajax.getJSON(requestUserStatusURI).pipe(
+    map(response => successLoadUserStatus(response)),
     catchError(error => of(errorLoadUserStatus(error))),
   )),
 );
@@ -78,76 +62,76 @@ const jsonAreaPropertiesData = JSON.stringify({
     type: 'input',
     title: 'Адрес',
   }, {
-    name: 'cadastralNumber',
+    name: 'cadastral_number',
     type: 'input',
     title: 'Кадастровый номер',
   }, {
-    name: 'usage',
+    name: 'id_usage',
     type: 'input',
     title: 'Вид разрешенного использования',
   }, {
-    name: 'hazardClass',
+    name: 'id_hazardclass',
     type: 'input',
     title: 'Класс опасности производства',
   }, {
-    name: 'rightHolder',
+    name: 'rightholder',
     type: 'input',
     title: 'Правообладатель',
   }, {
-    name: 'rightFoundation',
+    name: 'right_foundation',
     type: 'input',
     title: 'Основание пользования участком',
   }, {
-    name: 'activity',
+    name: 'id_activity',
     type: 'input',
     title: 'Вид деятельности производства',
   }, {
-    name: 'protectionZone',
+    name: 'protection_zone',
     type: 'input',
     title: 'Санитарно-защитная зона',
   }, {
-    name: 'connectivityOptions',
+    name: 'connectivity',
     type: 'select',
-    title: 'Возможности подключения',
+    title: 'возможности подключения',
     options: [{
-      name: 'gasSupply',
-      title: 'Газоснабжение',
+      name: 'gas_supply',
+      title: 'газоснабжение',
     }, {
-      name: 'waterSupply',
-      title: 'Водоснабжение',
+      name: 'water_supply',
+      title: 'водоснабжение',
     }, {
-      name: 'waterDrainage',
-      title: 'Водоотведение',
+      name: 'water_drainage',
+      title: 'водоотведение',
     }, {
-      name: 'heatSupply',
-      title: 'Теплоснабжение',
+      name: 'heat_supply',
+      title: 'теплоснабжение',
     }, {
-      name: 'powerSupply',
-      title: 'Электроснабжение',
+      name: 'power_supply',
+      title: 'электроснабжение',
     }],
   }, {
-    name: 'gasSupply',
-    type: 'range',
+    name: 'gas_supply',
+    type: 'input',
     title: 'Газоснабжение',
     units: 'м³/сутки',
   }, {
-    name: 'waterSupply',
-    type: 'range',
+    name: 'water_supply',
+    type: 'input',
     title: 'Водоснабжение',
     units: 'м³/сутки',
   }, {
-    name: 'waterDrainage',
-    type: 'range',
+    name: 'water_drainage',
+    type: 'input',
     title: 'Водоотведение',
     units: 'м³/сутки',
   }, {
-    name: 'heatSupply',
-    type: 'range',
+    name: 'heat_supply',
+    type: 'input',
     title: 'Теплоснабжение',
     units: 'Гкал/час',
   }, {
-    name: 'powerSupply',
-    type: 'range',
+    name: 'power_supply',
+    type: 'input',
     title: 'Электроснабжение',
     units: 'кВТ',
   }, {
