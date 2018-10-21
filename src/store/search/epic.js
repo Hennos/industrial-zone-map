@@ -4,7 +4,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import { events as loaderEvents } from '../loader/constants';
-import { events as searchEvents } from './constants';
+import { keys as searchKeys, events as searchEvents } from './constants';
 import {
   setFiltersData,
   getFoundObjects,
@@ -16,63 +16,34 @@ const setFiltersDataEpic = action$ => action$.pipe(
   map(({ data }) => setFiltersData(data.records)),
 );
 
-const jsonFoundObjects = JSON.stringify({
-  objects: [{
-    id: 1,
-    name: 'test',
-    properties: {
-      address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-      cadastrialNumber: '78:07:0003005:245',
-      usage: ['промышленные сооружения'],
-    },
-  }, {
-    id: 2,
-    name: 'test',
-    properties: {
-      address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-      cadastrialNumber: '78:07:0003005:245',
-      usage: ['промышленные сооружения'],
-    },
-  }, {
-    id: 3,
-    name: 'test',
-    properties: {
-      address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-      cadastrialNumber: '78:07:0003005:245',
-      usage: ['промышленные сооружения'],
-    },
-  }, {
-    id: 4,
-    name: 'test',
-    properties: {
-      address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-      cadastrialNumber: '78:07:0003005:245',
-      usage: ['промышленные сооружения'],
-    },
-  }, {
-    id: 5,
-    name: 'test',
-    properties: {
-      address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-      cadastrialNumber: '78:07:0003005:245',
-      usage: ['промышленные сооружения'],
-    },
-  }, {
-    id: 6,
-    name: 'test',
-    properties: {
-      address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-      cadastrialNumber: '78:07:0003005:245',
-      usage: ['промышленные сооружения'],
-    },
-  }],
-});
-const uriFoundObjects = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonFoundObjects}`;
-
-const loadFoundObjectsEpic = action$ => action$.pipe(
+const enumerateSearchConfigurator = (search, filters) => {
+  return JSON.stringify({
+    class: 'MapEntity',
+    search,
+    search_field: 'address',
+    properties: ['address', 'cadastral_number', 'id_usage'],
+    filters: filters
+      .filter(({ value }) => value !== undefined)
+      .map(({ property, value, data }) => ({
+        property,
+        value,
+        operation: data.type === 'range' ? 'is_range' : 'is',
+      })).toArray(),
+  });
+};
+const requestSearchObjectsURI = request =>
+  `http://industry.specom-vm.ru/map_interface.php?action=enumerate&data=${request}`;
+const loadFoundObjectsEpic = (action$, state$) => action$.pipe(
   ofType(searchEvents.requestSearchObjects),
-  mergeMap(() => ajax.getJSON(uriFoundObjects).pipe(
-    map(response => getFoundObjects(response.data.objects)),
+  mergeMap(({ search }) => ajax.getJSON(requestSearchObjectsURI(enumerateSearchConfigurator(
+    search,
+    state$.value.search.get(searchKeys.filters).map(filter => ({
+      property: filter,
+      value: state$.value.search.get(searchKeys.filtersValue).get(filter),
+      data: state$.value.search.get(searchKeys.filtersData).get(filter),
+    })),
+  ))).pipe(
+    map(response => getFoundObjects(response.objects)),
     catchError(error => of(errorGetFoundObjects(error))),
   )),
 );
