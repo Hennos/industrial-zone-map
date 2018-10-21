@@ -18,44 +18,21 @@ import {
   unsetObjectDetails,
 } from './actions';
 
-const jsonObjectDetails = JSON.stringify({
-  id: 1,
-  name: 'Someone value',
-  properties: {
-    address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-    cadastralNumber: '78:07:0003005:245',
-    area: 'area',
-    usage: ['промышленные сооружения'],
-    hazardClass: 1,
-    protectionZone: 3,
-    rightHolder: 'ООО РадиалПро',
-    activity: 'научно-техническое',
-    rightFoundation: null,
-    connectivityOptions: [{
-      option: 'waterSupply',
-      title: 'Водоснабжение',
-    }, {
-      option: 'waterDrainage',
-      title: 'Водоотведение',
-    }, {
-      option: 'heatSupply',
-      title: 'Теплоснабжение',
-    }],
-    reorganization: null,
-  },
-});
-
-const uriObjectDetails = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonObjectDetails}`;
-
 const setAreaPropertiesDataEpic = action$ => action$.pipe(
   ofType(loaderEvents.successLoadAreaPropertries),
   map(({ data }) => setAreaPropertiesData(data.properties)),
 );
 
+const requestAreaConfigurator = id =>
+  JSON.stringify({
+    id,
+    class: 'MapEntity',
+  });
+const requestAreaURI = area => `http://industry.specom-vm.ru/map_interface.php?action=get&data=${area}`;
 const loadObjectDetailsEpic = action$ => action$.pipe(
   ofType(objectDetailsEvents.loadObjectDetails),
-  mergeMap(() => ajax.getJSON(uriObjectDetails).pipe(
-    map(response => successLoadObjectDetails(response.data)),
+  mergeMap(({ area }) => ajax.getJSON(requestAreaURI(requestAreaConfigurator(area))).pipe(
+    map(data => successLoadObjectDetails(data)),
     catchError(error => of(errorLoadObjectDetails(error))),
   )),
 );
