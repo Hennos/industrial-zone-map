@@ -4,8 +4,6 @@
   width: 280px;
   display: flex;
   flex-direction: column;
-  background-color: white;
-  border-radius: 4px;
 }
 
 .map-legend > .map-legend-header {
