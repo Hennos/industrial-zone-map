@@ -8,6 +8,7 @@ import entityInformation from './entityInformation/epic';
 import objectDetails from './objectDetails/epic';
 import mapData from './mapData/epic';
 import areaEditor from './areaEditor/epic';
+import areaCreation from './areaCreation/epic';
 
 const rootEpic = combineEpics(
   loader,
@@ -18,6 +19,7 @@ const rootEpic = combineEpics(
   objectDetails,
   mapData,
   areaEditor,
+  areaCreation,
 );
 
 export default rootEpic;

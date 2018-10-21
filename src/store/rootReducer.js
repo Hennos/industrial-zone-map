@@ -8,6 +8,7 @@ import entityInformation from './entityInformation/reducer';
 import objectDetails from './objectDetails/reducer';
 import mapData from './mapData/reducer';
 import areaEditor from './areaEditor/reducer';
+import areaCreation from './areaCreation/reducer';
 
 const rootReducer = combineReducers({
   loader,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   objectDetails,
   mapData,
   areaEditor,
+  areaCreation,
 });
 
 export default rootReducer;
