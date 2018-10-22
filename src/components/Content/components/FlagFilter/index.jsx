@@ -15,7 +15,7 @@ const FlagFilter = ({
   <div className={classNames(stylization, 'flag-filter')}>
     {data.title}: <FlagDropList
       stylization="flag-filter-drop-list"
-      choosed={value.choosed || ''}
+      choosed={value}
       options={data.options}
       onChange={onChange}
     />
@@ -27,20 +27,16 @@ const shapeElementData = {
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-const shapeElementValue = {
-  choosed: PropTypes.string,
-};
-
 FlagFilter.propTypes = {
   stylization: PropTypes.string,
   data: PropTypes.shape(shapeElementData).isRequired,
-  value: PropTypes.shape(shapeElementValue),
+  value: PropTypes.string,
   onChange: PropTypes.func,
 };
 
 FlagFilter.defaultProps = {
   stylization: '',
-  value: {},
+  value: null,
   onChange: () => {},
 };
 

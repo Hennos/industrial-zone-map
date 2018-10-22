@@ -23,9 +23,7 @@ class FlagDropList extends React.Component {
   }
 
   onChooseOption(option) {
-    this.props.onChange({
-      choosed: (option !== this.props.choosed) ? option : '',
-    });
+    this.props.onChange((option !== this.props.choosed) ? option : null);
   }
 
   render() {
@@ -38,27 +36,36 @@ class FlagDropList extends React.Component {
     const contentStylization = classNames(
       'flag-drop-list-options',
       'modal-window-theme',
-      { 'flag-drop-list-options-none': !dropped },
     );
+    const choosedState = (() => {
+      let stateString = '';
+      if (!choosed) {
+        stateString = 'выберите из списка';
+      } else {
+        stateString = options.find(({ name }) => name === choosed).title;
+      }
+      return stateString;
+    })();
     return (
       <div className={classNames(stylization, 'flag-drop-list')} >
-        {choosed || 'выберите из списка'}
+        {choosedState}
         <button className="flag-drop-list-button" onClick={this.onDropListButtonClick} />
-        <div className={contentStylization}>
-          {options.map(({ name, title }) => {
-            const checked = name === choosed;
-            const className = classNames(
-              'flag-drop-list-option',
-              { 'flag-drop-list-option-choosed': checked },
-            );
-            return (
-              <button className={className} key={name} onClick={() => this.onChooseOption(name)}>
-                <input type="radio" checked={checked} />
-                <span>{title}</span>
-              </button>
-            );
-          })}
-        </div>
+        {dropped &&
+          <div className={contentStylization}>
+            {options.map(({ name, title }) => {
+              const checked = name === choosed;
+              const className = classNames(
+                'flag-drop-list-option',
+                { 'flag-drop-list-option-choosed': checked },
+              );
+              return (
+                <button className={className} key={name} onClick={() => this.onChooseOption(name)}>
+                  <input type="radio" checked={checked} />
+                  <span>{title}</span>
+                </button>
+              );
+            })}
+          </div>}
       </div>
     );
   }
@@ -77,7 +84,7 @@ FlagDropList.propTypes = {
 };
 
 FlagDropList.defaultProps = {
-  choosed: '',
+  choosed: null,
   stylization: '',
   options: [],
   onChange: () => {},

@@ -52,8 +52,3 @@
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.075);
 }
-
-.flag-drop-list > .flag-drop-list-options-none {
-  visibility: hidden;
-  pointer-events: none;
-}
