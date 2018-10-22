@@ -15,7 +15,7 @@ const SelectFilter = ({
   <div className={classNames(stylization, 'select-filter')}>
     {data.title}: <SelectDropList
       stylization="select-filter-drop-list"
-      choosed={value.choosed || []}
+      choosed={value}
       options={data.options}
       onChange={onChange}
     />
@@ -27,20 +27,16 @@ const shapeElementData = {
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-const shapeElementValue = {
-  choosed: PropTypes.arrayOf(PropTypes.string),
-};
-
 SelectFilter.propTypes = {
   stylization: PropTypes.string,
   data: PropTypes.shape(shapeElementData).isRequired,
-  value: PropTypes.shape(shapeElementValue),
+  value: PropTypes.arrayOf(PropTypes.string),
   onChange: PropTypes.func,
 };
 
 SelectFilter.defaultProps = {
   stylization: '',
-  value: {},
+  value: [],
   onChange: () => {},
 };
 

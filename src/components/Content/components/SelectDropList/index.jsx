@@ -14,6 +14,7 @@ class SelectDropList extends React.Component {
 
     this.onDropListButtonClick = this.onDropListButtonClick.bind(this);
     this.onChooseOption = this.onChooseOption.bind(this);
+    this.onDropListOut = this.onDropListOut.bind(this);
   }
 
   onDropListButtonClick() {
@@ -23,10 +24,14 @@ class SelectDropList extends React.Component {
   }
 
   onChooseOption(option) {
-    this.props.onChange({
-      choosed: this.props.choosed.find(value => value === option) ?
-        this.props.choosed.filter(value => value !== option) :
-        this.props.choosed.concat(option),
+    this.props.onChange(this.props.choosed.find(value => value === option) ?
+      this.props.choosed.filter(value => value !== option) :
+      this.props.choosed.concat(option));
+  }
+
+  onDropListOut() {
+    this.setState({
+      dropped: false,
     });
   }
 
@@ -40,14 +45,13 @@ class SelectDropList extends React.Component {
     const contentStylization = classNames(
       'select-drop-list-options',
       'modal-window-theme',
-      { 'select-drop-list-options-none': !dropped },
     );
     const choosedState = (() => {
       let stateString = '';
       if (!choosed.length) {
         stateString = 'выберите из списка';
       } else if (choosed.length === 1) {
-        const [onlyChoosed] = choosed;
+        const onlyChoosed = options.find(({ name }) => name === choosed[0]).title;
         stateString = onlyChoosed;
       } else {
         stateString = `несколько выбранных (${choosed.length})`;
@@ -58,21 +62,22 @@ class SelectDropList extends React.Component {
       <div className={classNames(stylization, 'select-drop-list')} >
         {choosedState}
         <button className="select-drop-list-button" onClick={this.onDropListButtonClick} />
-        <div className={contentStylization}>
-          {options.map(({ name, title }) => {
-            const checked = !!choosed.find(value => value === name);
-            const className = classNames(
-              'select-drop-list-option',
-              { 'select-drop-list-option-choosed': checked },
-            );
-            return (
-              <button key={name} className={className} onClick={() => this.onChooseOption(name)}>
-                <input type="checkbox" checked={checked} />
-                <span>{title}</span>
-              </button>
-            );
-          })}
-        </div>
+        {dropped &&
+          <div className={contentStylization}>
+            {options.map(({ name, title }) => {
+              const checked = !!choosed.find(value => value === name);
+              const className = classNames(
+                'select-drop-list-option',
+                { 'select-drop-list-option-choosed': checked },
+              );
+              return (
+                <button key={name} className={className} onClick={() => this.onChooseOption(name)}>
+                  <input type="checkbox" checked={checked} />
+                  <span>{title}</span>
+                </button>
+              );
+            })}
+          </div>}
       </div>
     );
   }

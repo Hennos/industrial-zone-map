@@ -15,8 +15,8 @@ const SelectEditableProperty = ({
   <div className={classNames(stylization, 'select-editable-property')}>
     {data.title}: <SelectDropList
       stylization="select-editable-property-drop-list"
-      choosed={value.map(option => option.title)}
-      options={data.options.map(option => option.title)}
+      choosed={value}
+      options={data.options}
       onChange={onChange}
     />
   </div>
@@ -32,15 +32,10 @@ const shapeElementData = {
   options: PropTypes.arrayOf(PropTypes.shape(shapeOptionData)).isRequired,
 };
 
-const shapeElementValue = {
-  name: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-};
-
 SelectEditableProperty.propTypes = {
   stylization: PropTypes.string,
   data: PropTypes.shape(shapeElementData).isRequired,
-  value: PropTypes.arrayOf(PropTypes.shape(shapeElementValue)),
+  value: PropTypes.arrayOf(PropTypes.string),
   onChange: PropTypes.func,
 };
 
