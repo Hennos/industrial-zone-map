@@ -1,178 +1,162 @@
 import { ajax } from 'rxjs/ajax';
 import { of } from 'rxjs';
 import {
-  mergeMap,
   map,
+  mergeMap,
   catchError,
   mapTo,
   flatMap,
-  delay,
+  tap,
+  ignoreElements,
 } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
-import { events } from './constants';
+import { keys as areaEditorKeys, events as areaEditorEvents } from './constants';
+import { events as loaderEvents } from '../loader/constants';
+import { keys as mapDataKeys } from '../mapData/constants';
+import { events as areaCreationEvents } from '../areaCreation/constants';
 import {
-  successLoadPropertiesData,
-  errorLoadProperties,
+  setAreaPropertiesData,
+  setAreaPropertiesValue,
+  unsetAreaPropertiesValue,
   openAreaEditor,
   closeAreaEditor,
-  startAreaEditing,
-  stopAreaEditing,
+  loadAreaPropertiesValue,
+  successLoadAreaPropertiesValue,
+  errorLoadAreaPropertiesValue,
+  requestPublishCadastrialArea,
+  successPublishCadastrialArea,
+  errorPublishCadastrialArea,
+  requestRemoveCadastrialArea,
+  successRemoveCadastrialArea,
+  errorRemoveCadastrialArea,
 } from './actions';
 import { removeTerritoryCadastrialArea } from '../mapData/actions';
 
-const jsonPropertiesData = JSON.stringify({
-  properties: [{
-    name: 'address',
-    type: 'input',
-    title: 'Адрес',
-  }, {
-    name: 'cadastralNumber',
-    type: 'input',
-    title: 'Кадастровый номер',
-  }, {
-    name: 'usage',
-    type: 'input',
-    title: 'Вид разрешенного использования',
-  }, {
-    name: 'hazardClass',
-    type: 'input',
-    title: 'Класс опасности производства',
-  }, {
-    name: 'rightHolder',
-    type: 'input',
-    title: 'Правообладатель',
-  }, {
-    name: 'rightFoundation',
-    type: 'input',
-    title: 'Основание пользования участком',
-  }, {
-    name: 'activity',
-    type: 'input',
-    title: 'Вид деятельности производства',
-  }, {
-    name: 'protectionZone',
-    type: 'input',
-    title: 'Санитарно-защитная зона',
-  }, {
-    name: 'connectivityOptions',
-    type: 'select',
-    title: 'Возможности подключения',
-    options: [{
-      name: 'gasSupply',
-      title: 'Газоснабжение',
-    }, {
-      name: 'waterSupply',
-      title: 'Водоснабжение',
-    }, {
-      name: 'waterDrainage',
-      title: 'Водоотведение',
-    }, {
-      name: 'heatSupply',
-      title: 'Теплоснабжение',
-    }, {
-      name: 'powerSupply',
-      title: 'Электроснабжение',
-    }],
-  }, {
-    name: 'gasSupply',
-    type: 'range',
-    title: 'Газоснабжение',
-    units: 'м³/сутки',
-  }, {
-    name: 'waterSupply',
-    type: 'range',
-    title: 'Водоснабжение',
-    units: 'м³/сутки',
-  }, {
-    name: 'waterDrainage',
-    type: 'range',
-    title: 'Водоотведение',
-    units: 'м³/сутки',
-  }, {
-    name: 'heatSupply',
-    type: 'range',
-    title: 'Теплоснабжение',
-    units: 'Гкал/час',
-  }, {
-    name: 'powerSupply',
-    type: 'range',
-    title: 'Электроснабжение',
-    units: 'кВТ',
-  }, {
-    name: 'reorganization',
-    type: 'dates',
-    title: 'Градостроительные преобразования',
-  }],
-});
-
-const jsonAreaPropertiesValue = JSON.stringify({
-  id: 1,
-  name: 'Someone value',
-  properties: {
-    district: 'Приморский',
-    address: 'г.Санкт-Петербург, Петропавловская крепость, дом 3, литера А',
-    cadastralNumber: '78:07:0003005:245',
-    usage: ['промышленные сооружения'],
-    hazardClass: 1,
-    rightHolder: 'ООО РадиалПро',
-    protectionZone: 3,
-    activity: 'научно-техническое',
-    rightFoundation: null,
-    connectivityOptions: [{
-      name: 'waterSupply',
-      title: 'Водоснабжение',
-    }, {
-      name: 'waterDrainage',
-      title: 'Водоотведение',
-    }, {
-      name: 'heatSupply',
-      title: 'Теплоснабжение',
-    }],
-    reorganization: null,
-  },
-});
-
-const uriPropertiesData = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonPropertiesData}`;
-const uriAreaPropertiesValue = `http://industry.specom-vm.ru/map_interface.php?action=ping&data=${jsonAreaPropertiesValue}`;
-
-const loadPropertiesDataEpic = action$ => action$.pipe(
-  ofType(events.loadPropertiesData),
-  mergeMap(() => ajax.getJSON(uriPropertiesData).pipe(
-    map(response => successLoadPropertiesData(response.data.properties)),
-    catchError(error => of(errorLoadProperties(error))),
-  )),
+const publishCadastrialAreaEpic = action$ => action$.pipe(
+  ofType(areaEditorEvents.publishChangesCadastrialArea),
+  map(({ area }) => requestPublishCadastrialArea(area)),
 );
-
-// const loadAreaPropertiesValueEpic = action$ => action$.pipe(
-//   ofType(events.loadAreaPropertiesValue),
-//   mergeMap(() => ajax.getJSON(uriAreaPropertiesValue).pipe(
-//     map(response => successLoadAreaPropertiesValue(response.data)),
-//     catchError(error => of(errorLoadProperties(error))),
-//   )),
-// );
 
 const removeCadastrialAreaEpic = action$ => action$.pipe(
-  ofType(events.removeCadastrialArea),
-  flatMap(({ area }) => [removeTerritoryCadastrialArea(area), stopAreaEditing()]),
+  ofType(areaEditorEvents.removeCadastrialArea),
+  flatMap(({ area }) => [
+    requestRemoveCadastrialArea(area),
+    removeTerritoryCadastrialArea(area),
+    closeAreaEditor(),
+  ]),
 );
 
-const startEditingEpic = action$ => action$.pipe(
-  ofType(events.loadAreaPropertiesValue),
-  delay(100),
+const closeEditorEpic = action$ => action$.pipe(
+  ofType(areaEditorEvents.closeAreaEditor),
+  mapTo(unsetAreaPropertiesValue()),
+);
+
+const openEditorEpic = action$ => action$.pipe(
+  ofType(areaEditorEvents.successLoadAreaPropertiesValue),
   mapTo(openAreaEditor()),
 );
 
-const stopEditingEpic = action$ => action$.pipe(
-  ofType(events.stopAreaEditing),
+const openAreaCreationEpic = action$ => action$.pipe(
+  ofType(areaCreationEvents.openAreaCreation),
   mapTo(closeAreaEditor()),
 );
 
+const setAreaPropertiesDataEpic = action$ => action$.pipe(
+  ofType(loaderEvents.successLoadAreaPropertries),
+  map(({ data }) => setAreaPropertiesData(data.properties)),
+);
+
+const requestLoadAreaPropertiesValueEpic = action$ => action$.pipe(
+  ofType(areaEditorEvents.requestLoadAreaPropertiesValue),
+  map(({ area }) => loadAreaPropertiesValue(area)),
+);
+
+const setAreaPropertiesValueEpic = action$ => action$.pipe(
+  ofType(areaEditorEvents.successLoadAreaPropertiesValue),
+  map(({ data }) => setAreaPropertiesValue(data)),
+);
+
+const requestAreaConfigurator = (id) => {
+  console.log('Запрос участка');
+  console.log(id);
+  console.log('Данные закончились');
+  return JSON.stringify({
+    id,
+    class: 'MapEntity',
+  });
+};
+const requestAreaURI = area => `http://industry.specom-vm.ru/map_interface.php?action=get&data=${area}`;
+const loadAreaPropertiesValueEpic = action$ => action$.pipe(
+  ofType(areaEditorEvents.loadAreaPropertiesValue),
+  mergeMap(({ area }) => ajax.getJSON(requestAreaURI(requestAreaConfigurator(area))).pipe(
+    map(data => successLoadAreaPropertiesValue(data)),
+    catchError(error => of(errorLoadAreaPropertiesValue(error))),
+  )),
+);
+
+const publishAreaConfigurator = (id, props, geo) =>
+  JSON.stringify({
+    id,
+    class: 'MapEntity',
+    properties: Object.assign({}, props, {
+      json: geo,
+      is_published: 1,
+    }),
+  });
+const requestPublishAreaURI = area => `http://industry.specom-vm.ru/map_interface.php?action=modify&data=${area}`;
+const requestPublishAreaEpic = (action$, state$) => action$.pipe(
+  ofType(areaEditorEvents.requestPublishCadastrialArea),
+  mergeMap(({ area }) => ajax.getJSON(requestPublishAreaURI(publishAreaConfigurator(
+    area,
+    state$.value.areaEditor.get(areaEditorKeys.propsValue).toObject(),
+    state$.value.mapData.get(mapDataKeys.areasGeoData).get(area),
+  ))).pipe(
+    map(response => successPublishCadastrialArea(response)),
+    catchError(error => of(errorPublishCadastrialArea(error))),
+  )),
+);
+const successPublishAreaEpic = action$ => action$.pipe(
+  ofType(areaEditorEvents.successPublishCadastrialArea),
+  tap(({ response }) => console.dir(response)),
+  ignoreElements(),
+);
+
+const removeAreaConfigurator = (area) => {
+  console.log(`Удаление участка: ${area}`);
+  return JSON.stringify({
+    id: area,
+    class: 'MapEntity',
+  });
+};
+const requestRemoveAreaURI = area => `http://industry.specom-vm.ru/map_interface.php?action=delete&data=${area}`;
+const requestRemoveAreaEpic = action$ => action$.pipe(
+  ofType(areaEditorEvents.requestRemoveCadastrialArea),
+  mergeMap(({ area }) => ajax.getJSON(requestRemoveAreaURI(removeAreaConfigurator(area))).pipe(
+    map(response => successRemoveCadastrialArea(response)),
+    catchError(error => of(errorRemoveCadastrialArea(error))),
+  )),
+);
+const successRemoveAreaEpic = action$ => action$.pipe(
+  ofType(areaEditorEvents.successRemoveCadastrialArea),
+  tap(({ response }) => console.dir(response)),
+  ignoreElements(),
+);
+
 const epic = combineEpics(
-  loadPropertiesDataEpic,
+  publishCadastrialAreaEpic,
   removeCadastrialAreaEpic,
-  stopEditingEpic,
-  startEditingEpic,
+  closeEditorEpic,
+  openEditorEpic,
+  setAreaPropertiesDataEpic,
+  setAreaPropertiesValueEpic,
+  openAreaCreationEpic,
+  loadAreaPropertiesValueEpic,
+  requestLoadAreaPropertiesValueEpic,
+  requestPublishAreaEpic,
+  successPublishAreaEpic,
+  requestRemoveAreaEpic,
+  successRemoveAreaEpic,
 );
 
 export default epic;

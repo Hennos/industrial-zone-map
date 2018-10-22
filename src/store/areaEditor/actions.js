@@ -1,64 +1,102 @@
 import { events } from './constants';
 
-const loadPropertiesData =
-  () => ({
-    type: events.loadPropertiesData,
-  });
-
-const successLoadPropertiesData =
-  props => ({
-    type: events.successLoadPropertiesData,
-    props,
-  });
-
-const updateAreaPropertiesValue =
-  (name, value) => ({
-    type: events.updateAreaPropertiesValue,
-    name,
-    value,
-  });
-
-const errorLoadProperties =
-  error => ({
-    type: events.errorLoadProperties,
-    error,
-  });
-
-const closeAreaEditor =
-  () => ({
-    type: events.closeAreaEditor,
-  });
-
-const openAreaEditor =
-  () => ({
-    type: events.openAreaEditor,
-  });
-
-const startAreaEditing =
+export const publishChangesCadastrialArea =
   area => ({
-    type: events.startAreaEditing,
+    type: events.publishChangesCadastrialArea,
     area,
   });
-
-const stopAreaEditing =
-  () => ({
-    type: events.stopAreaEditing,
+export const saveChangesCadastrialArea =
+  area => ({
+    type: events.saveChangesCadastrialArea,
+    area,
   });
-
-const removeCadastrialArea =
+export const removeCadastrialArea =
   area => ({
     type: events.removeCadastrialArea,
     area,
   });
 
-export {
-  loadPropertiesData,
-  successLoadPropertiesData,
-  updateAreaPropertiesValue,
-  errorLoadProperties,
-  closeAreaEditor,
-  openAreaEditor,
-  startAreaEditing,
-  stopAreaEditing,
-  removeCadastrialArea,
-};
+export const closeAreaEditor =
+  () => ({
+    type: events.closeAreaEditor,
+  });
+export const openAreaEditor =
+  () => ({
+    type: events.openAreaEditor,
+  });
+
+export const updateAreaPropertyValue =
+  (name, value) => ({
+    type: events.updateAreaPropertyValue,
+    name,
+    value,
+  });
+
+export const setAreaPropertiesData =
+  properties => ({
+    type: events.setAreaPropertiesData,
+    properties,
+  });
+
+export const setAreaPropertiesValue =
+  area => ({
+    type: events.setAreaPropertiesValue,
+    area,
+  });
+export const unsetAreaPropertiesValue =
+  () => ({
+    type: events.unsetAreaPropertiesValue,
+  });
+
+export const requestLoadAreaPropertiesValue =
+  area => ({
+    type: events.requestLoadAreaPropertiesValue,
+    area,
+  });
+export const loadAreaPropertiesValue =
+  area => ({
+    type: events.loadAreaPropertiesValue,
+    area,
+  });
+export const successLoadAreaPropertiesValue =
+  data => ({
+    type: events.successLoadAreaPropertiesValue,
+    data,
+  });
+export const errorLoadAreaPropertiesValue =
+  error => ({
+    type: events.errorLoadAreaPropertiesValue,
+    error,
+  });
+
+export const requestPublishCadastrialArea =
+  area => ({
+    type: events.requestPublishCadastrialArea,
+    area,
+  });
+export const successPublishCadastrialArea =
+  response => ({
+    type: events.successPublishCadastrialArea,
+    response,
+  });
+export const errorPublishCadastrialArea =
+  error => ({
+    type: events.errorPublishCadastrialArea,
+    error,
+  });
+
+export const requestRemoveCadastrialArea =
+  area => ({
+    type: events.requestRemoveCadastrialArea,
+    area,
+  });
+export const successRemoveCadastrialArea =
+  response => ({
+    type: events.successRemoveCadastrialArea,
+    response,
+  });
+export const errorRemoveCadastrialArea =
+  error => ({
+    type: events.errorRemoveCadastrialArea,
+    error,
+  });
