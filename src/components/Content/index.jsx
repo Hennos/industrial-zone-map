@@ -8,6 +8,7 @@ import './index.css';
 import { keys as searchKeys } from '../../store/search/constants';
 import { keys as legendKeys } from '../../store/legend/constants';
 import { keys as areaEditorKeys } from '../../store/areaEditor/constants';
+import { keys as areaCreationKeys } from '../../store/areaCreation/constants';
 
 import Sidebar from './components/Sidebar';
 import Map from './components/Map';
@@ -16,14 +17,16 @@ import MapInformation from './components/MapInformation';
 import SearchFilters from './components/SearchFilters';
 import MapLegend from './components/MapLegend';
 import AreaEditor from './components/AreaEditor';
+import AreaCreation from './components/AreaCreation';
 
 const Content = ({
   stylization,
   filtersVisibility,
   legendVisability,
   areaEditorVisability,
+  areaCreationVisability,
 }) => (
-  <div className={classNames(stylization, 'content')}>
+  <div className={classNames('content', stylization)}>
     <Sidebar stylization="content-sidebar">
       <EntityInformation />
     </Sidebar>
@@ -42,6 +45,9 @@ const Content = ({
     {areaEditorVisability && <AreaEditor
       stylization="content-area-editor modal-window-theme"
     />}
+    {areaCreationVisability && <AreaCreation
+      stylization="content-area-editor modal-window-theme"
+    />}
   </div>
 );
 
@@ -50,6 +56,7 @@ Content.propTypes = {
   filtersVisibility: PropTypes.bool.isRequired,
   legendVisability: PropTypes.bool.isRequired,
   areaEditorVisability: PropTypes.bool.isRequired,
+  areaCreationVisability: PropTypes.bool.isRequired,
 };
 
 Content.defaultProps = {
@@ -60,6 +67,7 @@ const mapStateTpProps = state => ({
   filtersVisibility: state.search.get(searchKeys.filtersVisability),
   legendVisability: state.legend.get(legendKeys.legendVisability),
   areaEditorVisability: state.areaEditor.get(areaEditorKeys.editorVisability),
+  areaCreationVisability: state.areaCreation.get(areaCreationKeys.areaCreationVisability),
 });
 
 export default connect(mapStateTpProps)(Content);
