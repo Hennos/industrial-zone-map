@@ -2,11 +2,13 @@
 }
 
 .reset-map-control > .reset-map-control-button {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
+  margin-right: 1px;
+  margin-left: 1px;
   border-radius: 100%;
-  background-color: white;
   font-size: 14px;
+  background-color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
 }
 

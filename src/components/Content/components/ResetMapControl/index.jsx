@@ -11,10 +11,11 @@ import { resetMap } from '../../../../store/mapData/actions';
 
 class ResetMapControl extends MapControl {
   componentWillMount() {
-    const resetControl = L.control({ position: 'topleft' });
+    const { position, onResetMap } = this.props;
+    const resetControl = L.control({ position });
     const jsx = (
       <div className="reset-map-control">
-        <button className="reset-map-control-button" onClick={this.props.onResetMap}>
+        <button className="reset-map-control-button" onClick={onResetMap}>
           <i className="fas fa-sync-alt" />
         </button>
       </div>
@@ -31,6 +32,7 @@ class ResetMapControl extends MapControl {
 }
 
 ResetMapControl.propTypes = {
+  position: PropTypes.string.isRequired,
   onResetMap: PropTypes.func.isRequired,
 };
 
