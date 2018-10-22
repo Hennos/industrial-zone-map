@@ -14,7 +14,6 @@ import {
 
 import FilterPresenter from '../FilterPresenter';
 
-
 const SearchFilters = ({
   stylization,
   loadStatus,
@@ -53,7 +52,7 @@ const SearchFilters = ({
 const shapeFilter = {
   name: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
-  value: PropTypes.object.isRequired,
+  value: PropTypes.any,
 };
 
 SearchFilters.propTypes = {
@@ -78,14 +77,14 @@ function mapStateToProps(state) {
     filters: filters.map(name => ({
       name,
       data: filtersData.get(name),
-      value: filtersValue.get(name) || {},
+      value: filtersValue.get(name) || null,
     })).toArray(),
   };
 }
 
 const mapDispatchToProps = dispatch => ({
-  onChangeFilter: (id, value) => {
-    dispatch(updateSearchFilterValue(id, value));
+  onChangeFilter: (name, value) => {
+    dispatch(updateSearchFilterValue(name, value));
   },
   onCloseFilters: () => {
     dispatch(invertFiltersVisability());
