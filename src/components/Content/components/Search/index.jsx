@@ -8,7 +8,7 @@ import './index.css';
 import { keys as searchKeys } from '../../../../store/search/constants';
 import { userGroupsEnum, keys as statusKeys } from '../../../../store/userStatus/constants';
 import { loadObjectDetails } from '../../../../store/objectDetails/actions';
-import { loadAreaPropertiesValue } from '../../../../store/areaEditor/actions';
+import { requestLoadAreaPropertiesValue } from '../../../../store/areaEditor/actions';
 
 import SearchInput from '../SearchInput';
 import SearchFound from '../SearchFound';
@@ -64,7 +64,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   onRequestFoundDetails: id => dispatch(loadObjectDetails(id)),
-  onRequestFoundEdit: id => dispatch(loadAreaPropertiesValue(id)),
+  onRequestFoundEdit: id => dispatch(requestLoadAreaPropertiesValue(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
