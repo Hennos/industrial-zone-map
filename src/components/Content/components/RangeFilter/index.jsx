@@ -15,24 +15,24 @@ class RangeFilter extends React.Component {
   }
 
   onLowerChange(event) {
-    this.props.onChange({
-      lower: parseInt(event.target.value, 10),
-      upper: this.props.value.upper || NaN,
-    });
+    this.props.onChange([
+      parseInt(event.target.value, 10),
+      this.props.value[1] || NaN,
+    ]);
     event.preventDefault();
   }
 
   onUpperChange(event) {
-    this.props.onChange({
-      lower: this.props.value.lower || NaN,
-      upper: parseInt(event.target.value, 10),
-    });
+    this.props.onChange([
+      this.props.value[0] || NaN,
+      parseInt(event.target.value, 10),
+    ]);
     event.preventDefault();
   }
 
   render() {
     const { stylization } = this.props;
-    const { lower, upper } = this.props.value;
+    const [lower, upper] = this.props.value;
     const { title, units } = this.props.data;
 
     return (
@@ -46,11 +46,6 @@ class RangeFilter extends React.Component {
   }
 }
 
-const shapeValue = {
-  lower: PropTypes.number,
-  upper: PropTypes.number,
-};
-
 const shapeElementData = {
   title: PropTypes.string.isRequired,
   units: PropTypes.string.isRequired,
@@ -58,17 +53,14 @@ const shapeElementData = {
 
 RangeFilter.propTypes = {
   stylization: PropTypes.string,
-  value: PropTypes.shape(shapeValue),
+  value: PropTypes.arrayOf(PropTypes.number),
   data: PropTypes.shape(shapeElementData).isRequired,
   onChange: PropTypes.func,
 };
 
 RangeFilter.defaultProps = {
   stylization: '',
-  value: {
-    lower: NaN,
-    upper: NaN,
-  },
+  value: [NaN, NaN],
   onChange: () => {},
 };
 
