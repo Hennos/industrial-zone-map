@@ -10,6 +10,7 @@ const AreaInformation = ({
   data,
   onRequestDetails,
   onRequestEdit,
+  onRequestEditCreated,
 }) => (
   <div className={classNames(stylization, 'area-information')}>
     <ul className="area-information-list">
@@ -23,14 +24,19 @@ const AreaInformation = ({
         Вид разрешённого пользования: {data.usage || '-'}
       </li>
       <li className="list-element list-element-operations">
-        <button className="area-information-operation" onClick={onRequestDetails}>
-          Подробнее
-        </button>
-        {editable && (
-          <button className="area-information-operation" onClick={onRequestEdit}>
+        {!data.created ?
+          <React.Fragment>
+            <button className="area-information-operation" onClick={onRequestDetails}>
+              Подробнее
+            </button>
+            {editable && (
+              <button className="area-information-operation" onClick={onRequestEdit}>
+                Редактировать
+              </button>)}
+          </React.Fragment> :
+          <button className="area-information-operation" onClick={onRequestEditCreated}>
             Редактировать
-          </button>
-        )}
+          </button>}
       </li>
     </ul>
   </div>
@@ -40,6 +46,7 @@ const shapeElementData = {
   address: PropTypes.string,
   cadastrialNumber: PropTypes.string,
   usage: PropTypes.arrayOf(PropTypes.string),
+  created: PropTypes.bool,
 };
 
 AreaInformation.propTypes = {
@@ -48,6 +55,7 @@ AreaInformation.propTypes = {
   data: PropTypes.shape(shapeElementData).isRequired,
   onRequestDetails: PropTypes.func,
   onRequestEdit: PropTypes.func,
+  onRequestEditCreated: PropTypes.func,
 };
 
 AreaInformation.defaultProps = {
@@ -55,6 +63,7 @@ AreaInformation.defaultProps = {
   editable: false,
   onRequestDetails: () => {},
   onRequestEdit: () => {},
+  onRequestEditCreated: () => {},
 };
 
 export default AreaInformation;
