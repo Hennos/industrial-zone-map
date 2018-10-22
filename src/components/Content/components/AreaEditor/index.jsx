@@ -5,93 +5,75 @@ import { connect } from 'react-redux';
 
 import './index.css';
 
-import { loadStatusEnum, keys } from '../../../../store/areaEditor/constants';
+import { loadStatusEnum, keys as loaderKeys } from '../../../../store/loader/constants';
+import { keys as areaEditorKeys } from '../../../../store/areaEditor/constants';
 import {
-  stopAreaEditing,
+  updateAreaPropertyValue,
+  closeAreaEditor,
+  publishChangesCadastrialArea,
   removeCadastrialArea,
 } from '../../../../store/areaEditor/actions';
 
-import EditablePropertyPresenter from '../EditablePropertyPresenter';
+import EditableAreaProperties from '../EditableAreaProperties';
 
-class AreaEditor extends React.Component {
-  constructor(props) {
-    super(props);
+const AreaEditor = ({
+  stylization,
+  propsDataLoadStatus,
+  id,
+  properties,
+  onChangeProperty,
+  onCloseEditor,
+  onPublishArea,
+  onRemoveArea,
+}) => {
+  const Header = () => <div className="area-editor-header">Редактирование выбранного участка</div>;
 
-    this.state = {
-      changes: [],
-    };
-  }
+  const CloseButton = () => (
+    <button className="area-editor-close-button" onClick={onCloseEditor}>
+      <i className="fas fa-times" />
+    </button>
+  );
 
-  render() {
-    const {
-      stylization,
-      loadStatus,
-      id,
-      properties,
-      onStopEditing,
-      onRemoveArea,
-    } = this.props;
-    const { changes } = this.state;
+  const PostButton = () => (
+    <button className="area-editor-control" onClick={() => onPublishArea(id)}>
+      Опубликовать
+    </button>
+  );
 
-    const Header = () => <div className="area-editor-header">Редактирование выбранного участка</div>;
+  const SaveButton = () => (
+    <button className="area-editor-control">
+      Сохранить
+    </button>
+  );
 
-    const CloseButton = () => (
-      <button onClick={onStopEditing} className="area-editor-close-button">
-        <i className="fas fa-times" />
-      </button>
-    );
+  const RemoveButton = () => (
+    <button className="area-editor-weak-control" onClick={() => onRemoveArea(id)}>
+      Удалить
+    </button>
+  );
 
-    const PostButton = () => (
-      <button className="area-editor-control">
-        Опубликовать
-      </button>
-    );
+  const Controls = () => (
+    <div className="area-editor-controls">
+      <PostButton />
+      <SaveButton />
+      <RemoveButton />
+    </div>
+  );
 
-    const SaveButton = () => (
-      <button className="area-editor-control">
-        Сохранить
-      </button>
-    );
-
-    const RemoveButton = () => (
-      <button className="area-editor-weak-control" onClick={() => onRemoveArea(id)}>
-        Удалить
-      </button>
-    );
-
-    const Controls = () => (
-      <div className="area-editor-controls">
-        <PostButton />
-        <SaveButton />
-        <RemoveButton />
-      </div>
-    );
-
-    return (
-      <div className={classNames('area-editor', stylization)}>
-        {loadStatus === loadStatusEnum.success &&
-          <React.Fragment>
-            <Header />
-            <CloseButton />
-            <div className="area-editor-props-list">
-              {properties
-                .filter(({ data }) => data.type !== 'dates')
-                .map(({ name, data, value }) => (
-                  <EditablePropertyPresenter
-                    key={name}
-                    stylization="area-editor-props-list-element"
-                    name={name}
-                    data={data}
-                    value={changes.find(val => val.name === name) || value}
-                  />
-              ))}
-            </div>
-            <Controls />
-          </React.Fragment>}
-      </div>
-    );
-  }
-}
+  return (
+    <div className={classNames('area-editor', stylization)}>
+      <Header />
+      <CloseButton />
+      {propsDataLoadStatus === loadStatusEnum.success &&
+        <EditableAreaProperties
+          stylization="area-editor-props-list"
+          properties={properties}
+          onChangeProperty={onChangeProperty}
+        />}
+      <Controls />
+    </div>
+  );
+};
 
 const shapeProperty = {
   name: PropTypes.string.isRequired,
@@ -101,25 +83,28 @@ const shapeProperty = {
 
 AreaEditor.propTypes = {
   stylization: PropTypes.string,
-  loadStatus: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  propsDataLoadStatus: PropTypes.string.isRequired,
+  id: PropTypes.number,
   properties: PropTypes.arrayOf(PropTypes.shape(shapeProperty)).isRequired,
-  onStopEditing: PropTypes.func.isRequired,
+  onChangeProperty: PropTypes.func.isRequired,
+  onCloseEditor: PropTypes.func.isRequired,
+  onPublishArea: PropTypes.func.isRequired,
   onRemoveArea: PropTypes.func.isRequired,
 };
 
 AreaEditor.defaultProps = {
   stylization: '',
+  id: null,
 };
 
 const mapStateToProps = (state) => {
-  const loadStatus = state.areaEditor.get(keys.loadPropsDataStatus);
-  const id = state.areaEditor.get(keys.id);
-  const properties = state.areaEditor.get(keys.properties);
-  const propsData = state.areaEditor.get(keys.propsData);
-  const propsValue = state.areaEditor.get(keys.propsValue);
+  const propsDataLoadStatus = state.loader.get(loaderKeys.areaPropertiesLoadStatus);
+  const id = state.areaEditor.get(areaEditorKeys.id);
+  const properties = state.areaEditor.get(areaEditorKeys.properties);
+  const propsData = state.areaEditor.get(areaEditorKeys.propsData);
+  const propsValue = state.areaEditor.get(areaEditorKeys.propsValue);
   return {
-    loadStatus,
+    propsDataLoadStatus,
     id,
     properties: properties.map(name => ({
       name,
@@ -130,7 +115,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onStopEditing: () => dispatch(stopAreaEditing()),
+  onChangeProperty: (name, value) => dispatch(updateAreaPropertyValue(name, value)),
+  onCloseEditor: () => dispatch(closeAreaEditor()),
+  onPublishArea: area => dispatch(publishChangesCadastrialArea(area)),
   onRemoveArea: area => dispatch(removeCadastrialArea(area)),
 });
 
