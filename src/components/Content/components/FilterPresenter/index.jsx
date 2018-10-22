@@ -18,26 +18,29 @@ const FilterPresenter = ({
   };
   const { type, ...filterData } = data;
   const RenderedFilter = mapFilter[type];
-  return (
+  return value !== null ?
     <RenderedFilter
       stylization={stylization}
       data={filterData}
       value={value}
       onChange={onChange}
     />
-  );
+    :
+    <RenderedFilter
+      stylization={stylization}
+      data={filterData}
+      onChange={onChange}
+    />;
 };
 
 const shapeFilterData = {
   type: PropTypes.string.isRequired,
 };
 
-const shapeFilterValue = {};
-
 FilterPresenter.propTypes = {
   stylization: PropTypes.string,
-  value: PropTypes.shape(shapeFilterValue).isRequired,
   data: PropTypes.shape(shapeFilterData).isRequired,
+  value: PropTypes.any,
   onChange: PropTypes.func,
 };
 
