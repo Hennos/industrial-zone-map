@@ -7,8 +7,9 @@ import {
   TileLayer,
   LayerGroup,
   FeatureGroup,
-  Polygon,
   ZoomControl,
+  Polygon,
+  Popup,
 } from 'react-leaflet';
 import { EditControl } from 'react-leaflet-draw';
 
@@ -22,9 +23,15 @@ import { keys as mapDataKeys } from '../../../../store/mapData/constants';
 import {
   loadIndustrialZones,
   chooseIndustrialZone,
+  createTerritoryCadastrialArea,
+  editTerritoryCadastrialAreas,
 } from '../../../../store/mapData/actions';
+import { loadObjectDetails } from '../../../../store/objectDetails/actions';
+import { requestLoadAreaPropertiesValue } from '../../../../store/areaEditor/actions';
+import { setCreatedArea } from '../../../../store/areaCreation/actions';
 
 import ResetMapControl from '../ResetMapControl';
+import AreaInformation from '../AreaInformation';
 
 function setLocalisationDraw() {
   L.drawLocal.draw.toolbar.actions = {
@@ -75,6 +82,10 @@ class Map extends React.Component {
     this.token = 'pk.eyJ1IjoiaGVubm9zIiwiYSI6ImNpeTV0dnQxdjAwMXozMm82OWg5Zmp0NHAifQ.suQs7bdNBxg5Q8_stqjOaA';
     this.center = [59.9342802, 30.12979159];
     this.zoom = 10;
+
+    this.onCreateArea = this.onCreateArea.bind(this);
+    this.onEditAreas = this.onEditAreas.bind(this);
+    this.onAddArea = this.onAddArea.bind(this);
   }
 
   componentDidMount() {
@@ -83,15 +94,43 @@ class Map extends React.Component {
     setLocalisationDraw();
   }
 
+  onCreateArea({ layer }) {
+    const { geometry: area } = layer.toGeoJSON();
+    this.props.onCreateCadastrialArea(area);
+  }
+
+  onEditAreas({ layers }) {
+    const edited = [];
+    layers.eachLayer((layer) => {
+      const { geometry: area } = layer.toGeoJSON();
+      edited.push({
+        id: layer.options.id,
+        bounds: area,
+      });
+    });
+    console.dir(edited);
+    this.props.onEditCadastrialAreas(edited);
+  }
+
+  onAddArea({ layer }) {
+    console.log(layer.options.id);
+    if (!this.props.areas.find(({ id }) => id === layer.options.id)) {
+      layer.remove();
+    }
+  }
+
   render() {
     const {
       superuser,
       activeZone,
       zonesLoadStatus,
       zones,
-      onChooseIndustrialZone,
       areasLoadStatus,
       areas,
+      onChooseIndustrialZone,
+      onRequestAreaDetails,
+      onRequestAreaEdit,
+      onRequestCreatedAreaEdit,
     } = this.props;
 
     const initialBounds = [
@@ -102,8 +141,27 @@ class Map extends React.Component {
     ];
 
     const bounds = activeZone ?
-      activeZone.geo.coordinates[0] :
+      L.geoJSON(activeZone.geo).getBounds() :
       initialBounds;
+
+    const Areas = () => areas.map(({ id, data, geo }) => (
+      <Polygon
+        key={id}
+        id={id}
+        color="red"
+        positions={L.GeoJSON.coordsToLatLngs(geo.coordinates, 1)}
+      >
+        <Popup>
+          <AreaInformation
+            editable={superuser}
+            data={data}
+            onRequestDetails={() => onRequestAreaDetails(id)}
+            onRequestEdit={() => onRequestAreaEdit(id)}
+            onRequestEditCreated={() => onRequestCreatedAreaEdit(id)}
+          />
+        </Popup>
+      </Polygon>
+    ));
 
     return (
       <LeafletMap
@@ -123,8 +181,12 @@ class Map extends React.Component {
           mapType="mapbox.streets"
           token={this.token}
         />
-        <ResetMapControl />
-        <ZoomControl position="bottomright" />
+        <ZoomControl
+          position="bottomright"
+          zoomInTitle="Приблизить"
+          zoomOutTitle="Отдалить"
+        />
+        <ResetMapControl position="bottomright" />
         {zonesLoadStatus === 'SUCCESS' &&
           <LayerGroup>
             {!activeZone ?
@@ -133,7 +195,7 @@ class Map extends React.Component {
                   <Polygon
                     key={id}
                     color="purple"
-                    positions={geo.coordinates[0]}
+                    positions={L.GeoJSON.coordsToLatLngs(geo.coordinates, 1)}
                     onDblclick={() => onChooseIndustrialZone(id)}
                   />
                 ))}
@@ -143,34 +205,32 @@ class Map extends React.Component {
                 <Polygon
                   color="purple"
                   fill={false}
-                  positions={activeZone.geo.coordinates[0]}
+                  positions={L.GeoJSON.coordsToLatLngs(activeZone.geo.coordinates, 1)}
                 />
-                <FeatureGroup>
-                  {superuser && <EditControl
-                    position="topright"
-                    draw={{
-                      polygon: {
-                        allowIntersection: false,
-                        shapeOptions: {
-                          color: 'red',
+                <FeatureGroup onLayeradd={this.onAddArea}>
+                  {superuser &&
+                    <EditControl
+                      position="topright"
+                      onCreated={this.onCreateArea}
+                      onEdited={this.onEditAreas}
+                      draw={{
+                        polygon: {
+                          shapeOptions: {
+                            color: 'red',
+                          },
+                          showArea: true,
                         },
-                        showArea: true,
-                      },
-                      polyline: false,
-                      rectangle: false,
-                      circle: false,
-                      circlemarker: false,
-                      marker: false,
-                    }}
-                  />}
-                  {areasLoadStatus === 'SUCCESS' && areas.map(({ id, geo }) => (
-                    <Polygon
-                      key={id}
-                      color="red"
-                      opacity={0.5}
-                      positions={geo.coordinates[0]}
-                    />
-                  ))}
+                        polyline: false,
+                        rectangle: false,
+                        circle: false,
+                        circlemarker: false,
+                        marker: false,
+                      }}
+                      edit={{
+                        remove: false,
+                      }}
+                    />}
+                  {areasLoadStatus === 'SUCCESS' && <Areas />}
                 </FeatureGroup>
               </LayerGroup>
             }
@@ -195,6 +255,11 @@ Map.propTypes = {
   areas: PropTypes.arrayOf(PropTypes.shape(objectShape)).isRequired,
   onLoadIndustrialZones: PropTypes.func.isRequired,
   onChooseIndustrialZone: PropTypes.func.isRequired,
+  onCreateCadastrialArea: PropTypes.func.isRequired,
+  onEditCadastrialAreas: PropTypes.func.isRequired,
+  onRequestAreaDetails: PropTypes.func.isRequired,
+  onRequestAreaEdit: PropTypes.func.isRequired,
+  onRequestCreatedAreaEdit: PropTypes.func.isRequired,
 };
 
 Map.defaultProps = {
@@ -239,6 +304,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   onLoadIndustrialZones: () => dispatch(loadIndustrialZones()),
   onChooseIndustrialZone: zone => dispatch(chooseIndustrialZone(zone)),
+  onCreateCadastrialArea: area => dispatch(createTerritoryCadastrialArea(area)),
+  onEditCadastrialAreas: areas => dispatch(editTerritoryCadastrialAreas(areas)),
+  onRequestAreaDetails: id => dispatch(loadObjectDetails(id)),
+  onRequestAreaEdit: id => dispatch(requestLoadAreaPropertiesValue(id)),
+  onRequestCreatedAreaEdit: id => dispatch(setCreatedArea(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);
