@@ -19,6 +19,7 @@ class SearchInput extends React.Component {
     };
 
     this.onChangeInput = this.onChangeInput.bind(this);
+    this.onEnterInput = this.onEnterInput.bind(this);
   }
 
   onChangeInput(event) {
@@ -27,18 +28,29 @@ class SearchInput extends React.Component {
     });
   }
 
+  onEnterInput(event) {
+    if (event.key === 'Enter') {
+      this.props.onSearchObjects(this.state.inputValue);
+    }
+  }
+
   render() {
     const { stylization, onSearchObjects, onChangeFiltersVisability } = this.props;
     const { inputValue } = this.state;
 
     const SearchButton = () => (
-      <button className="search-input-button" onClick={onSearchObjects}>
+      <button
+        className="search-input-button"
+        onClick={() => onSearchObjects(inputValue)}
+      >
         <i className="fas fa-search" />
       </button>
     );
 
     const FiltersButton = () => (
-      <button onClick={onChangeFiltersVisability} className="search-input-button" />
+      <button className="search-input-button" onClick={onChangeFiltersVisability}>
+        <i className="fas fa-plus" />
+      </button>
     );
 
     return (
@@ -48,6 +60,7 @@ class SearchInput extends React.Component {
           placeholder="Поиск"
           value={inputValue}
           type="text"
+          onKeyPress={this.onEnterInput}
           onChange={this.onChangeInput}
         />
         <SearchButton />
