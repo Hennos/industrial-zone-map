@@ -6,7 +6,8 @@ import legend from './legend/epic';
 import search from './search/epic';
 import entityInformation from './entityInformation/epic';
 import objectDetails from './objectDetails/epic';
-import mapData from './mapData/epic';
+import mapLayerCity from './mapLayerCity/epic';
+import mapLayerZone from './mapLayerZone/epic';
 import areaEditor from './areaEditor/epic';
 import areaCreation from './areaCreation/epic';
 
@@ -17,9 +18,10 @@ const rootEpic = combineEpics(
   search,
   entityInformation,
   objectDetails,
-  mapData,
+  mapLayerCity,
+  mapLayerZone,
   areaEditor,
-  areaCreation,
+  areaCreation
 );
 
 export default rootEpic;
