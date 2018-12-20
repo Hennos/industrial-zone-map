@@ -6,15 +6,15 @@ const defaultLayer = getDefaultLayer();
 export const setLayer = (layer, data) => ({
   type: events.setLayer,
   layer,
-  data,
+  data
 });
 
 export const setDefaultLayer = setLayer(defaultLayer.type, defaultLayer.data);
 
 export const goPreviousLayer = () => ({
-  type: events.goPreviousLayer,
+  type: events.goPreviousLayer
 });
 
 export const goFutureLayer = () => ({
-  type: events.goFutureLayer,
+  type: events.goFutureLayer
 });
