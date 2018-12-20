@@ -6,17 +6,13 @@ import './index.css';
 
 import SelectDropList from '../SelectDropList';
 
-const SelectFilter = ({
-  stylization,
-  value,
-  data,
-  onChange,
-}) => (
+const SelectFilter = ({ stylization, value, onChange, data: { title, options } }) => (
   <div className={classNames(stylization, 'select-filter')}>
-    {data.title}: <SelectDropList
+    {title}:{' '}
+    <SelectDropList
       stylization="select-filter-drop-list"
       choosed={value}
-      options={data.options}
+      options={options}
       onChange={onChange}
     />
   </div>
@@ -24,20 +20,20 @@ const SelectFilter = ({
 
 const shapeElementData = {
   title: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 SelectFilter.propTypes = {
   stylization: PropTypes.string,
   data: PropTypes.shape(shapeElementData).isRequired,
   value: PropTypes.arrayOf(PropTypes.string),
-  onChange: PropTypes.func,
+  onChange: PropTypes.func
 };
 
 SelectFilter.defaultProps = {
   stylization: '',
   value: [],
-  onChange: () => {},
+  onChange: () => {}
 };
 
 export default SelectFilter;

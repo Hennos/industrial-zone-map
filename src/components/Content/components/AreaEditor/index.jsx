@@ -11,7 +11,7 @@ import {
   updateAreaPropertyValue,
   closeAreaEditor,
   publishChangesCadastrialArea,
-  removeCadastrialArea,
+  removeCadastrialArea
 } from '../../../../store/areaEditor/actions';
 
 import EditableAreaProperties from '../EditableAreaProperties';
@@ -24,7 +24,7 @@ const AreaEditor = ({
   onChangeProperty,
   onCloseEditor,
   onPublishArea,
-  onRemoveArea,
+  onRemoveArea
 }) => {
   const Header = () => <div className="area-editor-header">Редактирование выбранного участка</div>;
 
@@ -40,11 +40,7 @@ const AreaEditor = ({
     </button>
   );
 
-  const SaveButton = () => (
-    <button className="area-editor-control">
-      Сохранить
-    </button>
-  );
+  const SaveButton = () => <button className="area-editor-control">Сохранить</button>;
 
   const RemoveButton = () => (
     <button className="area-editor-weak-control" onClick={() => onRemoveArea(id)}>
@@ -64,12 +60,13 @@ const AreaEditor = ({
     <div className={classNames('area-editor', stylization)}>
       <Header />
       <CloseButton />
-      {propsDataLoadStatus === loadStatusEnum.success &&
+      {propsDataLoadStatus === loadStatusEnum.success && (
         <EditableAreaProperties
           stylization="area-editor-props-list"
           properties={properties}
           onChangeProperty={onChangeProperty}
-        />}
+        />
+      )}
       <Controls />
     </div>
   );
@@ -78,7 +75,7 @@ const AreaEditor = ({
 const shapeProperty = {
   name: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
-  value: PropTypes.any,
+  value: PropTypes.any
 };
 
 AreaEditor.propTypes = {
@@ -89,15 +86,15 @@ AreaEditor.propTypes = {
   onChangeProperty: PropTypes.func.isRequired,
   onCloseEditor: PropTypes.func.isRequired,
   onPublishArea: PropTypes.func.isRequired,
-  onRemoveArea: PropTypes.func.isRequired,
+  onRemoveArea: PropTypes.func.isRequired
 };
 
 AreaEditor.defaultProps = {
   stylization: '',
-  id: null,
+  id: null
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const propsDataLoadStatus = state.loader.get(loaderKeys.areaPropertiesLoadStatus);
   const id = state.areaEditor.get(areaEditorKeys.id);
   const properties = state.areaEditor.get(areaEditorKeys.properties);
@@ -106,11 +103,18 @@ const mapStateToProps = (state) => {
   return {
     propsDataLoadStatus,
     id,
-    properties: properties.map(name => ({
-      name,
-      data: propsData.get(name),
-      value: propsValue.get(name) || null,
-    })).toArray(),
+    properties: properties
+      .map(name => {
+        const { type, ...propData } = propsData.get(name);
+        const propValue = propsValue.get(name);
+        return {
+          name,
+          type,
+          data: propData,
+          ...(propValue && { value: propValue })
+        };
+      })
+      .toArray()
   };
 };
 
@@ -118,7 +122,10 @@ const mapDispatchToProps = dispatch => ({
   onChangeProperty: (name, value) => dispatch(updateAreaPropertyValue(name, value)),
   onCloseEditor: () => dispatch(closeAreaEditor()),
   onPublishArea: area => dispatch(publishChangesCadastrialArea(area)),
-  onRemoveArea: area => dispatch(removeCadastrialArea(area)),
+  onRemoveArea: area => dispatch(removeCadastrialArea(area))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AreaEditor);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AreaEditor);

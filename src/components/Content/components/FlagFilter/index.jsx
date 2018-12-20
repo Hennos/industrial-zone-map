@@ -6,17 +6,13 @@ import './index.css';
 
 import FlagDropList from '../FlagDropList';
 
-const FlagFilter = ({
-  stylization,
-  value,
-  data,
-  onChange,
-}) => (
+const FlagFilter = ({ stylization, value, onChange, data: { title, options } }) => (
   <div className={classNames(stylization, 'flag-filter')}>
-    {data.title}: <FlagDropList
+    {title}:{' '}
+    <FlagDropList
       stylization="flag-filter-drop-list"
       choosed={value}
-      options={data.options}
+      options={options}
       onChange={onChange}
     />
   </div>
@@ -24,20 +20,20 @@ const FlagFilter = ({
 
 const shapeElementData = {
   title: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 FlagFilter.propTypes = {
   stylization: PropTypes.string,
   data: PropTypes.shape(shapeElementData).isRequired,
   value: PropTypes.string,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func
 };
 
 FlagFilter.defaultProps = {
   stylization: '',
   value: null,
-  onChange: () => {},
+  onChange: () => {}
 };
 
 export default FlagFilter;

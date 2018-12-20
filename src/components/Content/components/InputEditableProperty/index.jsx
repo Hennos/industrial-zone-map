@@ -4,12 +4,7 @@ import PropTypes from 'prop-types';
 
 import './index.css';
 
-const InputEditableProperty = ({
-  stylization,
-  value,
-  data,
-  onChange,
-}) => (
+const InputEditableProperty = ({ stylization, value, data, onChange }) => (
   <div className={classNames(stylization, 'input-editable-property')}>
     {data.title}:
     <input
@@ -22,20 +17,20 @@ const InputEditableProperty = ({
 );
 
 const shapeData = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 InputEditableProperty.propTypes = {
   stylization: PropTypes.string,
   data: PropTypes.shape(shapeData).isRequired,
-  value: PropTypes.any,
-  onChange: PropTypes.func,
+  value: PropTypes.string,
+  onChange: PropTypes.func
 };
 
 InputEditableProperty.defaultProps = {
   stylization: '',
   value: '',
-  onChange: () => {},
+  onChange: () => {}
 };
 
 export default InputEditableProperty;

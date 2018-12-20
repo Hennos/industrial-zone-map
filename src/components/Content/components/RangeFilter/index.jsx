@@ -15,18 +15,12 @@ class RangeFilter extends React.Component {
   }
 
   onLowerChange(event) {
-    this.props.onChange([
-      parseInt(event.target.value, 10),
-      this.props.value[1] || NaN,
-    ]);
+    this.props.onChange([parseInt(event.target.value, 10), this.props.value[1]]);
     event.preventDefault();
   }
 
   onUpperChange(event) {
-    this.props.onChange([
-      this.props.value[0] || NaN,
-      parseInt(event.target.value, 10),
-    ]);
+    this.props.onChange([this.props.value[0], parseInt(event.target.value, 10)]);
     event.preventDefault();
   }
 
@@ -34,13 +28,20 @@ class RangeFilter extends React.Component {
     const { stylization } = this.props;
     const [lower, upper] = this.props.value;
     const { title, units } = this.props.data;
-
     return (
       <div className={classNames(stylization, 'range-filter')}>
         {title} ({units}) от
-        <Range stylization="range-filter-input" value={lower ? lower.toString() : ''} onChange={this.onLowerChange} />
+        <Range
+          stylization="range-filter-input"
+          value={lower ? lower.toString() : ''}
+          onChange={this.onLowerChange}
+        />
         до
-        <Range stylization="range-filter-input" value={upper ? upper.toString() : ''} onChange={this.onUpperChange} />
+        <Range
+          stylization="range-filter-input"
+          value={upper ? upper.toString() : ''}
+          onChange={this.onUpperChange}
+        />
       </div>
     );
   }
@@ -48,20 +49,20 @@ class RangeFilter extends React.Component {
 
 const shapeElementData = {
   title: PropTypes.string.isRequired,
-  units: PropTypes.string.isRequired,
+  units: PropTypes.string.isRequired
 };
 
 RangeFilter.propTypes = {
   stylization: PropTypes.string,
   value: PropTypes.arrayOf(PropTypes.number),
   data: PropTypes.shape(shapeElementData).isRequired,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func
 };
 
 RangeFilter.defaultProps = {
   stylization: '',
   value: [NaN, NaN],
-  onChange: () => {},
+  onChange: () => {}
 };
 
 export default RangeFilter;

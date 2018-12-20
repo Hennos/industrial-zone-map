@@ -24,7 +24,7 @@ const Content = ({
   filtersVisibility,
   legendVisability,
   areaEditorVisability,
-  areaCreationVisability,
+  areaCreationVisability
 }) => (
   <div className={classNames('content', stylization)}>
     <Sidebar stylization="content-sidebar">
@@ -36,18 +36,12 @@ const Content = ({
     <div className="content-footer">
       <MapInformation />
     </div>
-    {filtersVisibility && <SearchFilters
-      stylization="content-search-filters modal-window-theme"
-    />}
-    {legendVisability && <MapLegend
-      stylization="content-map-legend modal-window-theme"
-    />}
-    {areaEditorVisability && <AreaEditor
-      stylization="content-area-editor modal-window-theme"
-    />}
-    {areaCreationVisability && <AreaCreation
-      stylization="content-area-editor modal-window-theme"
-    />}
+    {filtersVisibility && <SearchFilters stylization="content-search-filters modal-window-theme" />}
+    {legendVisability && <MapLegend stylization="content-map-legend modal-window-theme" />}
+    {areaEditorVisability && <AreaEditor stylization="content-area-editor modal-window-theme" />}
+    {areaCreationVisability && (
+      <AreaCreation stylization="content-area-editor modal-window-theme" />
+    )}
   </div>
 );
 
@@ -56,18 +50,18 @@ Content.propTypes = {
   filtersVisibility: PropTypes.bool.isRequired,
   legendVisability: PropTypes.bool.isRequired,
   areaEditorVisability: PropTypes.bool.isRequired,
-  areaCreationVisability: PropTypes.bool.isRequired,
+  areaCreationVisability: PropTypes.bool.isRequired
 };
 
 Content.defaultProps = {
-  stylization: '',
+  stylization: ''
 };
 
 const mapStateTpProps = state => ({
   filtersVisibility: state.search.get(searchKeys.filtersVisability),
   legendVisability: state.legend.get(legendKeys.legendVisability),
   areaEditorVisability: state.areaEditor.get(areaEditorKeys.editorVisability),
-  areaCreationVisability: state.areaCreation.get(areaCreationKeys.areaCreationVisability),
+  areaCreationVisability: state.areaCreation.get(areaCreationKeys.areaCreationVisability)
 });
 
 export default connect(mapStateTpProps)(Content);
