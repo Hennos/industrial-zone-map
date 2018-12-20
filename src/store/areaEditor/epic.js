@@ -1,6 +1,6 @@
 import { ajax } from 'rxjs/ajax';
 import { of } from 'rxjs';
-import { map, mergeMap, catchError, mapTo, flatMap, tap, ignoreElements } from 'rxjs/operators';
+import { map, mergeMap, catchError, mapTo, flatMap } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import { keys as areaEditorKeys, events as areaEditorEvents } from './constants';
@@ -130,12 +130,6 @@ const requestPublishAreaEpic = (action$, state$) =>
         )
     )
   );
-// const successPublishAreaEpic = action$ =>
-//   action$.pipe(
-//     ofType(areaEditorEvents.successPublishCadastrialArea),
-//     tap(({ response }) => console.dir(response)),
-//     ignoreElements()
-//   );
 
 const removeAreaConfigurator = area => {
   console.log(`Удаление участка: ${area}`);
@@ -156,12 +150,6 @@ const requestRemoveAreaEpic = action$ =>
       )
     )
   );
-// const successRemoveAreaEpic = action$ =>
-//   action$.pipe(
-//     ofType(areaEditorEvents.successRemoveCadastrialArea),
-//     tap(({ response }) => console.dir(response)),
-//     ignoreElements()
-//   );
 
 const epic = combineEpics(
   publishCadastrialAreaEpic,
@@ -174,9 +162,7 @@ const epic = combineEpics(
   loadAreaPropertiesValueEpic,
   requestLoadAreaPropertiesValueEpic,
   requestPublishAreaEpic,
-  successPublishAreaEpic,
-  requestRemoveAreaEpic,
-  successRemoveAreaEpic
+  requestRemoveAreaEpic
 );
 
 export default epic;
