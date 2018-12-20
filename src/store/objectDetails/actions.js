@@ -1,42 +1,27 @@
 import { events } from './constants';
 
-const setAreaPropertiesData =
-  properties => ({
-    type: events.setAreaPropertiesData,
-    properties,
-  });
+export const setAreaPropertiesData = properties => ({
+  type: events.setAreaPropertiesData,
+  properties
+});
 
-const loadObjectDetails =
-  area => ({
-    type: events.loadObjectDetails,
-    area,
-  });
-const successLoadObjectDetails =
-  object => ({
-    type: events.successLoadObjectDetails,
-    object,
-  });
-const errorLoadObjectDetails =
-  error => ({
-    type: events.errorLoadObjectDetails,
-    error,
-  });
+export const loadObjectDetails = area => ({
+  type: events.loadObjectDetails,
+  area
+});
+export const successLoadObjectDetails = object => ({
+  type: events.successLoadObjectDetails,
+  object
+});
+export const errorLoadObjectDetails = error => ({
+  type: events.errorLoadObjectDetails,
+  error
+});
 
-const closeObjectDetails =
-  () => ({
-    type: events.closeObjectDetails,
-  });
+export const closeObjectDetails = () => ({
+  type: events.closeObjectDetails
+});
 
-const unsetObjectDetails =
-  () => ({
-    type: events.unsetObjectDetails,
-  });
-
-export {
-  setAreaPropertiesData,
-  loadObjectDetails,
-  successLoadObjectDetails,
-  errorLoadObjectDetails,
-  closeObjectDetails,
-  unsetObjectDetails,
-};
+export const unsetObjectDetails = () => ({
+  type: events.unsetObjectDetails
+});

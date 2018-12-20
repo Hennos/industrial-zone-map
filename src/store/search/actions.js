@@ -1,46 +1,31 @@
 import { events } from './constants';
 
-const setFiltersData =
-  filters => ({
-    type: events.setFiltersData,
-    filters,
-  });
+export const constsetFiltersData = filters => ({
+  type: events.setFiltersData,
+  filters
+});
 
-const updateSearchFilterValue =
-  (name, value) => ({
-    type: events.updateSearchFilterValue,
-    name,
-    value,
-  });
+export const constupdateSearchFilterValue = (name, value) => ({
+  type: events.updateSearchFilterValue,
+  name,
+  value
+});
 
-const invertFiltersVisability =
-  () => ({
-    type: events.invertFiltersVisability,
-  });
+export const constinvertFiltersVisability = () => ({
+  type: events.invertFiltersVisability
+});
 
-const requestSearchObjects =
-  search => ({
-    type: events.requestSearchObjects,
-    search,
-  });
+export const constrequestSearchObjects = search => ({
+  type: events.requestSearchObjects,
+  search
+});
 
-const getFoundObjects =
-  found => ({
-    type: events.getFoundObjects,
-    found,
-  });
+export const constgetFoundObjects = found => ({
+  type: events.getFoundObjects,
+  found
+});
 
-const errorGetFoundObjects =
-  error => ({
-    type: events.errorGetFoundObjects,
-    error,
-  });
-
-export {
-  setFiltersData,
-  updateSearchFilterValue,
-  invertFiltersVisability,
-  requestSearchObjects,
-  getFoundObjects,
-  errorGetFoundObjects,
-};
+export const consterrorGetFoundObjects = error => ({
+  type: events.errorGetFoundObjects,
+  error
+});
