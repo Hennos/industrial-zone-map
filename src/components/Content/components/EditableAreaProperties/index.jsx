@@ -9,32 +9,32 @@ import EditablePropertyPresenter from '../EditablePropertyPresenter';
 const EditableAreaProperties = ({ stylization, properties, onChangeProperty }) => (
   <div className={classNames('editable-area-properties', stylization)}>
     {properties
-      .filter(({ data }) => data.type !== 'dates')
-      .map(property => (
+      .filter(({ type }) => type !== 'dates')
+      .map(({ name, type, ...property }) => (
         <EditablePropertyPresenter
-          key={property.name}
+          key={name}
+          presented={type}
           stylization="editable-area-properties-property"
           {...property}
-          onChange={newValue => onChangeProperty(property.name, newValue)}
+          onChange={newValue => onChangeProperty(name, newValue)}
         />
-    ))}
+      ))}
   </div>
 );
 
 const shapeProperty = {
   name: PropTypes.string.isRequired,
-  data: PropTypes.object.isRequired,
-  value: PropTypes.any,
+  type: PropTypes.string.isRequired
 };
 
 EditableAreaProperties.propTypes = {
   stylization: PropTypes.string,
   properties: PropTypes.arrayOf(PropTypes.shape(shapeProperty)).isRequired,
-  onChangeProperty: PropTypes.func.isRequired,
+  onChangeProperty: PropTypes.func.isRequired
 };
 
 EditableAreaProperties.defaultProps = {
-  stylization: '',
+  stylization: ''
 };
 
 export default EditableAreaProperties;

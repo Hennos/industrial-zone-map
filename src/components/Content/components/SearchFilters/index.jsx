@@ -7,20 +7,11 @@ import './index.css';
 
 import { loadStatusEnum, keys as loaderKeys } from '../../../../store/loader/constants';
 import { keys as searchKeys } from '../../../../store/search/constants';
-import {
-  updateSearchFilterValue,
-  invertFiltersVisability,
-} from '../../../../store/search/actions';
+import { updateSearchFilterValue, invertFiltersVisability } from '../../../../store/search/actions';
 
 import FilterPresenter from '../FilterPresenter';
 
-const SearchFilters = ({
-  stylization,
-  loadStatus,
-  filters,
-  onCloseFilters,
-  onChangeFilter,
-}) => {
+const SearchFilters = ({ stylization, loadStatus, filters, onCloseFilters, onChangeFilter }) => {
   const Header = () => <div className="search-filters-header">Критерии поиска</div>;
 
   const CloseButton = () => (
@@ -35,15 +26,15 @@ const SearchFilters = ({
       <CloseButton />
       <div className="search-filters-list">
         {loadStatus === loadStatusEnum.success &&
-          filters.map(({ name, data, value }) => (
+          filters.map(({ name, type, ...filter }) => (
             <FilterPresenter
               key={name}
+              presented={type}
               stylization="search-filters-list-element"
-              value={value}
-              data={data}
+              {...filter}
               onChange={newValue => onChangeFilter(name, newValue)}
             />
-        ))}
+          ))}
       </div>
     </div>
   );
@@ -51,8 +42,7 @@ const SearchFilters = ({
 
 const shapeFilter = {
   name: PropTypes.string.isRequired,
-  data: PropTypes.object.isRequired,
-  value: PropTypes.any,
+  type: PropTypes.string.isRequired
 };
 
 SearchFilters.propTypes = {
@@ -60,11 +50,11 @@ SearchFilters.propTypes = {
   loadStatus: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(shapeFilter)).isRequired,
   onChangeFilter: PropTypes.func.isRequired,
-  onCloseFilters: PropTypes.func.isRequired,
+  onCloseFilters: PropTypes.func.isRequired
 };
 
 SearchFilters.defaultProps = {
-  stylization: '',
+  stylization: ''
 };
 
 function mapStateToProps(state) {
@@ -74,11 +64,18 @@ function mapStateToProps(state) {
   const filtersValue = state.search.get(searchKeys.filtersValue);
   return {
     loadStatus,
-    filters: filters.map(name => ({
-      name,
-      data: filtersData.get(name),
-      value: filtersValue.get(name) || null,
-    })).toArray(),
+    filters: filters
+      .map(name => {
+        const { type, ...filterData } = filtersData.get(name);
+        const filterValue = filtersValue.get(name);
+        return {
+          name,
+          type,
+          data: filterData,
+          ...(filterValue && { value: filterValue })
+        };
+      })
+      .toArray()
   };
 }
 
@@ -88,7 +85,10 @@ const mapDispatchToProps = dispatch => ({
   },
   onCloseFilters: () => {
     dispatch(invertFiltersVisability());
-  },
+  }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchFilters);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchFilters);
