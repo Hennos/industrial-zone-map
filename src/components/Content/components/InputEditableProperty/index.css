@@ -7,7 +7,7 @@
 .input-editable-property > .input-editable-property-input {
   flex-shrink: 0;
   flex-grow: 1;
-  height: 18px;
+  height: 20px;
   margin-left: 0.5em;
   margin-right: 0.5em;
   padding-left: 4px;
