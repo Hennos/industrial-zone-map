@@ -1,3 +1,4 @@
 public/*
+node-modules/*
 registerServiceWorker.js
 src/index.js
