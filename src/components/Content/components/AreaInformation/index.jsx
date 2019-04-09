@@ -10,33 +10,34 @@ const AreaInformation = ({
   data,
   onRequestDetails,
   onRequestEdit,
-  onRequestEditCreated,
+  onRequestEditCreated
 }) => (
   <div className={classNames(stylization, 'area-information')}>
     <ul className="area-information-list">
-      <li className="list-element">
-        Адрес: {data.address || '-'}
-      </li>
-      <li className="list-element">
-        Кад. номер: {data.cadastrialNumber || '-'}
-      </li>
-      <li className="list-element">
-        Вид разрешённого пользования: {data.usage || '-'}
-      </li>
+      <li className="list-element">Адрес: {data.address || '-'}</li>
+      <li className="list-element">Кад. номер: {data.cadastral_number || '-'}</li>
+      <li className="list-element">Вид разрешённого пользования: {data.usage || '-'}</li>
       <li className="list-element list-element-operations">
-        {!data.created ?
+        {!data.created ? (
           <React.Fragment>
-            <button className="area-information-operation" onClick={onRequestDetails}>
+            <button className="area-information-operation" type="button" onClick={onRequestDetails}>
               Подробнее
             </button>
             {editable && (
-              <button className="area-information-operation" onClick={onRequestEdit}>
+              <button className="area-information-operation" type="button" onClick={onRequestEdit}>
                 Редактировать
-              </button>)}
-          </React.Fragment> :
-          <button className="area-information-operation" onClick={onRequestEditCreated}>
+              </button>
+            )}
+          </React.Fragment>
+        ) : (
+          <button
+            className="area-information-operation"
+            type="button"
+            onClick={onRequestEditCreated}
+          >
             Редактировать
-          </button>}
+          </button>
+        )}
       </li>
     </ul>
   </div>
@@ -46,7 +47,7 @@ const shapeElementData = {
   address: PropTypes.string,
   cadastrialNumber: PropTypes.string,
   usage: PropTypes.arrayOf(PropTypes.string),
-  created: PropTypes.bool,
+  created: PropTypes.bool
 };
 
 AreaInformation.propTypes = {
@@ -55,7 +56,7 @@ AreaInformation.propTypes = {
   data: PropTypes.shape(shapeElementData).isRequired,
   onRequestDetails: PropTypes.func,
   onRequestEdit: PropTypes.func,
-  onRequestEditCreated: PropTypes.func,
+  onRequestEditCreated: PropTypes.func
 };
 
 AreaInformation.defaultProps = {
@@ -63,7 +64,7 @@ AreaInformation.defaultProps = {
   editable: false,
   onRequestDetails: () => {},
   onRequestEdit: () => {},
-  onRequestEditCreated: () => {},
+  onRequestEditCreated: () => {}
 };
 
 export default AreaInformation;

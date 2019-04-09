@@ -8,7 +8,7 @@ const initialState = Immutable.Map([
   [keys.filtersValue, Immutable.Map()],
   [keys.filtersVisability, false],
   [keys.foundAreas, Immutable.List()],
-  [keys.foundAreasData, Immutable.Map()],
+  [keys.foundAreasData, Immutable.Map()]
 ]);
 
 export default initialState;

@@ -17,6 +17,14 @@ export const errorLoadObjectDetails = error => ({
   type: events.errorLoadObjectDetails,
   error
 });
+export const successLoadAreaPhotos = objects => ({
+  type: events.successLoadAreaPhotos,
+  objects
+});
+export const errorLoadAreaPhotos = error => ({
+  type: events.errorLoadAreaPhotos,
+  error
+});
 
 export const closeObjectDetails = () => ({
   type: events.closeObjectDetails

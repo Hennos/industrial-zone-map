@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import L from 'leaflet';
-import { FeatureGroup, LayerGroup, Polygon } from 'react-leaflet';
+import { FeatureGroup, LayerGroup, Polygon, Marker, Popup } from 'react-leaflet';
 import { EditControl } from 'react-leaflet-draw';
 
 import { userGroupsEnum, keys as userStatusKeys } from '../../../../store/userStatus/constants';
@@ -11,11 +11,18 @@ import {
   createTerritoryCadastrialArea,
   editTerritoryCadastrialAreas
 } from '../../../../store/mapLayerZone/actions';
+import { loadObjectDetails } from '../../../../store/objectDetails/actions';
+import { requestLoadAreaPropertiesValue } from '../../../../store/areaEditor/actions';
+import { setCreatedArea } from '../../../../store/areaCreation/actions';
 
 import withLoading from '../withLoading';
 import ZonePolygon from '../ZonePolygon';
+import AreaInformation from '../AreaInformation';
+import EmployerObjectInformation from '../EmployerObjectInformation';
 
 import { setLocalisationDraw } from './helpers';
+
+import marker from './marker.svg';
 
 class MapLayerZone extends React.Component {
   constructor(props) {
@@ -29,11 +36,13 @@ class MapLayerZone extends React.Component {
   }
 
   onCreateArea({ layer }) {
+    const { onCreateCadastrialArea } = this.props;
     const { geometry: area } = layer.toGeoJSON();
-    this.props.onCreateCadastrialArea(area);
+    onCreateCadastrialArea(area);
   }
 
   onEditAreas({ layers }) {
+    const { onEditCadastrialAreas } = this.props;
     const edited = [];
     layers.eachLayer(layer => {
       const { geometry: area } = layer.toGeoJSON();
@@ -42,38 +51,79 @@ class MapLayerZone extends React.Component {
         bounds: area
       });
     });
-    this.props.onEditCadastrialAreas(edited);
+    onEditCadastrialAreas(edited);
   }
 
   onAddArea({ layer }) {
-    if (!this.props.areas.find(({ id }) => id === layer.options.id)) {
+    const { areas } = this.props;
+    if (!areas.find(({ id }) => id === layer.options.id)) {
       layer.remove();
     }
   }
 
   render() {
-    const { superuser, zone, areas } = this.props;
+    const {
+      superuser,
+      zone,
+      highlighted,
+      areas,
+      onRequestAreaDetails,
+      onRequestAreaEdit,
+      onRequestCreatedAreaEdit
+    } = this.props;
 
     const Areas = () =>
-      areas.map(({ id, coordinates }) => (
-        <Polygon key={id} id={id} color="red" positions={coordinates} />
-      ));
+      areas
+        .filter(({ geometry }) => geometry.type === 'Polygon')
+        .map(({ id, data, geometry }) => (
+          <Polygon
+            key={id}
+            id={id}
+            color={id === highlighted ? 'blue' : 'red'}
+            positions={L.GeoJSON.coordsToLatLngs(geometry.coordinates, 1)}
+          >
+            <Popup>
+              <AreaInformation
+                editable={superuser}
+                data={data}
+                onRequestDetails={() => onRequestAreaDetails(id)}
+                onRequestEdit={() => onRequestAreaEdit(id)}
+                onRequestEditCreated={() => onRequestCreatedAreaEdit(id)}
+              />
+            </Popup>
+          </Polygon>
+        ));
 
-    // <Popup>
-    //   <AreaInformation
-    //     editable={superuser}
-    //     data={data}
-    //     onRequestDetails={() => onRequestAreaDetails(id)}
-    //     onRequestEdit={() => onRequestAreaEdit(id)}
-    //     onRequestEditCreated={() => onRequestCreatedAreaEdit(id)}
-    //   />
-    // </Popup>
+    const Objects = () =>
+      areas
+        .filter(({ geometry }) => geometry.type === 'Point')
+        .map(({ id, data, geometry }) => (
+          <Marker
+            key={id}
+            id={id}
+            icon={L.icon({ iconUrl: marker })}
+            position={L.GeoJSON.coordsToLatLng(geometry.coordinates, 1)}
+          >
+            <Popup>
+              <EmployerObjectInformation
+                data={data}
+                onRequestDetails={() => onRequestAreaDetails(id)}
+              />
+            </Popup>
+          </Marker>
+        ));
 
     return (
       <LayerGroup>
-        {zone && <ZonePolygon fill={false} {...zone} />}
+        {zone && (
+          <ZonePolygon
+            fill={false}
+            coordinates={L.GeoJSON.coordsToLatLngs(zone.geometry.coordinates, 1)}
+          />
+        )}
         <FeatureGroup onLayeradd={this.onAddArea}>
           <Areas />
+          <Objects />
           {superuser && (
             <EditControl
               position="topright"
@@ -103,19 +153,21 @@ class MapLayerZone extends React.Component {
   }
 }
 
-const areaShape = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  coordinates: PropTypes.arrayOf(PropTypes.array).isRequired
-};
-
 MapLayerZone.propTypes = {
-  loaded: PropTypes.bool.isRequired,
-  superuser: PropTypes.bool.isRequired,
-  zone: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]).isRequired,
-  areas: PropTypes.oneOfType([PropTypes.array, PropTypes.arrayOf(PropTypes.shape(areaShape))])
-    .isRequired,
+  superuser: PropTypes.bool,
+  zone: PropTypes.object.isRequired,
+  areas: PropTypes.object.isRequired,
+  highlighted: PropTypes.string,
+  onRequestAreaDetails: PropTypes.func.isRequired,
+  onRequestAreaEdit: PropTypes.func.isRequired,
+  onRequestCreatedAreaEdit: PropTypes.func.isRequired,
   onCreateCadastrialArea: PropTypes.func.isRequired,
   onEditCadastrialAreas: PropTypes.func.isRequired
+};
+
+MapLayerZone.defaultProps = {
+  superuser: false,
+  highlighted: null
 };
 
 const mapStateToProps = state => {
@@ -123,23 +175,30 @@ const mapStateToProps = state => {
     state.mapLayerZone.get(mapLayerZoneKeys.areasLoadStatus) === loadStatusEnum.success;
   const userGroups = state.userStatus.get(userStatusKeys.groups);
   const zone = state.mapLayerZone.get(mapLayerZoneKeys.zone);
+  const highlighted = state.mapLayerZone.get(mapLayerZoneKeys.highlighted);
   const areas = state.mapLayerZone.get(mapLayerZoneKeys.areas);
+  const areasData = state.mapLayerZone.get(mapLayerZoneKeys.areasData);
   const areasGeoData = state.mapLayerZone.get(mapLayerZoneKeys.areasGeoData);
   return {
     loaded,
     superuser: userGroups.get(userGroupsEnum.operator) || userGroups.get(userGroupsEnum.admin),
     zone: zone && {
       id: zone.id,
-      coordinates: L.GeoJSON.coordsToLatLngs(zone.geometry.coordinates, 1)
+      geometry: zone.geometry
     },
+    highlighted,
     areas: areas.map(id => ({
       id,
-      coordinates: L.GeoJSON.coordsToLatLngs(areasGeoData.get(id).coordinates, 1)
+      data: areasData.get(id),
+      geometry: areasGeoData.get(id)
     }))
   };
 };
 
 const mapDispatchToProps = dispatch => ({
+  onRequestAreaDetails: id => dispatch(loadObjectDetails(id)),
+  onRequestAreaEdit: id => dispatch(requestLoadAreaPropertiesValue(id)),
+  onRequestCreatedAreaEdit: id => dispatch(setCreatedArea(id)),
   onCreateCadastrialArea: area => dispatch(createTerritoryCadastrialArea(area)),
   onEditCadastrialAreas: areas => dispatch(editTerritoryCadastrialAreas(areas))
 });

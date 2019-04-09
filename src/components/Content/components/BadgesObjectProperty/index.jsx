@@ -16,16 +16,16 @@ const BadgesObjectProperty = ({ stylization, value }) => (
 
 const shapeValue = {
   option: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 BadgesObjectProperty.propTypes = {
   stylization: PropTypes.string,
-  value: PropTypes.arrayOf(PropTypes.shape(shapeValue)).isRequired,
+  value: PropTypes.arrayOf(PropTypes.shape(shapeValue)).isRequired
 };
 
 BadgesObjectProperty.defaultProps = {
-  stylization: '',
+  stylization: ''
 };
 
 export default BadgesObjectProperty;

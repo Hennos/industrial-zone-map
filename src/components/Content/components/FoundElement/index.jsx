@@ -10,25 +10,25 @@ const FoundElement = ({
   data,
   onRequestDetails,
   onRequestEdit,
+  onRequestShow
 }) => (
   <div className={classNames(stylization, 'found-element')}>
     <ul className="found-element-list">
-      <li className="list-element">
-        Адрес: {data.address}
-      </li>
-      <li className="list-element">
-        Кад. номер: {data.cadastral_number}
-      </li>
-      <li className="list-element">
-        Вид разрешённого пользования: {data.id_usage}
-      </li>
+      <li className="list-element">Адрес: {data.address || '-'}</li>
+      <li className="list-element">Кад. номер: {data.cadastrialNumber || '-'}</li>
+      <li className="list-element">Вид разрешённого пользования: {data.usage || '-'}</li>
       <li className="list-element list-element-operations">
-        <button className="found-element-operation" onClick={onRequestDetails}>
+        <button className="found-element-operation" type="button" onClick={onRequestDetails}>
           Подробнее
         </button>
         {editable && (
-          <button className="found-element-operation" onClick={onRequestEdit}>
+          <button className="found-element-operation" type="button" onClick={onRequestEdit}>
             Редактировать
+          </button>
+        )}
+        {data.territory && (
+          <button className="found-element-operation" type="button" onClick={onRequestShow}>
+            Показать
           </button>
         )}
       </li>
@@ -38,8 +38,9 @@ const FoundElement = ({
 
 const shapeElementData = {
   address: PropTypes.string,
-  cadastrialNumber: PropTypes.string.isRequired,
-  usage: PropTypes.arrayOf(PropTypes.string).isRequired,
+  territory: PropTypes.bool,
+  cadastrialNumber: PropTypes.string,
+  usage: PropTypes.string
 };
 
 FoundElement.propTypes = {
@@ -48,6 +49,7 @@ FoundElement.propTypes = {
   data: PropTypes.shape(shapeElementData).isRequired,
   onRequestDetails: PropTypes.func,
   onRequestEdit: PropTypes.func,
+  onRequestShow: PropTypes.func
 };
 
 FoundElement.defaultProps = {
@@ -55,6 +57,7 @@ FoundElement.defaultProps = {
   editable: false,
   onRequestDetails: () => {},
   onRequestEdit: () => {},
+  onRequestShow: () => {}
 };
 
 export default FoundElement;

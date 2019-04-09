@@ -13,12 +13,12 @@ const setFiltersDataEpic = action$ =>
     map(({ data }) => setFiltersData(data.records))
   );
 
-const enumerateSearchConfigurator = (search, filters) => {
-  return JSON.stringify({
+const enumerateSearchConfigurator = (search, filters) =>
+  JSON.stringify({
     class: 'MapEntity',
     search,
     search_field: 'address',
-    properties: ['address', 'cadastral_number', 'id_usage'],
+    properties: ['id_zone', 'address', 'cadastral_number', 'id_usage', 'json'],
     filters: filters
       .filter(({ value }) => value !== undefined)
       .map(({ property, value, data }) => ({
@@ -28,9 +28,8 @@ const enumerateSearchConfigurator = (search, filters) => {
       }))
       .toArray()
   });
-};
 const requestSearchObjectsURI = request =>
-  `http://industry.specom-vm.ru/map_interface.php?action=enumerate&data=${request}`;
+  `http://industry.aonords.ru/map_interface.php?action=enumerate&data=${request}`;
 const loadFoundObjectsEpic = (action$, state$) =>
   action$.pipe(
     ofType(searchEvents.requestSearchObjects),
@@ -54,6 +53,20 @@ const loadFoundObjectsEpic = (action$, state$) =>
         )
     )
   );
+
+// const requestDowloadFoundObjectsURI = found =>
+//   `http://industry.specom-vm.ru/map_interface.php?action=get_document&data=[${found}]`;
+// const dowloadFoundObjectsEpic = (action$, state$) =>
+//   action$.pipe(
+//     ofType(searchEvents.requestDowloadFoundObjects),
+//     mergeMap(() =>
+//       ajax
+//         .getJSON(
+//           requestDowloadFoundObjectsURI(state$.value.search.get(searchKeys.foundAreas).toArray())
+//         )
+//         .pipe(map(response => ({ type: 'TEST_ACTION', response })))
+//     )
+//   );
 
 const epic = combineEpics(setFiltersDataEpic, loadFoundObjectsEpic);
 

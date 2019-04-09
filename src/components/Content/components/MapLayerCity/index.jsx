@@ -19,9 +19,7 @@ const MapLayerCity = ({ zones, onChooseZone }) => (
 );
 
 MapLayerCity.propTypes = {
-  loaded: PropTypes.bool.isRequired,
   zones: PropTypes.object.isRequired,
-  onLoadIndustrialZones: PropTypes.func.isRequired,
   onChooseZone: PropTypes.func.isRequired
 };
 

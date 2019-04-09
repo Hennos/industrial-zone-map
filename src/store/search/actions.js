@@ -20,6 +20,10 @@ export const requestSearchObjects = search => ({
   search
 });
 
+export const requestDowloadFoundObjects = () => ({
+  type: events.requestDowloadFoundObjects
+});
+
 export const getFoundObjects = found => ({
   type: events.getFoundObjects,
   found

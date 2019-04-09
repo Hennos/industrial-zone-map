@@ -1,16 +1,10 @@
 import Immutable from 'immutable';
 
-import {
-  userGroupsEnum,
-  events,
-  keys,
-} from './constants';
+import { userGroupsEnum, events, keys } from './constants';
 import initialState from './initialState';
 
 function handleSetUserStatus(prevState, { user }) {
-  const {
-    is_authorized: authorized,
-  } = user;
+  const { is_authorized: authorized } = user;
   const userGroups = user.user_groups || {};
 
   const groups = Immutable.Map([
@@ -19,17 +13,13 @@ function handleSetUserStatus(prevState, { user }) {
     [userGroupsEnum.iogv, userGroups.iogv || null],
     [userGroupsEnum.admin, userGroups.admin || null],
     [userGroupsEnum.operator, userGroups.operator || null],
-    [userGroupsEnum.approved, userGroups.approved || null],
+    [userGroupsEnum.approved, userGroups.approved || null]
   ]);
 
-  return prevState
-    .set(keys.authorized, authorized)
-    .set(keys.groups, groups);
+  return prevState.set(keys.authorized, authorized).set(keys.groups, groups);
 }
 
-const handlers = new Map([
-  [events.setUserStatus, handleSetUserStatus],
-]);
+const handlers = new Map([[events.setUserStatus, handleSetUserStatus]]);
 
 const reducer = (state = initialState, action) => {
   const handleAction = handlers.get(action.type);

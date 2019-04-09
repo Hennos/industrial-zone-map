@@ -8,17 +8,15 @@ import EditablePropertyPresenter from '../EditablePropertyPresenter';
 
 const EditableAreaProperties = ({ stylization, properties, onChangeProperty }) => (
   <div className={classNames('editable-area-properties', stylization)}>
-    {properties
-      .filter(({ type }) => type !== 'dates')
-      .map(({ name, type, ...property }) => (
-        <EditablePropertyPresenter
-          key={name}
-          presented={type}
-          stylization="editable-area-properties-property"
-          {...property}
-          onChange={newValue => onChangeProperty(name, newValue)}
-        />
-      ))}
+    {properties.map(({ name, type, ...otherProps }) => (
+      <EditablePropertyPresenter
+        key={name}
+        presented={type}
+        stylization="editable-area-properties-property"
+        {...otherProps}
+        onChange={newValue => onChangeProperty(name, newValue)}
+      />
+    ))}
   </div>
 );
 

@@ -6,6 +6,7 @@ import search from './search/reducer';
 import legend from './legend/reducer';
 import entityInformation from './entityInformation/reducer';
 import objectDetails from './objectDetails/reducer';
+import mapData from './mapData/reducer';
 import mapLayers from './mapLayers/reducer';
 import mapLayerCity from './mapLayerCity/reducer';
 import mapLayerZone from './mapLayerZone/reducer';
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   legend,
   entityInformation,
   objectDetails,
+  mapData,
   mapLayers,
   mapLayerCity,
   mapLayerZone,

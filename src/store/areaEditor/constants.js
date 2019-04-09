@@ -2,7 +2,7 @@ const loadStatusEnum = Object.freeze({
   none: 'NONE',
   loading: 'LOADING',
   success: 'SUCCESS',
-  error: 'ERROR',
+  error: 'ERROR'
 });
 
 const events = Object.freeze({
@@ -26,12 +26,16 @@ const events = Object.freeze({
   errorLoadAreaPropertiesValue: '@@AREA_EDITOR:ERROR_LOAD_PROPERTIES_VALUE',
 
   requestPublishCadastrialArea: '@@AREA_EDITOR:REQUEST_PUBLISH_CADASTRIAL_AREA',
+
+  requestModifyAreaProps: '@@AREA_EDITOR:REQUEST_MODIFY_AREA_PROPERTIES',
+  requestModifyAreaPhoto: '@@AREA_EDITOR:REQUEST_MODIFY_AREA_PHOTO',
+
   successPublishCadastrialArea: '@@AREA_EDITOR:SUCCESS_PUBLISH_CADASTRIAL_AREA',
   errorPublishCadastrialArea: '@@AREA_EDITOR:ERROR_PUBLISH_CADASTRIAL_AREA',
 
   requestRemoveCadastrialArea: '@@AREA_EDITOR:REQUEST_REMOVE_CADASTRIAL_AREA',
   successRemoveCadastrialArea: '@@AREA_EDITOR:SUCCESS_REMOVE_CADASTRIAL_AREA',
-  errorRemoveCadastrialArea: '@@AREA_EDITOR:ERROR_REMOVE_CADASTRIAL_AREA',
+  errorRemoveCadastrialArea: '@@AREA_EDITOR:ERROR_REMOVE_CADASTRIAL_AREA'
 });
 
 const keys = Object.freeze({
@@ -41,7 +45,7 @@ const keys = Object.freeze({
   propsValue: 'propsValue',
   propsValueLoadStatus: 'propsValueLoadStatus',
   errorMsgLoadAreaPropertiesValue: 'errorMsgLoadAreaPropertiesValue',
-  editorVisability: 'editorVisability',
+  editorVisability: 'editorVisability'
 });
 
 export { loadStatusEnum, events, keys };

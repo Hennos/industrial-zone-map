@@ -4,10 +4,13 @@ import { connect } from 'react-redux';
 import L from 'leaflet';
 import { Map as LeafletMap, TileLayer, ZoomControl } from 'react-leaflet';
 
+import { keys as mapDataKeys } from '../../../../store/mapData/constants';
+import { setInitializeLayer } from '../../../../store/mapData/actions';
 import { keys as mapLayersKeys } from '../../../../store/mapLayers/constants';
 
 import './index.css';
 
+import ResetMapControl from '../ResetMapControl';
 import DataLayerPresenter from '../MapLayerPresenter';
 
 class Map extends React.Component {
@@ -20,62 +23,77 @@ class Map extends React.Component {
     this.zoom = 10;
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   const { layer } = this.props;
-  //   const { layer: nextLayer } = nextProps;
-  //   if (layer.type !== nextLayer.type) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  componentDidMount() {
+    const { prepareMap } = this.props;
+    prepareMap();
+  }
+
+  getLayerBounds() {
+    const { boundsGeometry } = this.props;
+    return boundsGeometry && L.geoJSON(boundsGeometry).getBounds();
+  }
 
   render() {
-    const { layer } = this.props;
+    const { loaded, layer } = this.props;
     return (
-      <LeafletMap
-        key={layer.type}
-        id="root-map"
-        center={this.center}
-        zoom={this.zoom}
-        minZoom={this.zoom}
-        bounds={layer.bounds}
-        maxBounds={layer.bounds}
-        maxBoundsViscosity={1.0}
-        zoomControl={false}
-        attributionControl={false}
-      >
-        <TileLayer
-          url="https://api.tiles.mapbox.com/v4/{mapType}/{z}/{x}/{y}.png?access_token={token}"
-          mapType="mapbox.streets"
-          token={this.token}
-        />
-        <ZoomControl position="bottomright" zoomInTitle="Приблизить" zoomOutTitle="Отдалить" />
-        <DataLayerPresenter presented={layer.type} />
-      </LeafletMap>
+      loaded && (
+        <LeafletMap
+          key={layer}
+          id="root-map"
+          center={this.center}
+          zoom={this.zoom}
+          minZoom={this.zoom}
+          bounds={this.getLayerBounds()}
+          maxBounds={this.getLayerBounds()}
+          maxBoundsViscosity={1.0}
+          zoomControl={false}
+          attributionControl={false}
+        >
+          <TileLayer
+            url="https://api.tiles.mapbox.com/v4/{mapType}/{z}/{x}/{y}.png?access_token={token}"
+            mapType="mapbox.streets"
+            token={this.token}
+          />
+          <ZoomControl position="bottomright" zoomInTitle="Приблизить" zoomOutTitle="Отдалить" />
+          <ResetMapControl position="bottomright" />
+          <DataLayerPresenter presented={layer} />
+        </LeafletMap>
+      )
     );
   }
 }
 
-const objectShape = {
-  type: PropTypes.string.isRequired,
-  bounds: PropTypes.object.isRequired
+Map.propTypes = {
+  loaded: PropTypes.bool.isRequired,
+  layer: PropTypes.string,
+  boundsGeometry: PropTypes.object,
+  prepareMap: PropTypes.func.isRequired
 };
 
-Map.propTypes = {
-  layer: PropTypes.shape(objectShape).isRequired
+Map.defaultProps = {
+  layer: null,
+  boundsGeometry: null
 };
 
 const mapStateToProps = state => {
-  const {
-    type,
-    data: { geometry }
-  } = state.mapLayers.get(mapLayersKeys.current);
-  return {
-    layer: {
-      type,
-      bounds: L.geoJSON(geometry).getBounds()
-    }
-  };
+  const loadedLayer = state.mapLayers.get(mapLayersKeys.current);
+  const boundsGeometry = state.mapData.get(mapDataKeys.boundsGeometry);
+  return loadedLayer != null && boundsGeometry != null
+    ? {
+        loaded: true,
+        layer: loadedLayer.type,
+        boundsGeometry
+      }
+    : {
+        loaded: false
+      };
 };
 
-export default connect(mapStateToProps)(Map);
+const mapDispatchToProps = dispatch => ({
+  prepareMap: () => dispatch(setInitializeLayer())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Map);

@@ -5,7 +5,17 @@ const loadStatusEnum = Object.freeze({
 });
 
 const events = Object.freeze({
+  showArea: '@@MAP_LAYER_ZONE:SHOW_AREA',
+  highlightArea: '@@MAP_LAYER_ZONE:HIGHLIGHT_AREA',
+
   setZone: '@@MAP_LAYER_ZONE:SET_ZONE',
+
+  zoneLayerSet: '@@MAP_LAYER_ZONE:ZONE_LAYER_SET',
+  clearZoneData: '@@MAP_LAYER_ZONE:CLEAR_ZONE_DATA',
+
+  loadIndustrialZone: '@@MAP_LAYER_ZONE:LOAD_INDUSTRIAL_ZONE',
+  successLoadIndustrialZone: '@@MAP_LAYER_ZONE:SUCCESS_LOAD_INDUSTRIAL_ZONE',
+  errorLoadIndustrialZone: '@@MAP_LAYER_ZONE:ERROR_LOAD_INDUSTRIAL_ZONE',
 
   loadCadastrialAreas: '@@MAP_LAYER_ZONE:LOAD_CADASTRIAL_AREAS',
   successLoadCadastrialAreas: '@@MAP_LAYER_ZONE:SUCCESS_LOAD_CADASTRIAL_AREAS',
@@ -18,6 +28,7 @@ const events = Object.freeze({
 
 const keys = Object.freeze({
   zone: 'zone',
+  highlighted: 'highlighted',
   areas: 'areas',
   areasData: 'areasData',
   areasGeoData: 'areasGeoData',

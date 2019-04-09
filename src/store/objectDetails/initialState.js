@@ -7,7 +7,7 @@ const initialState = Immutable.Map([
   [keys.ready, false],
   [keys.properties, Immutable.List()],
   [keys.propsData, Immutable.Map()],
-  [keys.propsValue, Immutable.Map()],
+  [keys.propsValue, Immutable.Map()]
 ]);
 
 export default initialState;

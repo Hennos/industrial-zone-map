@@ -1,7 +1,9 @@
 import Immutable from 'immutable';
 
 import { loadStatusEnum, events, keys } from './constants';
-import initialState from './initialState';
+import createInitialState from './initialState';
+
+const initialState = createInitialState();
 
 const createId = (() => {
   let id = 0;
@@ -11,6 +13,10 @@ const createId = (() => {
   };
 })();
 
+function handleHighlightArea(prevState, { area }) {
+  return prevState.set(keys.highlighted, area);
+}
+
 function handleSetZone(prevState, { id, geometry }) {
   return prevState.set(keys.zone, {
     id,
@@ -18,12 +24,16 @@ function handleSetZone(prevState, { id, geometry }) {
   });
 }
 
+function handleClearZoneData() {
+  return createInitialState();
+}
+
 function handleSuccessLoadCadastrialAreas(prevState, { areas }) {
   const areasId = Immutable.List(areas.map(({ id }) => id));
-  const areasDataEntities = areas.map(({ id, properties }) => {
+  const areasDataEntities = areas.map(({ id, name, properties }) => {
     const { json, ...data } = properties;
     return {
-      data: [id, data],
+      data: [id, Object.assign({ name }, data)],
       geometry: [id, json]
     };
   });
@@ -74,7 +84,9 @@ function handleRemoveTerritoryCadastrialArea(prevState, { area: removed }) {
 }
 
 const handlers = new Map([
+  [events.highlightArea, handleHighlightArea],
   [events.setZone, handleSetZone],
+  [events.clearZoneData, handleClearZoneData],
   [events.loadCadastrialAreas, handleLoadCadastrialAreas],
   [events.successLoadCadastrialAreas, handleSuccessLoadCadastrialAreas],
   [events.errorLoadCadastrialAreas, handleErrorLoadCadastrialAreas],
@@ -84,8 +96,6 @@ const handlers = new Map([
 ]);
 
 export default function(state = initialState, action) {
-  console.log(action.type, action.data);
-
   const handleAction = handlers.get(action.type);
 
   if (typeof handleAction === 'function') {

@@ -3,8 +3,9 @@ const events = Object.freeze({
   updateSearchFilterValue: '@@SEARCH:UPDATE_FILTER_VALUE',
   invertFiltersVisability: '@@SEARCH:INVERT_FILTERS_VISABILITY',
   requestSearchObjects: '@@SEARCH:SEARCH_OBJECTS',
+  requestDowloadFoundObjects: '@@SEARCH:DOWLOAD_FOUND_OBJECTS',
   getFoundObjects: '@@SEARCH:GET_FOUND_OBJECTS',
-  errorGetFoundObjects: '@@SEARCH:ERROR_GET_FOUND_OBJECT',
+  errorGetFoundObjects: '@@SEARCH:ERROR_GET_FOUND_OBJECT'
 });
 
 const keys = Object.freeze({
@@ -13,7 +14,7 @@ const keys = Object.freeze({
   filtersValue: 'filtersValue',
   filtersVisability: 'filtersVisability',
   foundAreas: 'foundAreas',
-  foundAreasData: 'foundAreasData',
+  foundAreasData: 'foundAreasData'
 });
 
 export { events, keys };

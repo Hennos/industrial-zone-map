@@ -4,20 +4,16 @@ const userGroupsEnum = Object.freeze({
   iogv: 'iogv',
   admin: 'admin',
   operator: 'operator',
-  approved: 'approved',
+  approved: 'approved'
 });
 
 const events = Object.freeze({
-  setUserStatus: '@@STATUS:SET_USER_STATUS',
+  setUserStatus: '@@STATUS:SET_USER_STATUS'
 });
 
 const keys = Object.freeze({
   authorized: 'authorized',
-  groups: 'groups',
+  groups: 'groups'
 });
 
-export {
-  userGroupsEnum,
-  events,
-  keys,
-};
+export { userGroupsEnum, events, keys };

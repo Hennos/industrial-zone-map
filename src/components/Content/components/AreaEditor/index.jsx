@@ -29,21 +29,25 @@ const AreaEditor = ({
   const Header = () => <div className="area-editor-header">Редактирование выбранного участка</div>;
 
   const CloseButton = () => (
-    <button className="area-editor-close-button" onClick={onCloseEditor}>
+    <button className="area-editor-close-button" type="button" onClick={onCloseEditor}>
       <i className="fas fa-times" />
     </button>
   );
 
   const PostButton = () => (
-    <button className="area-editor-control" onClick={() => onPublishArea(id)}>
+    <button className="area-editor-control" type="button" onClick={() => onPublishArea(id)}>
       Опубликовать
     </button>
   );
 
-  const SaveButton = () => <button className="area-editor-control">Сохранить</button>;
+  const SaveButton = () => (
+    <button className="area-editor-control" type="button">
+      Сохранить
+    </button>
+  );
 
   const RemoveButton = () => (
-    <button className="area-editor-weak-control" onClick={() => onRemoveArea(id)}>
+    <button className="area-editor-weak-control" type="button" onClick={() => onRemoveArea(id)}>
       Удалить
     </button>
   );

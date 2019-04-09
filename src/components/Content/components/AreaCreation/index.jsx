@@ -11,7 +11,7 @@ import {
   updateAreaPropertyValue,
   closeAreaCreation,
   publishCreatedCadastrialArea,
-  removeCreatedCadastrialArea,
+  removeCreatedCadastrialArea
 } from '../../../../store/areaCreation/actions';
 
 import EditableAreaProperties from '../EditableAreaProperties';
@@ -24,30 +24,30 @@ const AreaCreation = ({
   onChangeProperty,
   onCloseCreation,
   onPublishArea,
-  onRemoveArea,
+  onRemoveArea
 }) => {
   const Header = () => <div className="area-creation-header">Создание нового участка</div>;
 
   const CloseButton = () => (
-    <button className="area-creation-close-button" onClick={onCloseCreation}>
+    <button className="area-creation-close-button" type="button" onClick={onCloseCreation}>
       <i className="fas fa-times" />
     </button>
   );
 
   const PostButton = () => (
-    <button className="area-creation-control" onClick={() => onPublishArea(id)}>
+    <button className="area-creation-control" type="button" onClick={() => onPublishArea(id)}>
       Опубликовать
     </button>
   );
 
   const SaveButton = () => (
-    <button className="area-creation-control">
+    <button className="area-creation-control" type="button">
       Сохранить
     </button>
   );
 
   const RemoveButton = () => (
-    <button className="area-creation-weak-control" onClick={() => onRemoveArea(id)}>
+    <button className="area-creation-weak-control" type="button" onClick={() => onRemoveArea(id)}>
       Удалить
     </button>
   );
@@ -64,12 +64,13 @@ const AreaCreation = ({
     <div className={classNames('area-creation', stylization)}>
       <Header />
       <CloseButton />
-      {propsDataLoadStatus === loadStatusEnum.success &&
+      {propsDataLoadStatus === loadStatusEnum.success && (
         <EditableAreaProperties
           stylization="area-creation-props-list"
           properties={properties}
           onChangeProperty={onChangeProperty}
-        />}
+        />
+      )}
       <Controls />
     </div>
   );
@@ -78,7 +79,7 @@ const AreaCreation = ({
 const shapeProperty = {
   name: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
-  value: PropTypes.any,
+  value: PropTypes.any
 };
 
 AreaCreation.propTypes = {
@@ -89,15 +90,15 @@ AreaCreation.propTypes = {
   onChangeProperty: PropTypes.func.isRequired,
   onCloseCreation: PropTypes.func.isRequired,
   onPublishArea: PropTypes.func.isRequired,
-  onRemoveArea: PropTypes.func.isRequired,
+  onRemoveArea: PropTypes.func.isRequired
 };
 
 AreaCreation.defaultProps = {
   stylization: '',
-  id: '',
+  id: null
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const propsDataLoadStatus = state.loader.get(loaderKeys.areaPropertiesLoadStatus);
   const id = state.areaCreation.get(areaCreationKeys.id);
   const properties = state.areaCreation.get(areaCreationKeys.properties);
@@ -106,11 +107,18 @@ const mapStateToProps = (state) => {
   return {
     propsDataLoadStatus,
     id,
-    properties: properties.map(name => ({
-      name,
-      data: propsData.get(name),
-      value: propsValue.get(name) || null,
-    })).toArray(),
+    properties: properties
+      .map(name => {
+        const { type, ...propData } = propsData.get(name);
+        const propValue = propsValue.get(name);
+        return {
+          name,
+          type,
+          data: propData,
+          ...(propValue && { value: propValue })
+        };
+      })
+      .toArray()
   };
 };
 
@@ -118,7 +126,10 @@ const mapDispatchToProps = dispatch => ({
   onChangeProperty: (name, value) => dispatch(updateAreaPropertyValue(name, value)),
   onCloseCreation: () => dispatch(closeAreaCreation()),
   onPublishArea: area => dispatch(publishCreatedCadastrialArea(area)),
-  onRemoveArea: area => dispatch(removeCreatedCadastrialArea(area)),
+  onRemoveArea: area => dispatch(removeCreatedCadastrialArea(area))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AreaCreation);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AreaCreation);

@@ -1,6 +1,6 @@
 import { ajax } from 'rxjs/ajax';
 import { of } from 'rxjs';
-import { map, mergeMap, catchError, mapTo, flatMap } from 'rxjs/operators';
+import { map, mergeMap, catchError, mapTo, flatMap, filter } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import { keys as areaEditorKeys, events as areaEditorEvents } from './constants';
@@ -17,6 +17,8 @@ import {
   successLoadAreaPropertiesValue,
   errorLoadAreaPropertiesValue,
   requestPublishCadastrialArea,
+  requestModifyAreaProps,
+  requestModifyAreaPhoto,
   successPublishCadastrialArea,
   errorPublishCadastrialArea,
   requestRemoveCadastrialArea,
@@ -77,17 +79,13 @@ const setAreaPropertiesValueEpic = action$ =>
     map(({ data }) => setAreaPropertiesValue(data))
   );
 
-const requestAreaConfigurator = id => {
-  console.log('Запрос участка');
-  console.log(id);
-  console.log('Данные закончились');
-  return JSON.stringify({
+const requestAreaConfigurator = id =>
+  JSON.stringify({
     id,
     class: 'MapEntity'
   });
-};
 const requestAreaURI = area =>
-  `http://industry.specom-vm.ru/map_interface.php?action=get&data=${area}`;
+  `http://industry.aonords.ru/map_interface.php?action=get&data=${area}`;
 const loadAreaPropertiesValueEpic = action$ =>
   action$.pipe(
     ofType(areaEditorEvents.loadAreaPropertiesValue),
@@ -99,7 +97,13 @@ const loadAreaPropertiesValueEpic = action$ =>
     )
   );
 
-const publishAreaConfigurator = (id, props, geo) =>
+const requestPublishAreaEpic = action$ =>
+  action$.pipe(
+    ofType(areaEditorEvents.requestPublishCadastrialArea),
+    flatMap(({ area }) => [requestModifyAreaProps(area), requestModifyAreaPhoto(area)])
+  );
+
+const modifyAreaPropsConfigurator = (id, props, geo) =>
   JSON.stringify({
     id,
     class: 'MapEntity',
@@ -108,18 +112,22 @@ const publishAreaConfigurator = (id, props, geo) =>
       is_published: 1
     })
   });
-const requestPublishAreaURI = area =>
-  `http://industry.specom-vm.ru/map_interface.php?action=modify&data=${area}`;
-const requestPublishAreaEpic = (action$, state$) =>
+const requestModifyAreaPropsURI = area =>
+  `http://industry.aonords.ru/map_interface.php?action=modify&data=${area}`;
+const requestModifyAreaPropsEpic = (action$, state$) =>
   action$.pipe(
-    ofType(areaEditorEvents.requestPublishCadastrialArea),
+    ofType(areaEditorEvents.requestModifyAreaProps),
     mergeMap(({ area }) =>
       ajax
         .getJSON(
-          requestPublishAreaURI(
-            publishAreaConfigurator(
+          requestModifyAreaPropsURI(
+            modifyAreaPropsConfigurator(
               area,
-              state$.value.areaEditor.get(areaEditorKeys.propsValue).toObject(),
+              state$.value.areaEditor
+                .get(areaEditorKeys.propsValue)
+                .filter(value => value !== null)
+                .delete('photos')
+                .toObject(),
               state$.value.mapLayerZone.get(mapZoneKeys.areasGeoData).get(area)
             )
           )
@@ -131,6 +139,47 @@ const requestPublishAreaEpic = (action$, state$) =>
     )
   );
 
+const requestCreateAreaPhotoURI = data =>
+  `http://industry.aonords.ru/map_interface.php?action=create&data=${data}`;
+const createAreaPhotoConfigurator = id =>
+  JSON.stringify({
+    class: 'Photo',
+    properties: {
+      id_mapentity: id
+    }
+  });
+const requestModifyAreaPhotoURI = data =>
+  `http://industry.aonords.ru/map_interface.php?action=modify&data=${data}`;
+const modifyAreaPhotoConfigurator = id =>
+  JSON.stringify({
+    id,
+    class: 'Photo'
+  });
+const requestModifyAreaPhotoEpic = (action$, state$) =>
+  action$.pipe(
+    ofType(areaEditorEvents.requestModifyAreaPhoto),
+    filter(() => state$.value.areaEditor.get(areaEditorKeys.propsValue).get('photos') != null),
+    mergeMap(({ area }) =>
+      ajax(requestCreateAreaPhotoURI(createAreaPhotoConfigurator(area))).pipe(
+        filter(response => !!response.id),
+        mergeMap(({ id }) =>
+          ajax({
+            url: requestModifyAreaPhotoURI(modifyAreaPhotoConfigurator(id)),
+            method: 'POST',
+            headers: {
+              enctype: `multipart/form-data`
+            },
+            body: state$.value.areaEditor.get(areaEditorKeys.propsValue).get('photos')
+          }).pipe(
+            map(response => successPublishCadastrialArea(response)),
+            catchError(error => of(errorPublishCadastrialArea(error)))
+          )
+        ),
+        catchError(error => of(errorPublishCadastrialArea(error)))
+      )
+    )
+  );
+
 const removeAreaConfigurator = area => {
   console.log(`Удаление участка: ${area}`);
   return JSON.stringify({
@@ -139,7 +188,7 @@ const removeAreaConfigurator = area => {
   });
 };
 const requestRemoveAreaURI = area =>
-  `http://industry.specom-vm.ru/map_interface.php?action=delete&data=${area}`;
+  `http://industry.aonords.ru/map_interface.php?action=delete&data=${area}`;
 const requestRemoveAreaEpic = action$ =>
   action$.pipe(
     ofType(areaEditorEvents.requestRemoveCadastrialArea),
@@ -162,6 +211,8 @@ const epic = combineEpics(
   loadAreaPropertiesValueEpic,
   requestLoadAreaPropertiesValueEpic,
   requestPublishAreaEpic,
+  requestModifyAreaPropsEpic,
+  requestModifyAreaPhotoEpic,
   requestRemoveAreaEpic
 );
 

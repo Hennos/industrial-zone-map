@@ -11,18 +11,18 @@ const AnyObjectProperty = ({ stylization, data, value }) => (
 );
 
 const shapeData = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 AnyObjectProperty.propTypes = {
   stylization: PropTypes.string,
   data: PropTypes.shape(shapeData).isRequired,
-  value: PropTypes.any,
+  value: PropTypes.any
 };
 
 AnyObjectProperty.defaultProps = {
   stylization: '',
-  value: null,
+  value: null
 };
 
 export default AnyObjectProperty;

@@ -12,6 +12,7 @@ const SearchFound = ({
   found,
   onRequestDetails,
   onRequestEdit,
+  onRequestShow
 }) => (
   <div className={classNames(stylization, 'search-found')}>
     {found.map(({ id, data }) => (
@@ -22,6 +23,7 @@ const SearchFound = ({
         data={data}
         onRequestDetails={() => onRequestDetails(id)}
         onRequestEdit={() => onRequestEdit(id)}
+        onRequestShow={() => onRequestShow(data.idZone, id)}
       />
     ))}
   </div>
@@ -29,7 +31,7 @@ const SearchFound = ({
 
 const shapeFound = {
   id: PropTypes.number.isRequired,
-  data: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired
 };
 
 SearchFound.propTypes = {
@@ -38,6 +40,7 @@ SearchFound.propTypes = {
   found: PropTypes.arrayOf(PropTypes.shape(shapeFound)).isRequired,
   onRequestDetails: PropTypes.func,
   onRequestEdit: PropTypes.func,
+  onRequestShow: PropTypes.func
 };
 
 SearchFound.defaultProps = {
@@ -45,6 +48,7 @@ SearchFound.defaultProps = {
   editable: false,
   onRequestDetails: () => {},
   onRequestEdit: () => {},
+  onRequestShow: () => {}
 };
 
 export default SearchFound;

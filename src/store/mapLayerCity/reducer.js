@@ -1,7 +1,13 @@
 import Immutable from 'immutable';
 
 import { loadStatusEnum, events, keys } from './constants';
-import initialState from './initialState';
+import createInitialState from './initialState';
+
+const initialState = createInitialState();
+
+function handleClearCityData() {
+  return createInitialState();
+}
 
 function handleLoadIndustrialZones(prevState) {
   return prevState.set(keys.zonesLoadStatus, loadStatusEnum.loading);
@@ -30,6 +36,7 @@ function handleErrorLoadIndustrialZones(prevState, { error }) {
 }
 
 const handlers = new Map([
+  [events.clearCityData, handleClearCityData],
   [events.loadIndustrialZones, handleLoadIndustrialZones],
   [events.successLoadIndustrialZones, handleSuccessLoadIndustrialZones],
   [events.errorLoadIndustrialZones, handleErrorLoadIndustrialZones]

@@ -6,9 +6,7 @@ import initialState from './initialState';
 function handleSetAreaPropertiesData(prevState, { properties }) {
   const propsName = Immutable.List(properties.map(({ name }) => name));
   const propsData = Immutable.Map(properties.map(({ name, ...other }) => [name, other]));
-  return prevState
-    .set(keys.properties, propsName)
-    .set(keys.propsData, propsData);
+  return prevState.set(keys.properties, propsName).set(keys.propsData, propsData);
 }
 
 function handleSetAreaPropertiesValue(prevState, { area }) {
@@ -29,25 +27,20 @@ function handleUnsetAreaPropertiesValue(prevState) {
 }
 
 function handleUpdateAreaPropertyValue(prevState, { name, value }) {
-  const updatedPropsValue = prevState
-    .get(keys.propsValue)
-    .set(name, value);
+  const updatedPropsValue = prevState.get(keys.propsValue).set(name, value);
   return prevState.set(keys.propsValue, updatedPropsValue);
 }
 
 function handleCloseAreaEditor(prevState) {
-  return prevState
-    .set(keys.editorVisability, false);
+  return prevState.set(keys.editorVisability, false);
 }
 
 function handleOpenAreaEditor(prevState) {
-  return prevState
-    .set(keys.editorVisability, true);
+  return prevState.set(keys.editorVisability, true);
 }
 
 function handleLoadAreaPropertiesValue(prevState) {
-  return prevState
-    .set(keys.propsValueLoadStatus, loadStatusEnum.loading);
+  return prevState.set(keys.propsValueLoadStatus, loadStatusEnum.loading);
 }
 
 function handleErrorLoadAreaPropertiesValue(prevState, { error }) {
@@ -64,7 +57,7 @@ const handlers = new Map([
   [events.closeAreaEditor, handleCloseAreaEditor],
   [events.openAreaEditor, handleOpenAreaEditor],
   [events.loadAreaPropertiesValue, handleLoadAreaPropertiesValue],
-  [events.errorLoadAreaPropertiesValue, handleErrorLoadAreaPropertiesValue],
+  [events.errorLoadAreaPropertiesValue, handleErrorLoadAreaPropertiesValue]
 ]);
 
 const reducer = (state = initialState, action) => {

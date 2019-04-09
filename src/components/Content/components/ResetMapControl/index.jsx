@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import './index.css';
 
-import { resetMap } from '../../../../store/mapData/actions';
+import { setInitializeLayer } from '../../../../store/mapData/actions';
 
 class ResetMapControl extends MapControl {
   componentWillMount() {
@@ -33,11 +33,14 @@ class ResetMapControl extends MapControl {
 
 ResetMapControl.propTypes = {
   position: PropTypes.string.isRequired,
-  onResetMap: PropTypes.func.isRequired,
+  onResetMap: PropTypes.func.isRequired
 };
 
 const mapDispatchToProps = dispatch => ({
-  onResetMap: () => dispatch(resetMap()),
+  onResetMap: () => dispatch(setInitializeLayer())
 });
 
-export default connect(undefined, mapDispatchToProps)(ResetMapControl);
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(ResetMapControl);

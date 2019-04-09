@@ -1,0 +1,9 @@
+.area-properties {
+}
+
+.area-properties .area-properties-element {
+  min-height: 20px;
+  line-height: 14px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}

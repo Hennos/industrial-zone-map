@@ -1,0 +1,12 @@
+.photos-editable-property {
+  min-height: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.photos-editable-property > .property-title {
+  height: 20px;
+}
+
+.photos-editable-property > .property-form {
+}

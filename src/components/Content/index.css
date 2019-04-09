@@ -20,7 +20,7 @@
 .content > .content-footer {
   grid-row: content-footer-start / content-footer-end;
   grid-column: content-start / content-end;
-  background-color: #0081C7;
+  background-color: #0081c7;
 }
 
 .content > .content-search-filters {
@@ -45,4 +45,4 @@
   left: 360px;
   top: 10px;
   z-index: 1000002;
-};
+}
