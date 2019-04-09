@@ -54,20 +54,6 @@ const loadFoundObjectsEpic = (action$, state$) =>
     )
   );
 
-// const requestDowloadFoundObjectsURI = found =>
-//   `http://industry.specom-vm.ru/map_interface.php?action=get_document&data=[${found}]`;
-// const dowloadFoundObjectsEpic = (action$, state$) =>
-//   action$.pipe(
-//     ofType(searchEvents.requestDowloadFoundObjects),
-//     mergeMap(() =>
-//       ajax
-//         .getJSON(
-//           requestDowloadFoundObjectsURI(state$.value.search.get(searchKeys.foundAreas).toArray())
-//         )
-//         .pipe(map(response => ({ type: 'TEST_ACTION', response })))
-//     )
-//   );
-
 const epic = combineEpics(setFiltersDataEpic, loadFoundObjectsEpic);
 
 export default epic;
