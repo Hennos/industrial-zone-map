@@ -15,7 +15,7 @@ const FoundElement = ({
   <div className={classNames(stylization, 'found-element')}>
     <ul className="found-element-list">
       <li className="list-element">Адрес: {data.address || '-'}</li>
-      <li className="list-element">Кад. номер: {data.cadastrialNumber || '-'}</li>
+      <li className="list-element">Кад. номер: {data.cadastralNumber || '-'}</li>
       <li className="list-element">Вид разрешённого пользования: {data.usage || '-'}</li>
       <li className="list-element list-element-operations">
         <button className="found-element-operation" type="button" onClick={onRequestDetails}>
@@ -26,7 +26,7 @@ const FoundElement = ({
             Редактировать
           </button>
         )}
-        {data.territory && (
+        {data.enabled && (
           <button className="found-element-operation" type="button" onClick={onRequestShow}>
             Показать
           </button>
@@ -38,9 +38,9 @@ const FoundElement = ({
 
 const shapeElementData = {
   address: PropTypes.string,
-  territory: PropTypes.bool,
-  cadastrialNumber: PropTypes.string,
-  usage: PropTypes.string
+  cadastralNumber: PropTypes.string,
+  usage: PropTypes.string,
+  enabled: PropTypes.bool
 };
 
 FoundElement.propTypes = {

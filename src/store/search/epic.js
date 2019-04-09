@@ -18,7 +18,7 @@ const enumerateSearchConfigurator = (search, filters) =>
     class: 'MapEntity',
     search,
     search_field: 'address',
-    properties: ['id_zone', 'address', 'cadastral_number', 'id_usage', 'json'],
+    properties: ['id_zone', 'address', 'cadastral_number', 'id_usage', 'is_enabled'],
     filters: filters
       .filter(({ value }) => value !== undefined)
       .map(({ property, value, data }) => ({
@@ -48,7 +48,20 @@ const loadFoundObjectsEpic = (action$, state$) =>
           )
         )
         .pipe(
-          map(response => getFoundObjects(response.objects)),
+          map(response =>
+            getFoundObjects(
+              response.objects.map(({ id, properties }) => ({
+                id,
+                properties: {
+                  zone: properties.id_zone,
+                  address: properties.address,
+                  cadastralNumber: properties.cadastral_number,
+                  usage: properties.id_usage,
+                  enabled: properties.is_enabled
+                }
+              }))
+            )
+          ),
           catchError(error => of(errorGetFoundObjects(error)))
         )
     )

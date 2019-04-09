@@ -42,15 +42,8 @@ function handleInvertFiltersVisability(prevState) {
 }
 
 function handleGetFoundObjects(prevState, { found }) {
-  const foundArea = found.map(({ id, properties: { json, ...otherProps } }) => ({
-    id,
-    properties: {
-      territory: json.type === 'Polygon',
-      ...otherProps
-    }
-  }));
-  const foundAreasId = Immutable.List(foundArea.map(({ id }) => id));
-  const foundAreasData = Immutable.Map(foundArea.map(({ id, properties }) => [id, properties]));
+  const foundAreasId = Immutable.List(found.map(({ id }) => id));
+  const foundAreasData = Immutable.Map(found.map(({ id, properties }) => [id, properties]));
   return prevState.set(keys.foundAreas, foundAreasId).set(keys.foundAreasData, foundAreasData);
 }
 

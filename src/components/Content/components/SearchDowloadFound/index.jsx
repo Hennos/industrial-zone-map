@@ -6,7 +6,7 @@ import './index.css';
 
 const SearchDowloadFound = ({ stylization, found }) => (
   <a
-    href={`http://industry.specom-vm.ru/map_interface.php?action=get_document&data=[${found}]`}
+    href={`http://industry.aonords.ru/map_interface.php?action=get_document&data=[${found}]`}
     className={classNames(stylization, 'search-dowload-found-control')}
   >
     Загрузить найденные <i className="fas fa-download" />
@@ -15,7 +15,7 @@ const SearchDowloadFound = ({ stylization, found }) => (
 
 SearchDowloadFound.propTypes = {
   stylization: PropTypes.string,
-  found: PropTypes.arrayOf(PropTypes.string)
+  found: PropTypes.arrayOf(PropTypes.number)
 };
 
 SearchDowloadFound.defaultProps = {

@@ -47,7 +47,7 @@ const ObjectDetails = ({
           <img
             key={photo}
             className="object-details-content-photos-element"
-            src={`http://industry.specom-vm.ru/${photo}`}
+            src={`http://industry.aonords.ru/${photo}`}
             alt="Изображение объекта"
           />
         ))}

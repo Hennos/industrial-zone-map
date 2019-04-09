@@ -79,10 +79,10 @@ const mapStateToProps = state => {
         return {
           id,
           data: {
-            territory: areasData.territory,
-            idZone: areasData.id_zone,
-            cadastrialNumber: areasData.cadastral_number,
-            usage: areasData.id_usage,
+            enabled: areasData.enabled,
+            idZone: areasData.zone,
+            cadastralNumber: areasData.cadastralNumber,
+            usage: areasData.usage,
             address: areasData.address
           }
         };
