@@ -6,6 +6,7 @@ import './index.css';
 
 const AreaInformation = ({
   stylization,
+  id,
   editable,
   data,
   onRequestDetails,
@@ -14,26 +15,33 @@ const AreaInformation = ({
 }) => (
   <div className={classNames(stylization, 'area-information')}>
     <ul className="area-information-list">
-      <li className="list-element">Адрес: {data.address || '-'}</li>
-      <li className="list-element">Кад. номер: {data.cadastral_number || '-'}</li>
-      <li className="list-element">Вид разрешённого пользования: {data.usage || '-'}</li>
+      <li className="list-element">
+        Адрес:
+        {data.address || '-'}
+      </li>
+      <li className="list-element">
+        Кад. номер:
+        {data.cadastral_number || '-'}
+      </li>
+      <li className="list-element">
+        Вид разрешённого пользования:
+        {data.usage || '-'}
+      </li>
       <li className="list-element list-element-operations">
-        {!data.created ? (
-          <React.Fragment>
-            <button className="area-information-operation" type="button" onClick={onRequestDetails}>
-              Подробнее
-            </button>
-            {editable && (
-              <button className="area-information-operation" type="button" onClick={onRequestEdit}>
-                Редактировать
-              </button>
-            )}
-          </React.Fragment>
-        ) : (
+        {!data.created && (
           <button
             className="area-information-operation"
             type="button"
-            onClick={onRequestEditCreated}
+            onClick={() => onRequestDetails(id)}
+          >
+            Подробнее
+          </button>
+        )}
+        {editable && (
+          <button
+            className="area-information-operation"
+            type="button"
+            onClick={() => (!data.created ? onRequestEdit(id) : onRequestEditCreated(id))}
           >
             Редактировать
           </button>
@@ -52,6 +60,7 @@ const shapeElementData = {
 
 AreaInformation.propTypes = {
   stylization: PropTypes.string,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   editable: PropTypes.bool,
   data: PropTypes.shape(shapeElementData).isRequired,
   onRequestDetails: PropTypes.func,

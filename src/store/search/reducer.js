@@ -1,11 +1,9 @@
-import Immutable from 'immutable';
-
 import { events, keys } from './constants';
 import initialState from './initialState';
 
 function handleSetFiltersData(prevState, { filters }) {
-  const filtersName = Immutable.List(filters.map(({ name }) => name));
-  const filtersData = Immutable.Map(
+  const filtersName = filters.map(({ name }) => name);
+  const filtersData = Object.fromEntries(
     filters.map(({ name, type, ...other }) =>
       type === 'range'
         ? [
@@ -28,23 +26,52 @@ function handleSetFiltersData(prevState, { filters }) {
           ]
     )
   );
-  return prevState.set(keys.filters, filtersName).set(keys.filtersData, filtersData);
+  const updatedStateChunk = Object.fromEntries([
+    [keys.filters, filtersName],
+    [keys.filtersData, filtersData]
+  ]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 function handleUpdateSearchFilterValue(prevState, { name, value }) {
-  const updatedFiltersValue = prevState.get(keys.filtersValue).set(name, value);
-  return prevState.set(keys.filtersValue, updatedFiltersValue);
+  const prevFiltersValue = prevState[keys.filtersValue];
+  const updatedValueChuck = Object.fromEntries([[name, value]]);
+  const updatedFiltersValue = {
+    ...prevFiltersValue,
+    ...updatedValueChuck
+  };
+  const updatedStateChunk = Object.fromEntries([[keys.filtersValue, updatedFiltersValue]]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 function handleInvertFiltersVisability(prevState) {
-  const prevVisability = prevState.get(keys.filtersVisability);
-  return prevState.set(keys.filtersVisability, !prevVisability);
+  const updatedFiltersVisability = !prevState[keys.filtersVisability];
+  const updatedStateChunk = Object.fromEntries([
+    [keys.filtersVisability, updatedFiltersVisability]
+  ]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 function handleGetFoundObjects(prevState, { found }) {
-  const foundAreasId = Immutable.List(found.map(({ id }) => id));
-  const foundAreasData = Immutable.Map(found.map(({ id, properties }) => [id, properties]));
-  return prevState.set(keys.foundAreas, foundAreasId).set(keys.foundAreasData, foundAreasData);
+  const foundAreasId = found.map(({ id }) => id);
+  const foundAreasData = Object.fromEntries(found.map(({ id, properties }) => [id, properties]));
+  const updatedStateChunk = Object.fromEntries([
+    [keys.foundAreas, foundAreasId],
+    [keys.foundAreasData, foundAreasData]
+  ]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 const handlers = new Map([

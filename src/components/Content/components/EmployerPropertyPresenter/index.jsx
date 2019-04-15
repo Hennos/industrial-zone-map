@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { employerObjectPropsEnum } from '../../../../store/objectDetails/constants';
-
 import AnyObjectProperty from '../AnyObjectProperty';
 
 const EmployerPropertyPresenter = ({ stylization, name, data, value }) => {

@@ -59,23 +59,21 @@ SearchFilters.defaultProps = {
 
 function mapStateToProps(state) {
   const loadStatus = state.loader.get(loaderKeys.filtersLoadStatus);
-  const filters = state.search.get(searchKeys.filters);
-  const filtersData = state.search.get(searchKeys.filtersData);
-  const filtersValue = state.search.get(searchKeys.filtersValue);
+  const filters = state.search[searchKeys.filters];
+  const filtersData = state.search[searchKeys.filtersData];
+  const filtersValue = state.search[searchKeys.filtersValue];
   return {
     loadStatus,
-    filters: filters
-      .map(name => {
-        const { type, ...filterData } = filtersData.get(name);
-        const filterValue = filtersValue.get(name);
-        return {
-          name,
-          type,
-          data: filterData,
-          ...(filterValue && { value: filterValue })
-        };
-      })
-      .toArray()
+    filters: filters.map(name => {
+      const { type, ...filterData } = filtersData[name];
+      const filterValue = filtersValue[name];
+      return {
+        name,
+        type,
+        data: filterData,
+        ...(filterValue && { value: filterValue })
+      };
+    })
   };
 }
 

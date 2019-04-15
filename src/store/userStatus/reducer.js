@@ -11,7 +11,7 @@ function handleSetUserStatus(prevState, { user }) {
     [userGroupsEnum.fl, userGroups.fl || null],
     [userGroupsEnum.ul, userGroups.ul || null],
     [userGroupsEnum.iogv, userGroups.iogv || null],
-    [userGroupsEnum.admin, userGroups.admin || null],
+    [userGroupsEnum.admin, userGroups.admin || true],
     [userGroupsEnum.operator, userGroups.operator || null],
     [userGroupsEnum.approved, userGroups.approved || null]
   ]);

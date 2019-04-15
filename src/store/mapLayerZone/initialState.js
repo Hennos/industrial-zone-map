@@ -1,14 +1,12 @@
-import Immutable from 'immutable';
-
 import { loadStatusEnum, keys } from './constants';
 
 const createInitialState = () =>
-  Immutable.Map([
+  Object.fromEntries([
     [keys.zone, null],
     [keys.highlighted, null],
-    [keys.areas, Immutable.List()],
-    [keys.areasData, Immutable.Map()],
-    [keys.areasGeoData, Immutable.Map()],
+    [keys.areas, []],
+    [keys.areasData, {}],
+    [keys.areasGeometry, {}],
     [keys.areasLoadStatus, loadStatusEnum.none],
     [keys.areasLoadErrorMessage, '']
   ]);

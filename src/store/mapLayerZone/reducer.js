@@ -1,5 +1,3 @@
-import Immutable from 'immutable';
-
 import { loadStatusEnum, events, keys } from './constants';
 import createInitialState from './initialState';
 
@@ -14,73 +12,135 @@ const createId = (() => {
 })();
 
 function handleHighlightArea(prevState, { area }) {
-  return prevState.set(keys.highlighted, area);
+  const updatedStateChunk = Object.fromEntries([[keys.highlighted, area]]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 function handleSetZone(prevState, { id, geometry }) {
-  return prevState.set(keys.zone, {
+  const addedZone = {
     id,
     geometry
-  });
+  };
+  const updatedStateChunk = Object.fromEntries([[keys.zone, addedZone]]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 function handleClearZoneData() {
-  return createInitialState();
+  return { ...initialState };
 }
 
 function handleSuccessLoadCadastrialAreas(prevState, { areas }) {
-  const areasId = Immutable.List(areas.map(({ id }) => id));
-  const areasDataEntities = areas.map(({ id, name, properties }) => {
-    const { json, ...data } = properties;
-    return {
-      data: [id, Object.assign({ name }, data)],
-      geometry: [id, json]
-    };
-  });
-  const areasData = Immutable.Map(areasDataEntities.map(({ data }) => data));
-  const areasGeoData = Immutable.Map(areasDataEntities.map(({ geometry }) => geometry));
-  return prevState
-    .set(keys.areas, areasId)
-    .set(keys.areasData, areasData)
-    .set(keys.areasGeoData, areasGeoData)
-    .set(keys.areasLoadStatus, loadStatusEnum.success);
+  const updatedAreasId = areas.map(({ id }) => id);
+  const updatedAreasData = Object.fromEntries(
+    areas.map(({ id, name, properties: { json, ...data } }) => [
+      id,
+      {
+        name,
+        ...data
+      }
+    ])
+  );
+  const updatedAreasGeometry = Object.fromEntries(
+    areas.map(({ id, properties: { json } }) => [id, json])
+  );
+  const updatedStateChunk = Object.fromEntries([
+    [keys.areas, updatedAreasId],
+    [keys.areasData, updatedAreasData],
+    [keys.areasGeometry, updatedAreasGeometry],
+    [keys.areasLoadStatus, loadStatusEnum.success]
+  ]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 function handleLoadCadastrialAreas(prevState) {
-  return prevState.set(keys.areasLoadStatus, loadStatusEnum.loading);
+  const updatedStateChunk = Object.fromEntries([[keys.areasLoadStatus, loadStatusEnum.loading]]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 function handleErrorLoadCadastrialAreas(prevState, { error }) {
-  return prevState.set(keys.areasLoadErrorMessage, error.toString());
+  const updatedStateChunk = Object.fromEntries([[keys.areasLoadErrorMessage, error.toString()]]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 function handleCreateTerritoryCadastrialArea(prevState, { area }) {
-  const id = createId();
-  const updatedAreas = prevState.get(keys.areas).push(id);
-  const updatedAreasData = prevState.get(keys.areasData).set(id, {
-    created: true
-  });
-  const updatedAreasGeoData = prevState.get(keys.areasGeoData).set(id, area);
-  return prevState
-    .set(keys.areas, updatedAreas)
-    .set(keys.areasData, updatedAreasData)
-    .set(keys.areasGeoData, updatedAreasGeoData);
+  const created = createId();
+  const prevAreasId = prevState[keys.areas];
+  const updatedAreasId = prevAreasId.concat(created);
+
+  const prevAreasData = prevState[keys.areasData];
+  const updatedAreasDataChunk = Object.fromEntries([[created, { created: true }]]);
+  const updatedAreasData = {
+    ...prevAreasData,
+    ...updatedAreasDataChunk
+  };
+
+  const prevAreasGeometry = prevState[keys.areasGeometry];
+  const updatedAreasGeometryChunk = Object.fromEntries([[created, area]]);
+  const updateAreasGeometry = {
+    ...prevAreasGeometry,
+    ...updatedAreasGeometryChunk
+  };
+
+  const updatedStateChunk = Object.fromEntries([
+    [keys.areas, updatedAreasId],
+    [keys.areasData, updatedAreasData],
+    [keys.areasGeometry, updateAreasGeometry]
+  ]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 function handleEditTerritoryCadastrialAreas(prevState, { areas }) {
-  const newEditedAreasGeoData = Immutable.Map(areas.map(({ id, bounds }) => [id, bounds]));
-  const updatedAreasGeoData = prevState.get(keys.areasGeoData).merge(newEditedAreasGeoData);
-  return prevState.set(keys.areasGeoData, updatedAreasGeoData);
+  const prevAreasGeometry = prevState[keys.areasGeometry];
+  const updatedAreasGeometryChunk = Object.fromEntries(areas.map(({ id, bounds }) => [id, bounds]));
+  const updatedAreasGeometry = {
+    ...prevAreasGeometry,
+    ...updatedAreasGeometryChunk
+  };
+  const updatedStateChunk = Object.fromEntries([[keys.areasGeometry, updatedAreasGeometry]]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 function handleRemoveTerritoryCadastrialArea(prevState, { area: removed }) {
-  const updatedAreas = prevState.get(keys.areas).filter(area => area !== removed);
-  const updatedAreasData = prevState.get(keys.areasData).delete(removed);
-  const updatedAreasGeoData = prevState.get(keys.areasGeoData).delete(removed);
-  return prevState
-    .set(keys.areas, updatedAreas)
-    .set(keys.areasData, updatedAreasData)
-    .set(keys.areasGeoData, updatedAreasGeoData);
+  const prevAreasId = prevState[keys.areas];
+  const prevAreasData = prevState[keys.areasData];
+  const prevAreasGeometry = prevState[keys.areasGeometry];
+
+  const updatedAreasId = prevAreasId.filter(area => area !== removed);
+  const updatedAreasData = Object.fromEntries(updatedAreasId.map(id => [id, prevAreasData[id]]));
+  const updatedAreasGeometry = Object.fromEntries(
+    updatedAreasId.map(id => [id, prevAreasGeometry[id]])
+  );
+
+  const updatedStateChunk = Object.fromEntries([
+    [keys.areas, updatedAreasId],
+    [keys.areasData, updatedAreasData],
+    [keys.areasGeometry, updatedAreasGeometry]
+  ]);
+  return {
+    ...prevState,
+    ...updatedStateChunk
+  };
 }
 
 const handlers = new Map([

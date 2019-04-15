@@ -18,7 +18,7 @@ const enumerateSearchConfigurator = (search, filters) =>
     class: 'MapEntity',
     search,
     search_field: 'address',
-    properties: ['id_zone', 'address', 'cadastral_number', 'id_usage', 'is_enabled'],
+    properties: ['id_zone', 'address', 'cadastral_number', 'id_usage', 'json'],
     filters: filters
       .filter(({ value }) => value !== undefined)
       .map(({ property, value, data }) => ({
@@ -26,7 +26,6 @@ const enumerateSearchConfigurator = (search, filters) =>
         value,
         operation: data.type === 'range' ? 'is_range' : 'is'
       }))
-      .toArray()
   });
 const requestSearchObjectsURI = request =>
   `http://industry.aonords.ru/map_interface.php?action=enumerate&data=${request}`;
@@ -39,11 +38,15 @@ const loadFoundObjectsEpic = (action$, state$) =>
           requestSearchObjectsURI(
             enumerateSearchConfigurator(
               search,
-              state$.value.search.get(searchKeys.filters).map(filter => ({
-                property: filter,
-                value: state$.value.search.get(searchKeys.filtersValue).get(filter),
-                data: state$.value.search.get(searchKeys.filtersData).get(filter)
-              }))
+              state$.value.search[searchKeys.filters].map(filter => {
+                const filterValues = state$.value.search[searchKeys.filtersValue];
+                const filterDatas = state$.value.search[searchKeys.filtersData];
+                return {
+                  property: filter,
+                  value: filterValues[filter],
+                  data: filterDatas[filter]
+                };
+              })
             )
           )
         )
@@ -57,7 +60,7 @@ const loadFoundObjectsEpic = (action$, state$) =>
                   address: properties.address,
                   cadastralNumber: properties.cadastral_number,
                   usage: properties.id_usage,
-                  enabled: properties.is_enabled
+                  enabled: properties.json && properties.json.type !== 'Feature'
                 }
               }))
             )

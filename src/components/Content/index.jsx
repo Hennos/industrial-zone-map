@@ -58,7 +58,7 @@ Content.defaultProps = {
 };
 
 const mapStateTpProps = state => ({
-  filtersVisibility: state.search.get(searchKeys.filtersVisability),
+  filtersVisibility: state.search[searchKeys.filtersVisability],
   legendVisability: state.legend.get(legendKeys.legendVisability),
   areaEditorVisability: state.areaEditor.get(areaEditorKeys.editorVisability),
   areaCreationVisability: state.areaCreation.get(areaCreationKeys.areaCreationVisability)

@@ -3,18 +3,13 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import './index.css';
-
-import { keys as searchKeys } from '../../../../store/search/constants';
-import { requestDowloadFoundObjects } from '../../../../store/search/actions';
-import { userGroupsEnum, keys as statusKeys } from '../../../../store/userStatus/constants';
-import { loadObjectDetails } from '../../../../store/objectDetails/actions';
-import { requestLoadAreaPropertiesValue } from '../../../../store/areaEditor/actions';
-import { showArea } from '../../../../store/mapLayerZone/actions';
-
 import SearchInput from '../SearchInput';
 import SearchDowloadFound from '../SearchDowloadFound';
 import SearchFound from '../SearchFound';
+
+import { mapStateToProps, mapDispatchToProps } from './mapToProps';
+
+import './index.css';
 
 const Search = ({
   stylization,
@@ -66,37 +61,6 @@ Search.defaultProps = {
   superuser: false,
   found: []
 };
-
-const mapStateToProps = state => {
-  const foundAreas = state.search.get(searchKeys.foundAreas);
-  const foundAreasData = state.search.get(searchKeys.foundAreasData);
-  const userGroups = state.userStatus.get(statusKeys.groups);
-  return {
-    superuser: userGroups.get(userGroupsEnum.operator) || userGroups.get(userGroupsEnum.admin),
-    found: foundAreas
-      .map(id => {
-        const areasData = foundAreasData.get(id);
-        return {
-          id,
-          data: {
-            enabled: areasData.enabled,
-            idZone: areasData.zone,
-            cadastralNumber: areasData.cadastralNumber,
-            usage: areasData.usage,
-            address: areasData.address
-          }
-        };
-      })
-      .toArray()
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  onRequestDowloadFound: () => dispatch(requestDowloadFoundObjects()),
-  onRequestFoundDetails: id => dispatch(loadObjectDetails(id)),
-  onRequestFoundEdit: id => dispatch(requestLoadAreaPropertiesValue(id)),
-  onRequestFoundShow: (zone, area) => dispatch(showArea(zone, area))
-});
 
 export default connect(
   mapStateToProps,

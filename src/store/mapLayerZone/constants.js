@@ -31,7 +31,7 @@ const keys = Object.freeze({
   highlighted: 'highlighted',
   areas: 'areas',
   areasData: 'areasData',
-  areasGeoData: 'areasGeoData',
+  areasGeometry: 'areasGeometry',
   areasLoadStatus: 'areasLoadStatus',
   areasLoadErrorMessage: 'areasLoadErrorMessage'
 });

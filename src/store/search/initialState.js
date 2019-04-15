@@ -1,14 +1,12 @@
-import Immutable from 'immutable';
-
 import { keys } from './constants';
 
-const initialState = Immutable.Map([
-  [keys.filters, Immutable.List()],
-  [keys.filtersData, Immutable.Map()],
-  [keys.filtersValue, Immutable.Map()],
+const initialState = Object.fromEntries([
+  [keys.filters, []],
+  [keys.filtersData, {}],
+  [keys.filtersValue, {}],
   [keys.filtersVisability, false],
-  [keys.foundAreas, Immutable.List()],
-  [keys.foundAreasData, Immutable.Map()]
+  [keys.foundAreas, []],
+  [keys.foundAreasData, {}]
 ]);
 
 export default initialState;
